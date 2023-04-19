@@ -69,7 +69,6 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         width: Dimensions.get('window').width - SCALE_SIZE(70),
         height: Dimensions.get('window').width - SCALE_SIZE(80),
-        bottom: SCALE_SIZE(20)
     },
     heartImage: {
         height: SCALE_SIZE(58),

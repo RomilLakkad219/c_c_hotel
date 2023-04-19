@@ -8,6 +8,7 @@ import LogoutPopup from './LogoutPopup'
 import HotelCarousel from './HotelCarousel'
 import BookingSelectionPopup from './BookingSelectionPopup'
 import FavouriteList from './FavouriteList'
+import RateTheAppPopUp from './RateTheAppPopUp'
 
 export {
     Text,
@@ -19,5 +20,6 @@ export {
     LogoutPopup,
     HotelCarousel,
     BookingSelectionPopup,
-    FavouriteList
+    FavouriteList,
+    RateTheAppPopUp
 }

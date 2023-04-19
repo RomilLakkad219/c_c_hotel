@@ -24,19 +24,21 @@ export default function ToolItem(props) {
                 return (
                     <TouchableOpacity onPress={() => props.onPress(item, index)} style={props.style}>
                         <View style={styles.container}>
-                            <ImageBackground style={selectedItems.includes(index) ? styles.selectedBox : styles.squareBox}
-                                resizeMode='contain'>
-                                <Image
-                                    style={styles.right_bg}
-                                    resizeMode="contain"
-                                    source={IMAGES.right_bg} />
-                            </ImageBackground>
-                            <Text style={styles.tooltipText}
-                                size={SCALE_SIZE(12)}
-                                family={FONT_NAME.medium}
-                                color={COLORS.headerTitleGray}>
-                                {item}
-                            </Text>
+                            <View style={selectedItems.includes(index) ? styles.blueView : styles.normalView}>
+                                <ImageBackground style={selectedItems.includes(index) ? styles.selectedBox : styles.squareBox}
+                                    resizeMode='contain'>
+                                    <Image
+                                        style={styles.right_bg}
+                                        resizeMode="contain"
+                                        source={IMAGES.right_bg} />
+                                </ImageBackground>
+                                <Text style={styles.tooltipText}
+                                    size={SCALE_SIZE(12)}
+                                    family={FONT_NAME.medium}
+                                    color={COLORS.headerTitleGray}>
+                                    {item}
+                                </Text>
+                            </View>
                         </View>
                     </TouchableOpacity>
                 )
@@ -48,6 +50,25 @@ const styles = StyleSheet.create({
     container: {
         flexDirection: 'row',
         marginTop: SCALE_SIZE(10)
+    },
+    blueView: {
+        backgroundColor: '#EEF2FF',
+        borderRadius: SCALE_SIZE(6),
+        height: SCALE_SIZE(32),
+        width: SCALE_SIZE(152),
+        flexDirection: 'row',
+        marginHorizontal: SCALE_SIZE(10),
+        alignItems: 'center'
+    },
+    normalView:{
+        borderRadius: SCALE_SIZE(6),
+        height: SCALE_SIZE(32),
+        width: SCALE_SIZE(152),
+        flexDirection: 'row',
+        marginHorizontal: SCALE_SIZE(10),
+        backgroundColor: '#FFFFFF',
+        borderRadius: SCALE_SIZE(6),
+        alignItems: 'center'
     },
     squareBox: {
         height: SCALE_SIZE(18),

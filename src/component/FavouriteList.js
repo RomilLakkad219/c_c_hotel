@@ -54,9 +54,9 @@ const FavouriteList = (props) => {
                 </Text>
                 <Rating
                     style={styles.starContainer}
-                    type='custom'
+                    type='star'
                     ratingImage={IMAGES.ic_star}
-                    ratingColor='yellow'
+                    // ratingColor='yellow'
                     ratingCount={4}
                     imageSize={12}>
                 </Rating>

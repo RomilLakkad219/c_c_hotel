@@ -11,7 +11,7 @@ import { Header, HotelCarousel, Text } from "../../component";
 import { COLORS, STRING, SCALE_SIZE, FONT_NAME } from "../../constant";
 
 //PACKAGES
-import Carousel, { Pagination } from 'react-native-snap-carousel';
+import Carousel  from 'react-native-snap-carousel';
 
 //SCREENS
 import { SCREENS } from "..";
@@ -20,7 +20,6 @@ const Home = (props) => {
 
     const [search, setSearch] = useState('');
     const isCarousel = useRef();
-    const [isSelected, setIsSelected] = useState(false);
     const [index, setIndex] = useState(0)
 
     const hotelData =
@@ -97,11 +96,10 @@ const Home = (props) => {
                         renderItem={({ item, index }) => {
                             return (
                                 <TouchableOpacity style={styles.listDirectionView} onPress={() => {
-                                    if (item.key == 'map' || index==0) {
-                                        setIsSelected(true)
+                                    if (item.key == 'map') {
                                         props.navigation.navigate(SCREENS.Map.name)
                                     }
-                                    else if (item.key == 'experience' ) {
+                                    else if (item.key == 'experience') {
                                         props.navigation.navigate(SCREENS.Experience.name)
                                     }
                                     else if (item.key == 'destination') {
@@ -111,15 +109,15 @@ const Home = (props) => {
                                         props.navigation.navigate(SCREENS.Match.name)
                                     }
                                 }}>
-                                    <View style={isSelected ? styles.selected : styles.listContainer}>
+                                    <View style={styles.listContainer}>
                                         <Image
-                                            style={isSelected ? styles.whiteImage : styles.itemImage}
+                                            style={styles.itemImage}
                                             resizeMode="contain"
                                             source={item.image} />
                                         <Text
                                             style={styles.title}
                                             size={SCALE_SIZE(16)}
-                                            color={isSelected ? COLORS.white : COLORS.headerTitleGray}
+                                            color={COLORS.headerTitleGray}
                                             family={FONT_NAME.medium}>
                                             {item.title}
                                         </Text>
@@ -154,25 +152,6 @@ const Home = (props) => {
                     useScrollView={true}
                     onSnapToItem={(index) => setIndex(index)}>
                 </Carousel>
-                <Pagination
-                    dotsLength={3}
-                    activeDotIndex={index}
-                    carouselRef={isCarousel}
-                    dotStyle={{
-                        width: 10,
-                        height: 10,
-                        borderRadius: 5,
-                        // marginHorizontal: 2,
-                        backgroundColor: COLORS.blue,
-                    }}
-                    tappableDots={true}
-                    inactiveDotStyle={{
-                        backgroundColor: 'black',
-                        // Define styles for inactive dots here
-                    }}
-                    inactiveDotOpacity={0.4}
-                    inactiveDotScale={0.6}
-                />
                 <Text style={styles.followText}
                     size={SCALE_SIZE(20)}
                     color={COLORS.black}

@@ -61,11 +61,11 @@ const Otp = (props) => {
             <OTPTextInput
                 defaultValue={otp}
                 containerStyle={styles.otpContainerStyle}
-                textInputStyle={selected ? styles.otpSelected : styles.otpdeSelected}
+                textInputStyle={styles.otpSelected}
                 inputCount={4}
                 handleTextChange={(text) => {
                     setOtp(text)
-                    setSelected(true)
+                    // setSelected(true)
                 }}>
             </OTPTextInput>
             <Button
@@ -112,22 +112,18 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-start',
         marginLeft: SCALE_SIZE(35)
     },
-    otpdeSelected: {
-        borderRadius: SCALE_SIZE(10),
-        marginTop: SCALE_SIZE(42),
-        backgroundColor: '#EEF2FF',
-        color: COLORS.blue,
-    },
     otpSelected: {
         borderRadius: SCALE_SIZE(10),
         borderWidth: 1,
+        borderBottomWidth: 1,
         marginTop: SCALE_SIZE(42),
         color: COLORS.blue,
         backgroundColor: '#EEF2FF',
-        borderTopColor: COLORS.blue,
-        borderLeftColor: COLORS.blue,
-        borderRightColor: COLORS.blue,
-        borderBottomColor: COLORS.blue,
+        borderColor:COLORS.blue
+        // borderTopColor: COLORS.blue,
+        // borderLeftColor: COLORS.blue,
+        // borderRightColor: COLORS.blue,
+        // borderBottomColor: COLORS.blue,
     },
     submitButton: {
         marginTop: SCALE_SIZE(80),

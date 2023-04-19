@@ -30,11 +30,15 @@ const EditProfile = (props) => {
     const [postalCode, setPostalCode] = useState('');
     const genderRef = useRef();
     const countryRef = useRef();
-    const [selectedDate,setSelectedDate]=useState('')
+    const [selectedDate, setSelectedDate] = useState('');
+    const [maleSelect, setMaleSelect] = useState(false);
+    const [femaleSelect, setFemaleSelect] = useState(false);
+    const [otherSelect, setOtherSelect] = useState(false);
+    const [franceSelect, setFranceSelect] = useState(false);
+    const [finlandSelect, setFinlandSelect] = useState(false);
+    const [fijiIslandSelect, setFijiIslandSelect] = useState(false)
 
     const [isDatePickerVisible, setIsDatePickerVisible] = useState(false);
-
-    console.log(country)
 
     const showDatePicker = () => {
         setIsDatePickerVisible(true)
@@ -279,30 +283,33 @@ const EditProfile = (props) => {
                             height: SCALE_SIZE(300)
                         }
                     }}>
-                    <Text style={styles.maleText}
-                        onPress={() => {
-                            setGender('Male')
-                            genderRef.current.close()
-                        }}
-                        size={12}
-                        family={FONT_NAME.medium}
-                        color={COLORS.headerTitleGray}>
-                        {'Male'}
-                    </Text>
-                    <Text style={styles.femaleText}
+                        <Text style={maleSelect ? styles.blueView : styles.maleText}
+                            onPress={() => {
+                                setMaleSelect(!maleSelect)
+                                setGender('Male')
+                                genderRef.current.close()
+                            }}
+                            size={12}
+                            family={FONT_NAME.medium}
+                            color={COLORS.headerTitleGray}>
+                            {'Male'}
+                        </Text>
+                    <Text style={femaleSelect ? styles.blueView : styles.femaleText}
                         onPress={() => {
                             setGender('Female')
                             genderRef.current.close()
+                            setFemaleSelect(!femaleSelect)
                         }}
                         size={12}
                         family={FONT_NAME.medium}
                         color={COLORS.headerTitleGray}>
                         {'Female'}
                     </Text>
-                    <Text style={styles.otherText}
+                    <Text style={otherSelect ? styles.blueView : styles.otherText}
                         onPress={() => {
                             setGender('Other')
                             genderRef.current.close()
+                            setOtherSelect(!otherSelect)
                         }}
                         size={12}
                         family={FONT_NAME.medium}
@@ -318,30 +325,33 @@ const EditProfile = (props) => {
                             height: SCALE_SIZE(300)
                         }
                     }}>
-                    <Text style={styles.maleText}
+                    <Text style={franceSelect ? styles.blueView : styles.maleText}
                         onPress={() => {
                             setCountry('France')
                             countryRef.current.close()
+                            setFranceSelect(!franceSelect)
                         }}
                         size={12}
                         family={FONT_NAME.medium}
                         color={COLORS.headerTitleGray}>
                         {'France'}
                     </Text>
-                    <Text style={styles.femaleText}
+                    <Text style={finlandSelect ? styles.blueView : styles.femaleText}
                         onPress={() => {
                             setCountry('Finland')
                             countryRef.current.close()
+                            setFinlandSelect(!finlandSelect)
                         }}
                         size={12}
                         family={FONT_NAME.medium}
                         color={COLORS.headerTitleGray}>
                         {'Finland'}
                     </Text>
-                    <Text style={styles.otherText}
+                    <Text style={fijiIslandSelect ? styles.blueView : styles.otherText}
                         onPress={() => {
                             setCountry('Fiji Island')
                             countryRef.current.close()
+                            setFijiIslandSelect(!fijiIslandSelect)
                         }}
                         size={12}
                         family={FONT_NAME.medium}
@@ -422,7 +432,18 @@ const styles = StyleSheet.create({
     otherText: {
         marginHorizontal: SCALE_SIZE(15),
         marginTop: SCALE_SIZE(12)
-    }
+    },
+    blueView: {
+        backgroundColor: '#EEF2FF',
+        borderRadius: SCALE_SIZE(6),
+        flexDirection: 'row',
+        // alignItems: 'center',
+        marginHorizontal: SCALE_SIZE(15),
+        marginTop: SCALE_SIZE(20),
+        height: SCALE_SIZE(32),
+        width: SCALE_SIZE(130),
+        paddingLeft: SCALE_SIZE(15)
+    },
 })
 
 export default EditProfile;

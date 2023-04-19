@@ -12,13 +12,9 @@ const Input = (props) => {
     const [enable, setEnable] = useState(false)
 
     return (
-        <TouchableOpacity style=
-            {
-                [enable ? styles.inputHighlighted : styles.container, props.style]
-            }
-            onPress={()=>{
-                setEnable(!enable)
-            }}>
+        <View style={[styles.container, props.style, {
+            borderColor: enable ? COLORS.blue : 'transparent'
+        }]}>
             <View style={styles.detailContainer}>
                 <View style={styles.inputContainer}>
                     <Text
@@ -31,23 +27,29 @@ const Input = (props) => {
                         {...props}
                         autoCapitalize='none'
                         style={styles.input}
+                        onFocus={() => setEnable(true)}
+                        onEndEditing={() => setEnable(false)}
+                        onBlur={() => setEnable(false)}
                         secureTextEntry={props.secureTextEntry}
                         placeholderTextColor={COLORS.gray} />
                 </View>
                 {props.icon &&
                     <TouchableOpacity style={styles.iconButton} onPress={props.onPressIcon}>
-                        <Image style={styles.icon} source={props.icon} />
+                        <Image style={[styles.icon, {
+                            tintColor: enable ? COLORS.blue : COLORS.borderGray
+                        }]} 
+                        resizeMode='contain'
+                        source={props.icon} />
                     </TouchableOpacity>
                 }
             </View>
-        </TouchableOpacity>
+        </View>
     )
 }
 
 const styles = StyleSheet.create({
     container: {
-        // borderColor: COLORS.blue,
-        // borderWidth: 1,
+        borderWidth: 1,
         paddingHorizontal: SCALE_SIZE(25),
         paddingVertical: Platform.OS == 'ios' ? SCALE_SIZE(12) : SCALE_SIZE(5),
         borderRadius: SCALE_SIZE(25),

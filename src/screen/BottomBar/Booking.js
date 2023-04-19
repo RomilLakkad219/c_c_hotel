@@ -1,17 +1,21 @@
 import React, { useState } from "react";
-import { View, StyleSheet, SafeAreaView, TouchableOpacity, Image, TextInput } from 'react-native'
+import { View, StyleSheet, SafeAreaView, TouchableOpacity, Image, TextInput, FlatList } from 'react-native'
 
 //PACKAGES
-import MapView, { Marker } from 'react-native-maps'
+import MapView, { Marker } from 'react-native-maps';
+import { Rating } from 'react-native-ratings'
 
 //ASSET
 import { IMAGES } from "../../asset";
 
 //COMPONENT
-import { BookingSelectionPopup, Header, Text } from "../../component";
+import { Header, Text } from "../../component";
 
 //CONSTANT
 import { COLORS, FONT_NAME, SCALE_SIZE, STRING } from "../../constant";
+
+//SCREENS
+import { SCREENS } from "..";
 
 const Booking = (props) => {
 
@@ -20,18 +24,16 @@ const Booking = (props) => {
     }
 
     const [search, setSearch] = useState('');
-    const [visible, setVisible] = useState(false)
+    const [isSelectedSearch, setIsSelectedSearch] = useState(false)
 
     return (
         <View style={styles.container}>
             <SafeAreaView />
             <Header
                 onBack={() => onBack()}
-                onDashboard={() => onDashboard()} />
-            <TouchableOpacity style={styles.searchInputContainer}
-                onPress={() => {
-                    setVisible(true)
-                }}>
+                onDashboard={() => { }} />
+            <View
+                style={styles.searchInputContainer}>
                 <TextInput
                     style={styles.searchInput}
                     value={search}
@@ -45,7 +47,7 @@ const Booking = (props) => {
                     style={styles.searchImage}
                     resizeMode="contain"
                     source={IMAGES.ic_search} />
-            </TouchableOpacity>
+            </View>
             <View style={styles.container}>
                 <MapView style={styles.map}
                     initialRegion={{
@@ -62,11 +64,64 @@ const Booking = (props) => {
                     </Marker>
                 </MapView>
             </View>
-            <BookingSelectionPopup visible={visible}
-                onPress={() => {
-                    setVisible(false)
-                }}>
-            </BookingSelectionPopup>
+            <View style={styles.hotelContainer}>
+                <FlatList data={['', '']}
+                    showsVerticalScrollIndicator={false}
+                    keyExtractor={(item, index) => index.toString()}
+                    ListHeaderComponent={() => {
+                        return (
+                            <View style={{ marginTop: SCALE_SIZE(51) }}></View>
+                        )
+                    }}
+                    renderItem={({ item, index }) => {
+                        return (
+                            <TouchableOpacity style={styles.itemContainer}
+                                onPress={() => {
+                                    props.navigation.navigate(SCREENS.HotelDetail.name)
+                                }}>
+                                <View style={{ flexDirection: 'row' }}>
+                                    <Image style={styles.imageView}
+                                        resizeMode="contain"
+                                        source={IMAGES.popularhotel_bg} />
+                                    <View style={styles.directionView}>
+                                        <Text
+                                            style={styles.itemText}
+                                            size={SCALE_SIZE(18)}
+                                            color={COLORS.headerTitleGray}
+                                            family={FONT_NAME.medium}>
+                                            {"Oberio Hotel"}
+                                        </Text>
+                                        <Text
+                                            style={styles.southAmerica}
+                                            size={SCALE_SIZE(16)}
+                                            color={COLORS.gray}
+                                            family={FONT_NAME.medium}>
+                                            {"South America"}
+                                        </Text>
+                                        <Rating
+                                            style={styles.starContainer}
+                                            type='custom'
+                                            ratingImage={IMAGES.ic_star}
+                                            ratingColor='yellow'
+                                            ratingCount={4}
+                                            imageSize={12}>
+                                        </Rating>
+                                        <TouchableOpacity style={styles.discoverButton}>
+                                            <Text
+                                                align='center'
+                                                size={SCALE_SIZE(12)}
+                                                color={COLORS.white}
+                                                family={FONT_NAME.semiBold}>
+                                                {STRING.discover}
+                                            </Text>
+                                        </TouchableOpacity>
+                                    </View>
+                                </View>
+                            </TouchableOpacity>
+                        )
+                    }}>
+                </FlatList>
+            </View>
         </View>
     )
 }
@@ -80,7 +135,6 @@ const styles = StyleSheet.create({
         ...StyleSheet.absoluteFillObject,
     },
     headerContainer: {
-        // height: Platform.OS == 'ios' ? SCALE_SIZE(44) : SCALE_SIZE(54),
         flexDirection: 'row',
         justifyContent: 'space-between',
         backgroundColor: COLORS.white,
@@ -102,7 +156,7 @@ const styles = StyleSheet.create({
         marginTop: SCALE_SIZE(35),
         paddingHorizontal: SCALE_SIZE(28),
         flexDirection: 'row',
-        marginBottom:SCALE_SIZE(20)
+        marginBottom: SCALE_SIZE(20)
     },
     searchInput: {
         fontFamily: FONT_NAME.medium,
@@ -114,6 +168,60 @@ const styles = StyleSheet.create({
         width: SCALE_SIZE(30),
         alignSelf: 'center'
     },
+    hotelContainer: {
+        backgroundColor: COLORS.white,
+        borderTopLeftRadius: SCALE_SIZE(36),
+        borderTopRightRadius: SCALE_SIZE(36),
+        // position:'absolute',
+        // top:0,
+        // bottom:0,
+        // right:0,
+        // left:0,
+        flex: 1.0
+    },
+    directionView: {
+        flexDirection: 'column',
+        justifyContent: 'center'
+    },
+    itemContainer: {
+        borderWidth: 1,
+        borderColor: '#DEDEDE',
+        backgroundColor: COLORS.white,
+        borderRadius: SCALE_SIZE(10),
+        marginTop: SCALE_SIZE(15),
+        marginHorizontal: SCALE_SIZE(35),
+        paddingBottom: SCALE_SIZE(15)
+    },
+    imageView: {
+        height: SCALE_SIZE(117),
+        width: SCALE_SIZE(124),
+        alignSelf: 'center',
+        marginTop: SCALE_SIZE(16),
+        marginLeft: SCALE_SIZE(16),
+        paddingBottom: SCALE_SIZE(15)
+    },
+    itemText: {
+        marginTop: SCALE_SIZE(16),
+        marginHorizontal: SCALE_SIZE(16)
+    },
+    southAmerica: {
+        marginHorizontal: SCALE_SIZE(16),
+        marginTop: SCALE_SIZE(1)
+    },
+    discoverButton: {
+        height: SCALE_SIZE(31),
+        width: SCALE_SIZE(77),
+        borderRadius: SCALE_SIZE(24),
+        backgroundColor: COLORS.black,
+        justifyContent: 'center',
+        marginTop: SCALE_SIZE(13),
+        marginLeft: SCALE_SIZE(13)
+    },
+    starContainer: {
+        alignItems: 'flex-start',
+        marginHorizontal: SCALE_SIZE(17),
+        marginTop: SCALE_SIZE(9)
+    }
 })
 
 export default Booking;

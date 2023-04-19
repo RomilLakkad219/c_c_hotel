@@ -1,5 +1,5 @@
-import React from 'react';
-import { View, StyleSheet } from 'react-native'
+import React, { useEffect } from 'react';
+import { View, StyleSheet, Platform } from 'react-native'
 
 //PACKAGES
 import { NavigationContainer, StackActions } from '@react-navigation/native';
@@ -15,11 +15,19 @@ import Toast, {
   ErrorToast,
   InfoToast,
 } from 'react-native-toast-message';
+import KeyboardManager from 'react-native-keyboard-manager';
 
 //CONSTANT
 import { COLORS, SCALE_SIZE } from './src/constant';
 
 const App = (props) => {
+
+  useEffect(() => {
+    if (Platform.OS == 'ios') {
+      KeyboardManager.setEnable(true);
+      KeyboardManager.setKeyboardDistanceFromTextField(30);
+    }
+  }, [])
 
   const { Navigator, Screen } = createStackNavigator()
 

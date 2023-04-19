@@ -83,8 +83,8 @@ const STRING = {
     selectContinent:'Select Continent',
     selectCountry:'Select Country',
     selectRegion:'Select Region',
-    selectDate:'Select Date'
-
+    selectDate:'Select Date',
+    howItWork:'How It Works'
 }
 
 export { STRING }

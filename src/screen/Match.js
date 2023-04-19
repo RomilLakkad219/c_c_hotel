@@ -465,7 +465,7 @@ const styles = StyleSheet.create({
         height: SCALE_SIZE(54),
         borderRadius: SCALE_SIZE(25),
         backgroundColor: COLORS.lightgray,
-        marginTop: SCALE_SIZE(10),
+         marginTop: SCALE_SIZE(10),
         marginHorizontal: SCALE_SIZE(35),
         alignSelf: 'center',
         flexDirection: 'row'

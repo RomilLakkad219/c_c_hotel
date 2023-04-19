@@ -5,7 +5,7 @@ import { View, StyleSheet, Platform, TouchableOpacity, Image } from 'react-nativ
 import { IMAGES } from "../asset";
 
 //COMPONENT
-import { Text, ToolItem } from '../component'
+import { BookingSelectionPopup, Text, ToolItem } from '../component'
 
 //CONSTANT
 import { COLORS, FONT_NAME, SCALE_SIZE, STRING } from "../constant";
@@ -15,13 +15,12 @@ import Tooltip from "react-native-walkthrough-tooltip";
 
 const Header = (props) => {
 
-    const [ishighLighted, setIsHighlighted] = useState(false)
+    const [ishighLighted, setIsHighlighted] = useState(false);
+    const [visible, setVisible] = useState(false)
 
     if (props.type == 'home') {
         return (
-            <View style={[styles.headerContainer, {
-                paddingHorizontal: SCALE_SIZE(35)
-            }]}>
+            <View style={styles.headerContainer}>
                 <TouchableOpacity style={{ flexDirection: 'row' }}>
                     <Text
                         size={SCALE_SIZE(22)}
@@ -80,13 +79,18 @@ const Header = (props) => {
                 {
                     props.onDashboard &&
                     <TouchableOpacity style={styles.backContainer}
-                        onPress={props.onDashboard}>
+                        onPress={() => { setVisible(true) }}>
                         <Image
                             style={styles.dashboardImage}
                             resizeMode="contain"
                             source={IMAGES.dashboard_bg} />
                     </TouchableOpacity>
                 }
+                <BookingSelectionPopup visible={visible}
+                    onPress={() => {
+                        setVisible(false)
+                    }}>
+                </BookingSelectionPopup>
             </View>
         )
     }
@@ -129,7 +133,7 @@ const FilterToolTip = (props) => {
                 onPress={() => setVisible(true)}
                 style={styles.backContainer}>
                 <Image
-                    style={[styles.backImage,{marginRight:SCALE_SIZE(35)}]}
+                    style={styles.backImage}
                     resizeMode="contain"
                     source={IMAGES.ic_menu} />
             </TouchableOpacity>
@@ -143,14 +147,13 @@ const styles = StyleSheet.create({
         backgroundColor: '#FFFFFF',
         alignItems: 'center',
         flexDirection: 'row',
-        // paddingHorizontal: 10
+        marginHorizontal:SCALE_SIZE(35)
     },
     backContainer: {
         height: Platform.OS == 'ios' ? SCALE_SIZE(44) : SCALE_SIZE(54),
         width: Platform.OS == 'ios' ? SCALE_SIZE(44) : SCALE_SIZE(54),
         alignItems: 'center',
-        justifyContent: 'center',
-        marginLeft:SCALE_SIZE(35)
+        justifyContent: 'center'
     },
     backImage: {
         height: SCALE_SIZE(25),
@@ -185,7 +188,6 @@ const styles = StyleSheet.create({
         borderColor: COLORS.gray,
         borderWidth: 2,
         borderRadius: SCALE_SIZE(10),
-        // marginTop: SCALE_SIZE(68),
         marginHorizontal: SCALE_SIZE(20)
     },
     editProfile: {
@@ -196,8 +198,7 @@ const styles = StyleSheet.create({
     dashboardImage: {
         height: SCALE_SIZE(29),
         width: SCALE_SIZE(29),
-        alignSelf: 'center',
-        marginRight:SCALE_SIZE(35)
+        alignSelf: 'center'
     },
 })
 

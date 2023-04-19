@@ -126,7 +126,7 @@ const Login = (props) => {
                         </Text>
                     </Text>
                 </View>
-            </ ScrollView>
+            </ScrollView>
         </ImageBackground>
     )
 }

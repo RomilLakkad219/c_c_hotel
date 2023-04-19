@@ -1,5 +1,5 @@
 import React, {  useState } from "react";
-import { StyleSheet, Image, TouchableOpacity, SafeAreaView, ImageBackground } from 'react-native'
+import { StyleSheet, Image, TouchableOpacity, SafeAreaView, ImageBackground,ScrollView } from 'react-native'
 
 //SCREENS
 import { SCREENS } from "..";
@@ -54,6 +54,7 @@ const SignUp = (props) => {
                     resizeMode="contain"
                     source={IMAGES.back_arrow} />
             </TouchableOpacity>
+            <ScrollView showsVerticalScrollIndicator={false}>
             <Text
                 style={styles.signUpText}
                 size={SCALE_SIZE(33)}
@@ -157,6 +158,7 @@ const SignUp = (props) => {
                 </Text>
                 <SafeAreaView />
             </TouchableOpacity>
+            </ScrollView>
         </ImageBackground>
     )
 }

@@ -6022,6 +6022,11 @@
   "resolved" "https://registry.npmjs.org/react-native-gradle-plugin/-/react-native-gradle-plugin-0.71.17.tgz"
   "version" "0.71.17"
 
+"react-native-keyboard-manager@^6.5.11-1":
+  "integrity" "sha512-Td75sNR2cc7adYmp21DtE9066DUFSA16L70D8L8RbA1Gd4q6HDYqR1FVojVzv2OQxkc8+K1YWwr5azGhHIOgvA=="
+  "resolved" "https://registry.npmjs.org/react-native-keyboard-manager/-/react-native-keyboard-manager-6.5.11-1.tgz"
+  "version" "6.5.11-1"
+
 "react-native-linear-gradient@^2.6.2":
   "integrity" "sha512-Z8Xxvupsex+9BBFoSYS87bilNPWcRfRsGC0cpJk72Nxb5p2nEkGSBv73xZbEHnW2mUFvP+huYxrVvjZkr/gRjQ=="
   "resolved" "https://registry.npmjs.org/react-native-linear-gradient/-/react-native-linear-gradient-2.6.2.tgz"

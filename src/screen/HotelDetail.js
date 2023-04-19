@@ -1,5 +1,5 @@
 import React from "react";
-import { View, StyleSheet, TouchableOpacity, ScrollView, ImageBackground, Dimensions, Image, SafeAreaView, FlatList } from 'react-native'
+import { View, StyleSheet, TouchableOpacity, ScrollView, ImageBackground, Dimensions, Image, SafeAreaView, FlatList, Platform } from 'react-native'
 
 //ASSET
 import { IMAGES } from "../asset";
@@ -15,8 +15,9 @@ const HotelDetail = (props) => {
     return (
         <View style={styles.container}>
             <ImageBackground style={styles.headerContainer}
-                resizeMode='contain'
+                resizeMode='cover'
                 source={IMAGES.hoteldetail_bg}>
+                {/* <SafeAreaView /> */}
                 <View style={styles.imageContainer}>
                     <SafeAreaView />
                     <TouchableOpacity onPress={() => {
@@ -137,24 +138,26 @@ const styles = StyleSheet.create({
     headerContainer: {
         height: Dimensions.get('screen').width,
         width: Dimensions.get('screen').width,
-        paddingBottom: SCALE_SIZE(18)
+        paddingBottom: SCALE_SIZE(18),
+        overflow: 'hidden',
+        borderBottomLeftRadius: SCALE_SIZE(30),
+        borderBottomRightRadius: SCALE_SIZE(30)
     },
     imageContainer: {
         flexDirection: 'row',
         marginHorizontal: SCALE_SIZE(35),
-        alignItems: 'center'
+        alignItems: 'center',
+        marginTop: Platform.OS == 'ios' ? SCALE_SIZE(35) : SCALE_SIZE(5)
     },
     backArrow: {
         height: SCALE_SIZE(30),
         width: SCALE_SIZE(30),
         alignSelf: 'center',
         tintColor: COLORS.white,
-        marginTop: SCALE_SIZE(35)
     },
     heartImage: {
         height: SCALE_SIZE(58),
         width: SCALE_SIZE(58),
-        marginTop: SCALE_SIZE(35)
     },
     shareImage: {
         height: SCALE_SIZE(58),

@@ -46,7 +46,7 @@ const Item = (props) => {
     return (
         <TouchableOpacity onPress={props.onPress}
             style={styles.itemContainer}>
-            <View>
+            <View style={{ flex: 1.0, justifyContent: 'center' }}>
                 <Image style={props.selected ? styles.itemImageSelected : styles.itemImage}
                     resizeMode='contain'
                     source={images[props.index]} />
@@ -54,6 +54,13 @@ const Item = (props) => {
                     <View style={styles.indicator} />
                 }
             </View>
+            <View style={{
+                height: 5, 
+                width: 5, 
+                borderRadius: 2.5, 
+                backgroundColor: props.selected ? COLORS.blue : 'rgba(0,0,0,0)', 
+                marginBottom: 5
+            }} />
         </TouchableOpacity>
     )
 }

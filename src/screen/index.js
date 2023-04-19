@@ -13,6 +13,7 @@ import Favourite from "./BottomBar/Favourite";
 import Booking from "./BottomBar/Booking";
 import Profile from "./BottomBar/Profile";
 
+//SCREENS
 import HotelDetail from "./HotelDetail";
 import Experience from "./Experience";
 import Destination from "./Destination";
@@ -23,6 +24,11 @@ import PopularHotel from "./PopularHotel";
 import EditProfile from "./EditProfile";
 import Setting from "./Setting";
 import Map from "./Map";
+import HowItWork from "./HowItWork";
+import Blog from "./Blog";
+import LegalNotice from "./LegalNotice";
+import PersonalData from "./PersonalData";
+import AboutDeveloper from "./AboutDeveloper";
 
 export const SCREENS = {
     Splash: {
@@ -108,5 +114,25 @@ export const SCREENS = {
     Map: {
         name: 'Map',
         component: Map
+    },
+    HowItWork: {
+        name: 'HowItWork',
+        component: HowItWork
+    },
+    Blog: {
+        name: 'Blog',
+        component: Blog
+    },
+    LegalNotice: {
+        name: 'LegalNotice',
+        component: LegalNotice
+    },
+    PersonalData: {
+        name: 'PersonalData',
+        component: PersonalData
+    },
+    AboutDeveloper: {
+        name: 'AboutDeveloper',
+        component: AboutDeveloper
     }
 }
