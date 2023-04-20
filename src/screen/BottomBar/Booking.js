@@ -68,11 +68,6 @@ const Booking = (props) => {
                 <FlatList data={['', '']}
                     showsVerticalScrollIndicator={false}
                     keyExtractor={(item, index) => index.toString()}
-                    ListHeaderComponent={() => {
-                        return (
-                            <View style={{ marginTop: SCALE_SIZE(51) }}></View>
-                        )
-                    }}
                     renderItem={({ item, index }) => {
                         return (
                             <TouchableOpacity style={styles.itemContainer}
@@ -172,12 +167,8 @@ const styles = StyleSheet.create({
         backgroundColor: COLORS.white,
         borderTopLeftRadius: SCALE_SIZE(36),
         borderTopRightRadius: SCALE_SIZE(36),
-        // position:'absolute',
-        // top:0,
-        // bottom:0,
-        // right:0,
-        // left:0,
-        flex: 1.0
+        flex: 1.0,
+        marginTop: SCALE_SIZE(-30)
     },
     directionView: {
         flexDirection: 'column',

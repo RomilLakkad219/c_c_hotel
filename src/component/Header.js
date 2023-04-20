@@ -21,7 +21,7 @@ const Header = (props) => {
     if (props.type == 'home') {
         return (
             <View style={styles.headerContainer}>
-                <TouchableOpacity style={{ flexDirection: 'row' }}>
+                <TouchableOpacity style={{ flexDirection: 'row', alignSelf: 'center', marginLeft: 15 }}>
                     <Text
                         size={SCALE_SIZE(22)}
                         family={FONT_NAME.medium}
@@ -47,14 +47,16 @@ const Header = (props) => {
     else {
         return (
             <View style={[styles.headerContainer, props.style]}>
-                {props.onBack &&
-                    <TouchableOpacity style={styles.backContainer}
-                        onPress={props.onBack}>
-                        <Image style={styles.backImage}
-                            resizeMode="contain"
-                            source={IMAGES.back_arrow} />
-                    </TouchableOpacity>
-                }
+                <View style={styles.itemContainer}>
+                    {props.onBack &&
+                        <TouchableOpacity style={styles.backContainer}
+                            onPress={props.onBack}>
+                            <Image style={styles.backImage}
+                                resizeMode="contain"
+                                source={IMAGES.back_arrow} />
+                        </TouchableOpacity>
+                    }
+                </View>
                 <Text
                     style={{ flex: 1.0 }}
                     align='center'
@@ -63,29 +65,30 @@ const Header = (props) => {
                     color={COLORS.headerTitleGray}>
                     {props.title}
                 </Text>
-                {props.onFilter &&
-                    <FilterToolTip />
-                }
-                {props.onEditProfile &&
-                    <TouchableOpacity
-                        style={styles.backContainer}
-                        onPress={props.onEditProfile}>
-                        <Image
-                            style={styles.editProfile}
-                            resizeMode="contain"
-                            source={IMAGES.edit_bg} />
-                    </TouchableOpacity>
-                }
-                {
-                    props.onDashboard &&
-                    <TouchableOpacity style={styles.backContainer}
-                        onPress={() => { setVisible(true) }}>
-                        <Image
-                            style={styles.dashboardImage}
-                            resizeMode="contain"
-                            source={IMAGES.dashboard_bg} />
-                    </TouchableOpacity>
-                }
+                <View style={styles.itemContainer}>
+                    {props.onFilter &&
+                        <FilterToolTip />
+                    }
+                    {props.onEditProfile &&
+                        <TouchableOpacity
+                            style={styles.backContainer}
+                            onPress={props.onEditProfile}>
+                            <Image
+                                style={styles.editProfile}
+                                resizeMode="contain"
+                                source={IMAGES.edit_bg} />
+                        </TouchableOpacity>
+                    }
+                    {props.onDashboard &&
+                        <TouchableOpacity style={styles.backContainer}
+                            onPress={() => { setVisible(true) }}>
+                            <Image
+                                style={styles.dashboardImage}
+                                resizeMode="contain"
+                                source={IMAGES.dashboard_bg} />
+                        </TouchableOpacity>
+                    }
+                </View>
                 <BookingSelectionPopup visible={visible}
                     onPress={() => {
                         setVisible(false)
@@ -147,12 +150,16 @@ const styles = StyleSheet.create({
         backgroundColor: '#FFFFFF',
         alignItems: 'center',
         flexDirection: 'row',
-        paddingHorizontal: SCALE_SIZE(35),
+        paddingHorizontal: SCALE_SIZE(20)
+    },
+    itemContainer: {
+        height: Platform.OS == 'ios' ? 44 : 56,
+        width: Platform.OS == 'ios' ? 44 : 56,
     },
     backContainer: {
         height: Platform.OS == 'ios' ? 44 : 56,
         width: Platform.OS == 'ios' ? 44 : 56,
-        justifyContent:'center'
+        justifyContent: 'center'
     },
     backImage: {
         height: 25,
@@ -160,14 +167,17 @@ const styles = StyleSheet.create({
         alignSelf: 'center'
     },
     downImage: {
-        height: 20,
-        width: 20,
+        alignSelf: 'center',
+        marginLeft: 10,
+        height: 15,
+        width: 15,
     },
     profileView: {
         height: 40,
         width: 40,
         backgroundColor: COLORS.gray,
         borderRadius: 20,
+        marginRight: 15
     },
     profileHighlight: {
         height: 40,
@@ -175,7 +185,8 @@ const styles = StyleSheet.create({
         borderRadius: 20,
         borderWidth: 1,
         borderColor: COLORS.blue,
-        backgroundColor: COLORS.gray
+        backgroundColor: COLORS.gray,
+        marginRight: 15
     },
     tooltipContainer: {
         height: SCALE_SIZE(173),

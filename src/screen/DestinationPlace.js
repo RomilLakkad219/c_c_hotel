@@ -5,25 +5,22 @@ import { View, StyleSheet, SafeAreaView, TextInput, TouchableOpacity, Image, Fla
 import { IMAGES } from "../asset";
 
 //COMPONENT
-import { Header, Text, ToolItem, HotelCarousel } from "../component";
+import { Header, Text, ToolItem, HotelCarousel, BottomSheet, BottomMultiSelectionSheet } from "../component";
 
 //CONSTANT
 import { COLORS, STRING, SCALE_SIZE, FONT_NAME } from "../constant";
 
 //PACKAGES
-import Carousel,{Pagination} from 'react-native-snap-carousel';
+import Carousel, { Pagination } from 'react-native-snap-carousel';
 import RBSheet from "react-native-raw-bottom-sheet";
 
 const DestinationPlace = (props) => {
 
-    function onBack() {
-        props.navigation.goBack()
-    }
+    const isCarousel = useRef();
+    const destinationRef = useRef()
 
     const [search, setSearch] = useState('');
-    const isCarousel = useRef();
     const [selectedFilterItems, setSelectedFilterItems] = useState([]);
-    const destinationRef = useRef()
 
     const placeOption =
         [
@@ -46,6 +43,12 @@ const DestinationPlace = (props) => {
                 title: 'Ivory Coast'
             }
         ]
+
+
+    function onBack() {
+        props.navigation.goBack()
+    }
+
 
     return (
         <View style={styles.container}>
@@ -160,31 +163,22 @@ const DestinationPlace = (props) => {
                 </View>
                 <SafeAreaView />
             </ScrollView>
-            <RBSheet ref={destinationRef}
-                closeOnDragDown={true}
-                closeOnPressMask={true}
-                customStyles={{
-                    wrapper: {
-                        backgroundColor: "transparent",
-                    }
-                }}>
-                <ToolItem items={['Praia', 'Mindelo', 'Sal Rei']}
-                    style={{ marginHorizontal: SCALE_SIZE(18) }}
-                    selectedItems={selectedFilterItems}
-                    onPress={(item, index) => {
-                        const array = [...selectedFilterItems]
-                        if (selectedFilterItems.includes(index)) {
-                            const arrayIndex = array.indexOf(index)
-                            array.splice(arrayIndex, 1)
-                            setSelectedFilterItems(array)
-                        }
-                        else {
-                            array.push(index)
-                        }
+            <BottomMultiSelectionSheet
+                onRef={destinationRef}
+                selectedItem={selectedFilterItems}
+                data={['Praia', 'Mindelo', 'Sal Rei']}
+                onPressItem={(e) => {
+                    const array = [...selectedFilterItems]
+                    if (selectedFilterItems.includes(e)) {
+                        const arrayIndex = array.indexOf(e)
+                        array.splice(arrayIndex, 1)
                         setSelectedFilterItems(array)
-                    }}
-                />
-            </RBSheet>
+                    }
+                    else {
+                        array.push(e)
+                    }
+                    setSelectedFilterItems(array)
+                }} />
         </View>
     )
 }

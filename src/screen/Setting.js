@@ -24,49 +24,42 @@ const Setting = (props) => {
         {
             title: STRING.language,
             image: IMAGES.ic_down,
-            imageForward: IMAGES.ic_forward,
             key: 'language'
         },
         {
             title: STRING.subscribe,
             image: IMAGES.ic_down,
-            imageForward: IMAGES.ic_forward,
-            key: 'subscribe'
+            key: 'subscribe',
+            isSwitch: true,
         },
         {
             title: STRING.howItWorks,
             image: IMAGES.ic_down,
-            imageForward: IMAGES.ic_forward,
             key: 'how it work'
         },
         {
             title: STRING.blog,
             image: IMAGES.ic_down,
-            imageForward: IMAGES.ic_forward,
             key: 'blog'
         },
         {
             title: STRING.rateTheApp,
             image: IMAGES.ic_down,
-            imageForward: IMAGES.ic_forward,
             key: 'rate the app'
         },
         {
             title: STRING.legalNotice,
             image: IMAGES.ic_down,
-            imageForward: IMAGES.ic_forward,
             key: 'legal notice'
         },
         {
             title: STRING.personalData,
             image: IMAGES.ic_down,
-            imageForward: IMAGES.ic_forward,
             key: 'personal data'
         },
         {
             title: STRING.aboutDeveloper,
             image: IMAGES.ic_down,
-            imageForward: IMAGES.ic_forward,
             key: 'about developer'
         },
     ]
@@ -99,82 +92,55 @@ const Setting = (props) => {
                         )
                     }}
                     renderItem={({ item, index }) => {
-                        if (index == 0) {
-                            return (
-                                <TouchableOpacity style={styles.mainContainer}
-                                    onPress={() => {
-                                        setChangable(!changable)
-                                        languageRef.current.open()
-                                    }}>
-                                    <Text
-                                        style={styles.itemTitle}
-                                        size={18}
-                                        family={FONT_NAME.medium}
-                                        color={COLORS.headerTitleGray}>
-                                        {item.title}
-                                    </Text>
-                                    <Image
-                                        style={styles.itemImage}
-                                        resizeMode='contain'
-                                        source={item.image} />
-                                </TouchableOpacity>
-                            )
-                        }
-                        else if (index == 1) {
-                            return (
-                                <TouchableOpacity style={styles.mainContainer}
-                                    onPress={() => {
-                                    }}>
-                                    <Text
-                                        style={styles.itemTitle}
-                                        size={18}
-                                        family={FONT_NAME.medium}
-                                        color={COLORS.headerTitleGray}>
-                                        {item.title}
-                                    </Text>
+                        return (
+                            <TouchableOpacity
+                                style={styles.mainContainer}
+                                activeOpacity={1}
+                                onPress={() => {
+                                    if (item.key == 'language') {
+                                        languageRef?.current?.open()
+                                    }
+                                    else if (item.key == 'subscribe') {
+
+                                    }
+                                    else if (item.key == 'how it work') {
+                                        props.navigation.navigate(SCREENS.HowItWork.name)
+                                    }
+                                    else if (item.key == 'blog') {
+                                        props.navigation.navigate(SCREENS.Blog.name)
+                                    }
+                                    else if (item.key == 'rate the app') {
+                                        setVisible(true)
+                                    }
+                                    else if (item.key == 'legal notice') {
+                                        props.navigation.navigate(SCREENS.LegalNotice.name)
+                                    }
+                                    else if (item.key == 'personal data') {
+                                        props.navigation.navigate(SCREENS.PersonalData.name)
+                                    }
+                                    else if (item.key == 'about developer') {
+                                        props.navigation.navigate(SCREENS.AboutDeveloper.name)
+                                    }
+                                }}>
+                                <Text
+                                    style={styles.itemTitle}
+                                    size={18}
+                                    family={FONT_NAME.medium}
+                                    color={COLORS.headerTitleGray}>
+                                    {item.title}
+                                </Text>
+                                {item.isSwitch ?
                                     <Switch
                                         onValueChange={toggleSwitch}
                                         value={isEnabled} />
-                                </TouchableOpacity>
-                            )
-                        }
-                        else {
-                            return (
-                                <TouchableOpacity style={styles.mainContainer}
-                                    onPress={() => {
-                                        if (item.key == 'how it work') {
-                                            props.navigation.navigate(SCREENS.HowItWork.name)
-                                        }
-                                        else if (item.key == 'blog') {
-                                            props.navigation.navigate(SCREENS.Blog.name)
-                                        }
-                                        else if (item.key == 'rate the app') {
-                                            setVisible(true)
-                                        }
-                                        else if (item.key == 'legal notice') {
-                                            props.navigation.navigate(SCREENS.LegalNotice.name)
-                                        }
-                                        else if (item.key == 'personal data') {
-                                            props.navigation.navigate(SCREENS.PersonalData.name)
-                                        }
-                                        else if (item.key == 'about developer') {
-                                            props.navigation.navigate(SCREENS.AboutDeveloper.name)
-                                        }
-                                    }}>
-                                    <Text
-                                        style={styles.itemTitle}
-                                        size={18}
-                                        family={FONT_NAME.medium}
-                                        color={COLORS.headerTitleGray}>
-                                        {item.title}
-                                    </Text>
+                                    :
                                     <Image
                                         style={styles.itemImage}
                                         resizeMode='contain'
-                                        source={item.imageForward} />
-                                </TouchableOpacity>
-                            )
-                        }
+                                        source={item.key == 'language' ? IMAGES.ic_down : IMAGES.ic_forward} />
+                                }
+                            </TouchableOpacity>
+                        )
                     }}>
                 </FlatList>
             </View>
@@ -194,7 +160,8 @@ const Setting = (props) => {
                 visible={modalVisible}
                 onPressYes={() => { setModalVisible(false) }}
                 onPressNo={() => { setModalVisible(false) }} />
-            <RateTheAppPopUp visible={visible}
+            <RateTheAppPopUp
+                visible={visible}
                 onPress={() => {
                     setVisible(false)
                 }} />
@@ -218,18 +185,17 @@ const styles = StyleSheet.create({
     mainContainer: {
         flexDirection: 'row',
         marginHorizontal: SCALE_SIZE(35),
+        height: SCALE_SIZE(50),
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
     },
     itemTitle: {
         flex: 1.0,
-        marginTop: SCALE_SIZE(18)
     },
     itemImage: {
         height: SCALE_SIZE(20),
         width: SCALE_SIZE(20),
         alignSelf: 'center',
-        marginTop: SCALE_SIZE(10),
         tintColor: COLORS.headerTitleGray
     },
     logOutButton: {

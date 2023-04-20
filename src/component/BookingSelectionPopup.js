@@ -102,7 +102,7 @@ const styles = StyleSheet.create({
     },
     modalContainer: {
         flex: 1.0,
-        backgroundColor: 'rgba(0,0,0,0.1)',
+        backgroundColor: 'rgba(0,0,0,0.6)',
     },
     whiteContainer: {
         alignSelf: 'center',

@@ -19,31 +19,15 @@ import { SCREENS } from ".";
 
 const MatchList = (props) => {
 
-    function onBack() {
-        props.navigation.goBack()
-    }
-
     return (
         <View style={styles.container}>
             <SafeAreaView style={{ backgroundColor: 'rgba(255, 255, 255, 0.28)' }} />
             <View style={styles.headerContainer}>
-                <TouchableOpacity
-                    onPress={() => {
-                        onBack()
-                    }}>
-                    <Image
-                        style={styles.backArrow}
-                        resizeMode="contain"
-                        source={IMAGES.back_arrow} />
-                </TouchableOpacity>
-                <Text
-                    size={SCALE_SIZE(23)}
-                    color={COLORS.gray}
-                    align='center'
-                    family={FONT_NAME.medium}>
-                    {"Match List(10)"}
-                </Text>
-                <View></View>
+                <Header
+                    title={"Match List(10)"}
+                    onBack={() => {
+                        props.navigation.goBack()
+                    }} />
             </View>
             <View style={{ flex: 1.0 }}>
                 <MapView style={styles.map}
@@ -64,11 +48,6 @@ const MatchList = (props) => {
             <View style={styles.hotelContainer}>
                 <FlatList data={['', '']}
                     keyExtractor={(item, index) => index.toString()}
-                    ListHeaderComponent={() => {
-                        return (
-                            <View style={{ marginTop: SCALE_SIZE(51) }}></View>
-                        )
-                    }}
                     renderItem={({ item, index }) => {
                         return (
                             <TouchableOpacity style={styles.itemContainer}
@@ -96,9 +75,9 @@ const MatchList = (props) => {
                                         </Text>
                                         <Rating
                                             style={styles.starContainer}
-                                            type='custom'
+                                            type='star'
                                             ratingImage={IMAGES.ic_star}
-                                            ratingColor='yellow'
+                                            startingValue={2}
                                             ratingCount={4}
                                             imageSize={12}>
                                         </Rating>
@@ -129,24 +108,21 @@ const styles = StyleSheet.create({
         backgroundColor: COLORS.white
     },
     headerContainer: {
-        height: Platform.OS == 'ios' ? SCALE_SIZE(44) : SCALE_SIZE(54),
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        backgroundColor: 'rgba(255, 255, 255, 0.28)',
-        alignItems: 'center',
-        paddingHorizontal: SCALE_SIZE(35),
-        paddingBottom: SCALE_SIZE(20)
-    },
-    backArrow: {
-        height: SCALE_SIZE(30),
-        width: SCALE_SIZE(30),
-        alignSelf: 'center'
+        paddingBottom: SCALE_SIZE(20),
+        elevation: 4,
+        shadowColor: '#000',
+        shadowOpacity: 0.3,
+        shadowOffset: { width: 0, height: 4 },
+        shadowRadius: 3,
+        backgroundColor: '#fff',
+        zIndex: 2000
     },
     hotelContainer: {
         backgroundColor: COLORS.white,
         borderTopLeftRadius: SCALE_SIZE(36),
         borderTopRightRadius: SCALE_SIZE(36),
-        flex: 1.0
+        flex: 1.0,
+        marginTop: -30
     },
     directionView: {
         flexDirection: 'column',

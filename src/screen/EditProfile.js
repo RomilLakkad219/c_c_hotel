@@ -9,10 +9,11 @@ import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { IMAGES } from "../asset";
 
 //COMPONENT
-import { Header, Text } from "../component";
+import { BottomSheet, Header, Text } from "../component";
 
 //CONSTANT
 import { COLORS, FONT_NAME, SCALE_SIZE, SHOW_TOAST, STRING } from "../constant";
+import moment from "moment";
 
 const EditProfile = (props) => {
 
@@ -30,14 +31,6 @@ const EditProfile = (props) => {
     const [postalCode, setPostalCode] = useState('');
     const genderRef = useRef();
     const countryRef = useRef();
-    const [selectedDate, setSelectedDate] = useState('');
-    const [maleSelect, setMaleSelect] = useState(false);
-    const [femaleSelect, setFemaleSelect] = useState(false);
-    const [otherSelect, setOtherSelect] = useState(false);
-    const [franceSelect, setFranceSelect] = useState(false);
-    const [finlandSelect, setFinlandSelect] = useState(false);
-    const [fijiIslandSelect, setFijiIslandSelect] = useState(false)
-
     const [isDatePickerVisible, setIsDatePickerVisible] = useState(false);
 
     const showDatePicker = () => {
@@ -50,6 +43,9 @@ const EditProfile = (props) => {
 
     const handleConfirm = (date) => {
         console.log('A date has been picked', date);
+
+        const dateStr = moment(date).format('YYYY MM DD')
+        setDateOfBirth(dateStr)
         hideDatePicker()
     }
 
@@ -108,7 +104,7 @@ const EditProfile = (props) => {
                 <View style={styles.nameContainer}>
                     <Text
                         style={{ width: SCALE_SIZE(120) }}
-                        size={16}
+                        size={SCALE_SIZE(16)}
                         family={FONT_NAME.medium}
                         color={COLORS.black}>
                         {STRING.name}
@@ -124,12 +120,12 @@ const EditProfile = (props) => {
                 <View style={styles.nameContainer}>
                     <Text
                         style={{ width: SCALE_SIZE(120) }}
-                        size={16}
+                        size={SCALE_SIZE(16)}
                         family={FONT_NAME.medium}
                         color={COLORS.black}>
                         {STRING.dob}
                     </Text>
-                    <TouchableOpacity style={{ flex: 1.0, height: SCALE_SIZE(40) }}
+                    <TouchableOpacity style={{ flex: 1.0, flexDirection: 'row', height: SCALE_SIZE(60) }}
                         onPress={() => {
                             showDatePicker()
                         }}>
@@ -141,16 +137,16 @@ const EditProfile = (props) => {
                                 setDateOfBirth(text)
                             }}>
                         </TextInput>
+                        <Image
+                            style={styles.calender}
+                            resizeMode="contain"
+                            source={IMAGES.ic_calender} />
                     </TouchableOpacity>
-                    <Image
-                        style={styles.calender}
-                        resizeMode="contain"
-                        source={IMAGES.ic_calender} />
                 </View>
                 <View style={styles.nameContainer}>
                     <Text
                         style={{ width: SCALE_SIZE(120) }}
-                        size={16}
+                        size={SCALE_SIZE(16)}
                         family={FONT_NAME.medium}
                         color={COLORS.black}>
                         {STRING.mobileNumber}
@@ -165,13 +161,12 @@ const EditProfile = (props) => {
                 <View style={styles.nameContainer}>
                     <Text
                         style={{ width: SCALE_SIZE(120) }}
-                        size={16}
+                        size={SCALE_SIZE(16)}
                         family={FONT_NAME.medium}
                         color={COLORS.black}>
                         {STRING.gender}
                     </Text>
-                    <TouchableOpacity
-                        style={{ flex: 1.0, height: SCALE_SIZE(40) }}
+                    <TouchableOpacity style={{ flex: 1.0, flexDirection: 'row', height: SCALE_SIZE(60) }}
                         onPress={() => {
                             genderRef.current.open()
                         }}>
@@ -183,16 +178,16 @@ const EditProfile = (props) => {
                                 setGender(text)
                             }}>
                         </TextInput>
+                        <Image
+                            style={styles.calender}
+                            resizeMode="contain"
+                            source={IMAGES.ic_down} />
                     </TouchableOpacity>
-                    <Image
-                        style={styles.calender}
-                        resizeMode="contain"
-                        source={IMAGES.ic_down} />
                 </View>
                 <View style={styles.nameContainer}>
                     <Text
                         style={{ width: SCALE_SIZE(120) }}
-                        size={16}
+                        size={SCALE_SIZE(16)}
                         family={FONT_NAME.medium}
                         color={COLORS.black}>
                         {STRING.address}
@@ -207,7 +202,7 @@ const EditProfile = (props) => {
                 <View style={styles.nameContainer}>
                     <Text
                         style={{ width: SCALE_SIZE(120) }}
-                        size={16}
+                        size={SCALE_SIZE(16)}
                         family={FONT_NAME.medium}
                         color={COLORS.black}>
                         {STRING.city}
@@ -222,13 +217,12 @@ const EditProfile = (props) => {
                 <View style={styles.nameContainer}>
                     <Text
                         style={{ width: SCALE_SIZE(120) }}
-                        size={16}
+                        size={SCALE_SIZE(16)}
                         family={FONT_NAME.medium}
                         color={COLORS.black}>
                         {STRING.country}
                     </Text>
-                    <TouchableOpacity
-                        style={{ flex: 1.0, height: SCALE_SIZE(40) }}
+                    <TouchableOpacity style={{ flex: 1.0, flexDirection: 'row', height: SCALE_SIZE(60) }}
                         onPress={() => {
                             countryRef.current.open()
                         }}>
@@ -241,16 +235,16 @@ const EditProfile = (props) => {
                                 setCountry(text)
                             }}>
                         </TextInput>
+                        <Image
+                            style={styles.calender}
+                            resizeMode="contain"
+                            source={IMAGES.ic_down} />
                     </TouchableOpacity>
-                    <Image
-                        style={styles.calender}
-                        resizeMode="contain"
-                        source={IMAGES.ic_down} />
                 </View>
                 <View style={styles.nameContainer}>
                     <Text
                         style={{ width: SCALE_SIZE(130) }}
-                        size={16}
+                        size={SCALE_SIZE(16)}
                         family={FONT_NAME.medium}
                         color={COLORS.black}>
                         {STRING.postalCode}
@@ -275,96 +269,28 @@ const EditProfile = (props) => {
                         {STRING.save}
                     </Text>
                 </TouchableOpacity>
-                <RBSheet ref={genderRef}
-                    closeOnDragDown={true}
-                    closeOnPressMask={true}
-                    customStyles={{
-                        container: {
-                            height: SCALE_SIZE(300)
-                        }
-                    }}>
-                        <Text style={maleSelect ? styles.blueView : styles.maleText}
-                            onPress={() => {
-                                setMaleSelect(!maleSelect)
-                                setGender('Male')
-                                genderRef.current.close()
-                            }}
-                            size={12}
-                            family={FONT_NAME.medium}
-                            color={COLORS.headerTitleGray}>
-                            {'Male'}
-                        </Text>
-                    <Text style={femaleSelect ? styles.blueView : styles.femaleText}
-                        onPress={() => {
-                            setGender('Female')
-                            genderRef.current.close()
-                            setFemaleSelect(!femaleSelect)
-                        }}
-                        size={12}
-                        family={FONT_NAME.medium}
-                        color={COLORS.headerTitleGray}>
-                        {'Female'}
-                    </Text>
-                    <Text style={otherSelect ? styles.blueView : styles.otherText}
-                        onPress={() => {
-                            setGender('Other')
-                            genderRef.current.close()
-                            setOtherSelect(!otherSelect)
-                        }}
-                        size={12}
-                        family={FONT_NAME.medium}
-                        color={COLORS.headerTitleGray}>
-                        {'Other'}
-                    </Text>
-                </RBSheet>
-                <RBSheet ref={countryRef}
-                    closeOnDragDown={true}
-                    closeOnPressMask={true}
-                    customStyles={{
-                        container: {
-                            height: SCALE_SIZE(300)
-                        }
-                    }}>
-                    <Text style={franceSelect ? styles.blueView : styles.maleText}
-                        onPress={() => {
-                            setCountry('France')
-                            countryRef.current.close()
-                            setFranceSelect(!franceSelect)
-                        }}
-                        size={12}
-                        family={FONT_NAME.medium}
-                        color={COLORS.headerTitleGray}>
-                        {'France'}
-                    </Text>
-                    <Text style={finlandSelect ? styles.blueView : styles.femaleText}
-                        onPress={() => {
-                            setCountry('Finland')
-                            countryRef.current.close()
-                            setFinlandSelect(!finlandSelect)
-                        }}
-                        size={12}
-                        family={FONT_NAME.medium}
-                        color={COLORS.headerTitleGray}>
-                        {'Finland'}
-                    </Text>
-                    <Text style={fijiIslandSelect ? styles.blueView : styles.otherText}
-                        onPress={() => {
-                            setCountry('Fiji Island')
-                            countryRef.current.close()
-                            setFijiIslandSelect(!fijiIslandSelect)
-                        }}
-                        size={12}
-                        family={FONT_NAME.medium}
-                        color={COLORS.headerTitleGray}>
-                        {'Fiji Island'}
-                    </Text>
-                </RBSheet>
+                <BottomSheet
+                    onRef={genderRef}
+                    selectedItem={gender}
+                    data={['Male', 'Female', 'Other']}
+                    onPressItem={(e) => {
+                        genderRef?.current?.close()
+                        setGender(e)
+                    }} />
+                <BottomSheet
+                    onRef={countryRef}
+                    selectedItem={country}
+                    data={['France', 'Finland', 'Fiji Island']}
+                    onPressItem={(e) => {
+                        countryRef?.current?.close()
+                        setCountry(e)
+                    }} />
                 <DateTimePickerModal
                     isVisible={isDatePickerVisible}
                     mode="date"
                     onConfirm={handleConfirm}
                     onCancel={hideDatePicker}
-                />
+                    maximumDate={new Date()} />
             </ScrollView>
         </View>
     )
@@ -391,18 +317,20 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         marginTop: SCALE_SIZE(20),
         marginHorizontal: SCALE_SIZE(35),
+        height: SCALE_SIZE(60),
     },
     input: {
         flex: 1.0,
+        height: SCALE_SIZE(60),
         borderBottomWidth: 1,
         borderColor: COLORS.gray,
-        height: SCALE_SIZE(60),
-        marginLeft: SCALE_SIZE(10)
+        fontFamily: FONT_NAME.medium,
+        fontSize: SCALE_SIZE(16)
     },
     calender: {
-        height: SCALE_SIZE(14),
-        width: SCALE_SIZE(15),
-        alignSelf: 'flex-end'
+        height: SCALE_SIZE(20),
+        width: SCALE_SIZE(20),
+        alignSelf: 'center'
     },
     downImage: {
         height: SCALE_SIZE(15),

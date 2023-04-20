@@ -17,7 +17,7 @@ const HotelDetail = (props) => {
             <ImageBackground style={styles.headerContainer}
                 resizeMode='cover'
                 source={IMAGES.hoteldetail_bg}>
-                {/* <SafeAreaView /> */}
+                <SafeAreaView />
                 <View style={styles.imageContainer}>
                     <SafeAreaView />
                     <TouchableOpacity onPress={() => {
@@ -147,7 +147,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         marginHorizontal: SCALE_SIZE(35),
         alignItems: 'center',
-        marginTop: Platform.OS == 'ios' ? SCALE_SIZE(35) : SCALE_SIZE(5)
+        marginTop: SCALE_SIZE(5)
     },
     backArrow: {
         height: SCALE_SIZE(30),
@@ -200,6 +200,7 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     coastText: {
+        flex: 1.0,
         marginHorizontal: SCALE_SIZE(35)
     },
     websiteButton: {
@@ -209,7 +210,8 @@ const styles = StyleSheet.create({
         borderRadius: SCALE_SIZE(24),
         // marginHorizontal: SCALE_SIZE(33),
         justifyContent: 'center',
-        alignSelf: 'center'
+        alignSelf: 'center',
+        marginRight: SCALE_SIZE(35)
     },
     factEstablishText: {
         marginTop: SCALE_SIZE(13),

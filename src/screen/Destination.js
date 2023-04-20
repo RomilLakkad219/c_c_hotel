@@ -48,7 +48,7 @@ const Destination = (props) => {
                                 <ImageBackground style={[styles.listImageContainer, {
                                     marginLeft: index % 2 == 1 ? SCALE_SIZE(20) : 0
                                 }]}
-                                    resizeMode='contain'
+                                    resizeMode='cover'
                                     source={item.image}>
                                     <View style={styles.transparentView}>
                                         <Text
@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
         marginTop: SCALE_SIZE(20),
         justifyContent: 'flex-end',
         alignSelf:'center',
-        overflow:'hidden'
+        overflow:'hidden',
     },
     transparentView: {
         backgroundColor: 'rgba(0,0,0,0.33)',

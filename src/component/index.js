@@ -10,6 +10,7 @@ import BookingSelectionPopup from './BookingSelectionPopup'
 import FavouriteList from './FavouriteList'
 import RateTheAppPopUp from './RateTheAppPopUp'
 import BottomSheet from './BottomSheet'
+import BottomMultiSelectionSheet from './BottomMultiSelectionSheet'
 
 export {
     Text,
@@ -23,5 +24,6 @@ export {
     BookingSelectionPopup,
     FavouriteList,
     RateTheAppPopUp,
-    BottomSheet
+    BottomSheet,
+    BottomMultiSelectionSheet
 }

@@ -20,7 +20,6 @@ const RateTheAppPopUp = (props) => {
                 <View style={styles.container}>
                     <View style={styles.mainContainer}>
                         <Text
-                            style={styles.text}
                             size={20}
                             family={FONT_NAME.medium}
                             color={COLORS.headerTitleGray}>
@@ -28,11 +27,7 @@ const RateTheAppPopUp = (props) => {
                         </Text>
                         <View style={styles.blueView}>
                             <Rating
-                                style={styles.starContainer}
                                 type='star'
-                                // ratingImage={IMAGES.ic_star}
-                                // ratingColor='yellow'
-                                ratingBackgroudColor='gray'
                                 ratingCount={5}
                                 imageSize={43}>
                             </Rating>
@@ -64,37 +59,23 @@ const styles = StyleSheet.create({
     },
     mainContainer: {
         backgroundColor: COLORS.white,
-        height: SCALE_SIZE(193),
-        width: SCALE_SIZE(360),
-        alignSelf: 'center',
         marginHorizontal: SCALE_SIZE(35),
-        borderRadius: SCALE_SIZE(10)
-    },
-    text: {
-        marginTop: SCALE_SIZE(20),
-        marginHorizontal: SCALE_SIZE(24)
+        borderRadius: SCALE_SIZE(10),
+        paddingVertical: SCALE_SIZE(20),
+        paddingHorizontal: SCALE_SIZE(24)
     },
     blueView: {
         backgroundColor: '#EEF2FF',
         borderRadius: SCALE_SIZE(6),
-        alignItems: 'center',
-        marginHorizontal: SCALE_SIZE(25),
-        marginTop: SCALE_SIZE(12),
-        height: SCALE_SIZE(59),
-        width: SCALE_SIZE(312),
-        marginHorizontal: SCALE_SIZE(24)
-    },
-    starContainer: {
-        alignItems: 'flex-start',
-        marginHorizontal: SCALE_SIZE(35),
-        marginTop: SCALE_SIZE(5)
+        paddingHorizontal: SCALE_SIZE(35),
+        paddingVertical: SCALE_SIZE(9),
+        marginVertical: SCALE_SIZE(12)
     },
     submitButton: {
         backgroundColor: COLORS.blue,
         height: SCALE_SIZE(36),
         width: SCALE_SIZE(125),
         borderRadius: SCALE_SIZE(30),
-        marginTop: SCALE_SIZE(12),
         marginHorizontal: SCALE_SIZE(118),
         justifyContent: 'center',
         alignSelf: 'center',
