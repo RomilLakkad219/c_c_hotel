@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { View, StyleSheet, Platform } from 'react-native'
+import { View, StyleSheet, Platform, StatusBar } from 'react-native'
 
 //PACKAGES
 import { NavigationContainer, StackActions } from '@react-navigation/native';
@@ -63,6 +63,7 @@ const App = (props) => {
 
   return (
     <View style={styles.container}>
+      <StatusBar backgroundColor={'#fff'} barStyle={'dark-content'} translucent={false}/>
       <NavigationContainer>
         <Navigator
           initialRouteName={SCREENS.Splash.name}
