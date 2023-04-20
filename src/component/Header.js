@@ -143,40 +143,36 @@ const FilterToolTip = (props) => {
 
 const styles = StyleSheet.create({
     headerContainer: {
-        height: Platform.OS == 'ios' ? SCALE_SIZE(44) : SCALE_SIZE(54),
+        height: Platform.OS == 'ios' ? 44 : 56,
         backgroundColor: '#FFFFFF',
         alignItems: 'center',
         flexDirection: 'row',
-        marginHorizontal:SCALE_SIZE(35)
+        paddingHorizontal: SCALE_SIZE(35),
     },
     backContainer: {
-        height: Platform.OS == 'ios' ? SCALE_SIZE(44) : SCALE_SIZE(54),
-        width: Platform.OS == 'ios' ? SCALE_SIZE(44) : SCALE_SIZE(54),
-        alignItems: 'center',
-        justifyContent: 'center'
+        height: Platform.OS == 'ios' ? 44 : 56,
+        width: Platform.OS == 'ios' ? 44 : 56,
+        justifyContent:'center'
     },
     backImage: {
-        height: SCALE_SIZE(25),
-        width: SCALE_SIZE(25)
+        height: 25,
+        width: 25,
+        alignSelf: 'center'
     },
     downImage: {
-        height: SCALE_SIZE(20),
-        width: SCALE_SIZE(20),
-        alignSelf: 'center',
-        justifyContent: 'center',
-        paddingTop: SCALE_SIZE(10),
-        marginHorizontal: SCALE_SIZE(16)
+        height: 20,
+        width: 20,
     },
     profileView: {
-        height: SCALE_SIZE(40),
-        width: SCALE_SIZE(40),
+        height: 40,
+        width: 40,
         backgroundColor: COLORS.gray,
-        borderRadius: SCALE_SIZE(20),
+        borderRadius: 20,
     },
     profileHighlight: {
-        height: SCALE_SIZE(40),
-        width: SCALE_SIZE(40),
-        borderRadius: SCALE_SIZE(20),
+        height: 40,
+        width: 40,
+        borderRadius: 20,
         borderWidth: 1,
         borderColor: COLORS.blue,
         backgroundColor: COLORS.gray
@@ -191,13 +187,13 @@ const styles = StyleSheet.create({
         marginHorizontal: SCALE_SIZE(20)
     },
     editProfile: {
-        height: SCALE_SIZE(26),
-        width: SCALE_SIZE(26),
+        height: 26,
+        width: 26,
         alignSelf: 'center'
     },
     dashboardImage: {
-        height: SCALE_SIZE(29),
-        width: SCALE_SIZE(29),
+        height: 29,
+        width: 29,
         alignSelf: 'center'
     },
 })

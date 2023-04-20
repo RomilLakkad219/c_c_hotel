@@ -37,7 +37,8 @@ const Map = (props) => {
                         coordinate={{
                             latitude: 37.78825,
                             longitude: -122.4324,
-                        }}>
+                        }}
+                        image={IMAGES.map_bg}>
                         <Callout
                             tooltip={true}
                             style={{ backgroundColor: "#ffffff" }}>
