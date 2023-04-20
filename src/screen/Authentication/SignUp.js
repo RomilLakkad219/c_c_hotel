@@ -18,9 +18,9 @@ const SignUp = (props) => {
     const [clickable, setClickable] = useState(false);
     const [isSecurePassword, setSecurePassword] = useState(true);
     const [isVisiblePassword, setIsVisiblePassword] = useState(true);
-    const [email, setEmail] = useState('dharaValanda@gmail.com');
-    const [password, setPassword] = useState('dhara');
-    const [confirmPassword, setConfirmPassword] = useState('dhara');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
 
     function onSignUp() {
             if (!email) {
