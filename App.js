@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { View, StyleSheet, Platform } from 'react-native'
+import { View, StyleSheet, Platform, LogBox } from 'react-native'
 
 //PACKAGES
 import { NavigationContainer, StackActions } from '@react-navigation/native';
@@ -19,6 +19,8 @@ import KeyboardManager from 'react-native-keyboard-manager';
 
 //CONSTANT
 import { COLORS, SCALE_SIZE } from './src/constant';
+
+LogBox.ignoreAllLogs(true)
 
 const App = (props) => {
 

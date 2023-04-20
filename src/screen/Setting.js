@@ -1,5 +1,5 @@
 import React, { useRef, useState } from "react";
-import { View, StyleSheet, TouchableOpacity, SafeAreaView, FlatList, Image, Switch} from 'react-native'
+import { View, StyleSheet, TouchableOpacity, SafeAreaView, FlatList, Image, Switch } from 'react-native'
 
 //PACKAGES
 import RBSheet from "react-native-raw-bottom-sheet";
@@ -8,7 +8,7 @@ import RBSheet from "react-native-raw-bottom-sheet";
 import { IMAGES } from "../asset";
 
 //COMPONENT
-import { Header, LogoutPopup, RateTheAppPopUp, Text } from "../component";
+import { BottomSheet, Header, LogoutPopup, RateTheAppPopUp, Text } from "../component";
 
 //ASSET
 import { COLORS, FONT_NAME, SCALE_SIZE, STRING } from "../constant";
@@ -18,9 +18,7 @@ import { SCREENS } from ".";
 
 const Setting = (props) => {
 
-    function onBack() {
-        props.navigation.goBack()
-    }
+    const languageRef = useRef();
 
     const settingData = [
         {
@@ -73,19 +71,19 @@ const Setting = (props) => {
         },
     ]
 
+    const [selectedLanguage, setSelectedLanguage] = useState(STRING.english)
+
     const [changable, setChangable] = useState(false);
     const [modalVisible, setModalVisible] = useState(false);
-    const languageRef = useRef();
-    const [english, setEnglish] = useState('english');
-    const [french, setFrench] = useState('french');
-    const [spanish, setSpanish] = useState('spanish');
-    const [englishSelected, setEnglishSelected] = useState(false);
-    const [frenchSelected, setFrenchSelected] = useState(false);
-    const [spanishSelected, setSpanishSelected] = useState(false);
     const [visible, setVisible] = useState(false)
 
     const [isEnabled, setIsEnabled] = useState(false);
     const toggleSwitch = () => setIsEnabled(previousState => !previousState);
+
+
+    function onBack() {
+        props.navigation.goBack()
+    }
 
     return (
         <View style={styles.container}>
@@ -135,12 +133,8 @@ const Setting = (props) => {
                                         {item.title}
                                     </Text>
                                     <Switch
-                                        trackColor={{ false: '#767577', true: '#81b0ff' }}
-                                        thumbColor={isEnabled ? '#f5dd4b' : '#f4f3f4'}
-                                        ios_backgroundColor="#3e3e3e"
                                         onValueChange={toggleSwitch}
-                                        value={isEnabled}
-                                    />
+                                        value={isEnabled} />
                                 </TouchableOpacity>
                             )
                         }
@@ -204,49 +198,14 @@ const Setting = (props) => {
                 onPress={() => {
                     setVisible(false)
                 }} />
-            <RBSheet ref={languageRef}
-                closeOnDragDown={true}
-                closeOnPressMask={true}
-                customStyles={{
-                    container: {
-                        backgroundColor: '#FFF',
-                        height: SCALE_SIZE(300)
-                    }
-                }}>
-                <TouchableOpacity onPress={() => {
-                    setEnglish(english)
-                    setEnglishSelected(!englishSelected)
-                }}>
-                    <Text style={englishSelected ? styles.blueView : styles.englishText}
-                        size={18}
-                        family={FONT_NAME.medium}
-                        color={COLORS.headerTitleGray}>
-                        {STRING.english}
-                    </Text>
-                </TouchableOpacity>
-                <TouchableOpacity onPress={() => {
-                    setFrench(french)
-                    setFrenchSelected(!frenchSelected)
-                }}>
-                    <Text style={frenchSelected ? styles.blueView : styles.englishText}
-                        size={18}
-                        family={FONT_NAME.medium}
-                        color={COLORS.headerTitleGray}>
-                        {STRING.french}
-                    </Text>
-                </TouchableOpacity>
-                <TouchableOpacity onPress={() => {
-                    setSpanish(spanish)
-                    setSpanishSelected(!spanishSelected)
-                }}>
-                    <Text style={spanishSelected ? styles.blueView : styles.englishText}
-                        size={18}
-                        family={FONT_NAME.medium}
-                        color={COLORS.headerTitleGray}>
-                        {STRING.spanish}
-                    </Text>
-                </TouchableOpacity>
-            </RBSheet>
+            <BottomSheet
+                onRef={languageRef}
+                selectedItem={selectedLanguage}
+                data={[STRING.english, STRING.spanish, STRING.french]}
+                onPressItem={(e) => {
+                    languageRef?.current?.close()
+                    setSelectedLanguage(e)
+                }} />
         </View>
     )
 }
