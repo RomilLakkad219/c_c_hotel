@@ -11,7 +11,7 @@ import { Header, Text, ToolItem, HotelCarousel, BottomSheet, BottomMultiSelectio
 import { COLORS, STRING, SCALE_SIZE, FONT_NAME } from "../constant";
 
 //PACKAGES
-import Carousel, { Pagination } from 'react-native-snap-carousel';
+import Carousel from 'react-native-snap-carousel';
 import RBSheet from "react-native-raw-bottom-sheet";
 
 const DestinationPlace = (props) => {
@@ -138,24 +138,6 @@ const DestinationPlace = (props) => {
                                         itemWidth={Dimensions.get('window').width - SCALE_SIZE(70)}
                                         useScrollView={true}>
                                     </Carousel>
-                                    <Pagination
-                                        dotsLength={3}
-                                        activeDotIndex={index}
-                                        carouselRef={isCarousel}
-                                        dotStyle={{
-                                            width: 10,
-                                            height: 10,
-                                            borderRadius: 5,
-                                            backgroundColor: COLORS.blue,
-                                        }}
-                                        tappableDots={true}
-                                        inactiveDotStyle={{
-                                            backgroundColor: 'black',
-                                            // Define styles for inactive dots here
-                                        }}
-                                        inactiveDotOpacity={0.4}
-                                        inactiveDotScale={0.6}
-                                    />
                                 </View>
                             )
                         }}>
