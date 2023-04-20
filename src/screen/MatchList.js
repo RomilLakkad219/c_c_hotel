@@ -114,7 +114,7 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.3,
         shadowOffset: { width: 0, height: 4 },
         shadowRadius: 3,
-        backgroundColor: '#fff',
+        backgroundColor: '#FFF',
         zIndex: 2000
     },
     hotelContainer: {

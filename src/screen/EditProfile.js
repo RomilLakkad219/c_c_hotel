@@ -125,7 +125,7 @@ const EditProfile = (props) => {
                         color={COLORS.black}>
                         {STRING.dob}
                     </Text>
-                    <TouchableOpacity style={{ flex: 1.0, flexDirection: 'row', height: SCALE_SIZE(60) }}
+                    <TouchableOpacity style={styles.directionContainer}
                         onPress={() => {
                             showDatePicker()
                         }}>
@@ -166,7 +166,7 @@ const EditProfile = (props) => {
                         color={COLORS.black}>
                         {STRING.gender}
                     </Text>
-                    <TouchableOpacity style={{ flex: 1.0, flexDirection: 'row', height: SCALE_SIZE(60) }}
+                    <TouchableOpacity style={styles.directionContainer}
                         onPress={() => {
                             genderRef.current.open()
                         }}>
@@ -174,6 +174,7 @@ const EditProfile = (props) => {
                             value={gender}
                             editable={false}
                             pointerEvents='none'
+                             // placeholderTextColor={COLORS.black}
                             onChangeText={(text) => {
                                 setGender(text)
                             }}>
@@ -222,7 +223,7 @@ const EditProfile = (props) => {
                         color={COLORS.black}>
                         {STRING.country}
                     </Text>
-                    <TouchableOpacity style={{ flex: 1.0, flexDirection: 'row', height: SCALE_SIZE(60) }}
+                    <TouchableOpacity style={styles.directionContainer}
                         onPress={() => {
                             countryRef.current.open()
                         }}>
@@ -230,6 +231,7 @@ const EditProfile = (props) => {
                             style={styles.input}
                             editable={false}
                             pointerEvents='none'
+                            // placeholderTextColor={COLORS.black}
                             value={country}
                             onChangeText={(text) => {
                                 setCountry(text)
@@ -365,13 +367,17 @@ const styles = StyleSheet.create({
         backgroundColor: '#EEF2FF',
         borderRadius: SCALE_SIZE(6),
         flexDirection: 'row',
-        // alignItems: 'center',
         marginHorizontal: SCALE_SIZE(15),
         marginTop: SCALE_SIZE(20),
         height: SCALE_SIZE(32),
         width: SCALE_SIZE(130),
         paddingLeft: SCALE_SIZE(15)
     },
+    directionContainer: {
+        flex: 1.0,
+        flexDirection: 'row',
+        height: SCALE_SIZE(60)
+    }
 })
 
 export default EditProfile;

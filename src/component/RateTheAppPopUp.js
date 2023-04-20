@@ -1,5 +1,5 @@
 import React from "react";
-import { View, StyleSheet, Modal,TouchableOpacity } from 'react-native'
+import { View, StyleSheet, Modal, TouchableOpacity } from 'react-native'
 
 //CONSTANT
 import { COLORS, FONT_NAME, SCALE_SIZE, STRING } from "../constant";
@@ -28,8 +28,11 @@ const RateTheAppPopUp = (props) => {
                         <View style={styles.blueView}>
                             <Rating
                                 type='star'
+                                tintColor={COLORS.blue_light}
+                                unSelectedColor='gray'
                                 ratingCount={5}
-                                imageSize={43}>
+                                imageSize={43}
+                            >
                             </Rating>
                         </View>
                         <TouchableOpacity style={styles.submitButton}>
