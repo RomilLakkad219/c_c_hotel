@@ -95,9 +95,7 @@ const Booking = (props) => {
                                         </Text>
                                         <Rating
                                             style={styles.starContainer}
-                                            type='custom'
-                                            ratingImage={IMAGES.ic_star}
-                                            ratingColor='yellow'
+                                            type='star'
                                             ratingCount={4}
                                             imageSize={12}>
                                         </Rating>

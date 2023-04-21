@@ -76,7 +76,7 @@ const styles = StyleSheet.create({
     },
     listImageContainer: {
         height: Dimensions.get('window').height * 0.25,
-        width: (Dimensions.get('window').width - SCALE_SIZE(80)) / 2,
+        width: (Dimensions.get('window').width - SCALE_SIZE(100)) / 2,
         borderRadius: SCALE_SIZE(10),
         marginTop: SCALE_SIZE(20),
         justifyContent: 'flex-end',
