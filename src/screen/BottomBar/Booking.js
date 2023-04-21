@@ -28,25 +28,28 @@ const Booking = (props) => {
 
     return (
         <View style={styles.container}>
-            <SafeAreaView />
-            <Header
-                onBack={() => onBack()}
-                onDashboard={() => { }} />
-            <View
-                style={styles.searchInputContainer}>
-                <TextInput
-                    style={styles.searchInput}
-                    value={search}
-                    placeholder={STRING.searchHere}
-                    placeholderTextColor={COLORS.gray}
-                    onChangeText={(text) => {
-                        setSearch(text)
-                    }}>
-                </TextInput>
-                <Image
-                    style={styles.searchImage}
-                    resizeMode="contain"
-                    source={IMAGES.ic_search} />
+            <View style={styles.positionView}>
+                <SafeAreaView />
+                <Header
+                    style={{ backgroundColor: 'transparent' }}
+                    onBack={() => onBack()}
+                    onDashboard={() => { }} />
+                <View
+                    style={styles.searchInputContainer}>
+                    <TextInput
+                        style={styles.searchInput}
+                        value={search}
+                        placeholder={STRING.searchHere}
+                        placeholderTextColor={COLORS.gray}
+                        onChangeText={(text) => {
+                            setSearch(text)
+                        }}>
+                    </TextInput>
+                    <Image
+                        style={styles.searchImage}
+                        resizeMode="contain"
+                        source={IMAGES.ic_search} />
+                </View>
             </View>
             <View style={styles.container}>
                 <MapView style={styles.map}
@@ -124,6 +127,13 @@ const styles = StyleSheet.create({
         flex: 1.0,
         backgroundColor: COLORS.white
     },
+    positionView: {
+        position: 'absolute',
+        zIndex: 5000,
+        top: 0,
+        right: 0,
+        left: 0
+    },
     map: {
         ...StyleSheet.absoluteFillObject,
     },
@@ -143,13 +153,14 @@ const styles = StyleSheet.create({
     },
     searchInputContainer: {
         height: SCALE_SIZE(70),
-        backgroundColor: 'rgba(0,0,0,0.1)',
+        backgroundColor: '#fff',
         borderRadius: SCALE_SIZE(20),
         marginHorizontal: SCALE_SIZE(30),
         marginTop: SCALE_SIZE(35),
         paddingHorizontal: SCALE_SIZE(28),
         flexDirection: 'row',
-        marginBottom: SCALE_SIZE(20)
+        marginBottom: SCALE_SIZE(20),
+        elevation: 4
     },
     searchInput: {
         fontFamily: FONT_NAME.medium,

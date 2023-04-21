@@ -108,15 +108,13 @@ const FilterToolTip = (props) => {
         <Tooltip
             isVisible={visible}
             contentStyle={styles.tooltipContainer}
+            backgroundColor="transparent"
             placement='bottom'
             onClose={() => {
                 setVisible(false)
             }}
-            arrowSize={
-                { width: 16, height: 8 }
-            }
             arrowStyle={{
-                marginHorizontal: SCALE_SIZE(10)
+                height: SCALE_SIZE(0), width: SCALE_SIZE(0)
             }}
             content={<ToolItem items={[STRING.beach, STRING.village, STRING.cityShopping, STRING.mountainSky, STRING.nature, STRING.waterFront]}
                 selectedItems={selectedFilterItems}
@@ -191,8 +189,6 @@ const styles = StyleSheet.create({
         height: SCALE_SIZE(173),
         backgroundColor: COLORS.white,
         width: SCALE_SIZE(205),
-        borderColor: COLORS.gray,
-        borderWidth: 2,
         borderRadius: SCALE_SIZE(10),
         marginHorizontal: SCALE_SIZE(20)
     },

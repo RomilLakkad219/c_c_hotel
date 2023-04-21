@@ -61,6 +61,7 @@ const Map = (props) => {
                                     {/* <Rating
                                         style={styles.starContainer}
                                         type='star'
+                                        startingValue={2}
                                         ratingCount={4}
                                         imageSize={12}>
                                     </Rating> */}
@@ -88,7 +89,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         paddingHorizontal: SCALE_SIZE(12),
         paddingVertical: SCALE_SIZE(14),
-        borderRadius: SCALE_SIZE(13),
+        borderRadius: SCALE_SIZE(13)
     },
     mapHotelBg: {
         height: SCALE_SIZE(100),

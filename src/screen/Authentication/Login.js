@@ -39,7 +39,7 @@ const Login = (props) => {
 
     return (
         <ImageBackground style={styles.container} source={IMAGES.login_bg}>
-            < ScrollView showsVerticalScrollIndicator={false}>
+            <ScrollView showsVerticalScrollIndicator={false}>
                 <Image
                     style={styles.ccHotelLogo}
                     resizeMode="contain"
@@ -200,11 +200,6 @@ const styles = StyleSheet.create({
     googleText: {
         marginLeft: SCALE_SIZE(16)
     },
-    suggestionView: {
-        // alignItems: 'center',
-        // marginVertical: SCALE_SIZE(60),
-        backgroundColor: 'red'
-    }
 })
 
 export default Login;

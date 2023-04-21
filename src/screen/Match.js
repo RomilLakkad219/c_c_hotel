@@ -110,12 +110,13 @@ const ContinentToolTip = (props) => {
             isVisible={visible}
             item={item}
             contentStyle={styles.tooltipContainer}
+            backgroundColor={'transparent'}
             placement='bottom'
             onClose={() => {
                 setVisible(false)
             }}
             arrowStyle={{
-                marginHorizontal: SCALE_SIZE(100)
+                height: SCALE_SIZE(0), width: SCALE_SIZE(0)
             }}
             content={<ToolItem items={['Africa', 'Asia', 'Europe', 'North America', 'Oceania', 'South America']}
                 selectedItems={selectedFilterItems}
@@ -159,12 +160,13 @@ const CountriesToolTip = (props) => {
         <Tooltip
             isVisible={visible}
             contentStyle={styles.tooltipContainer}
+            backgroundColor={'transparent'}
             placement='bottom'
             onClose={() => {
                 setVisible(false)
             }}
             arrowStyle={{
-                marginHorizontal: SCALE_SIZE(100)
+                height: SCALE_SIZE(0), width: SCALE_SIZE(0)
             }}
             content={<ToolItem items={['India', 'Australia', 'America', 'Russia', 'England', 'France']}
                 selectedItems={selectedFilterItems}
@@ -258,11 +260,12 @@ const ExperienceToolTip = (props) => {
             isVisible={visible}
             contentStyle={[styles.tooltipContainer]}
             placement='bottom'
+            backgroundColor={'transparent'}
             onClose={() => {
                 setVisible(false)
             }}
             arrowStyle={{
-                marginHorizontal: SCALE_SIZE(100)
+                height: SCALE_SIZE(0), width: SCALE_SIZE(0)
             }}
             content={<ToolItem items={['Beach', 'Tea Route', 'Trendy', 'Village', 'Weddings', 'Zen']}
                 selectedItems={selectedFilterItems}
@@ -307,11 +310,12 @@ const ServiceToolTip = (props) => {
             isVisible={visible}
             contentStyle={styles.tooltipContainer}
             placement='bottom'
+            backgroundColor={'transparent'}
             onClose={() => {
                 setVisible(false)
             }}
             arrowStyle={{
-                marginHorizontal: SCALE_SIZE(100)
+                height: SCALE_SIZE(0), width: SCALE_SIZE(0)
             }}
             content={<ToolItem items={['Bicycle Rental', 'Concierge', 'Daily Press', 'Cooking Lessons', 'Weddings', 'Electric Vehicle']}
                 selectedItems={selectedFilterItems}
@@ -355,16 +359,13 @@ const EquipmentToolTip = (props) => {
         <Tooltip
             isVisible={visible}
             contentStyle={styles.tooltipContainer}
+            backgroundColor={'transparent'}
             placement='bottom'
             onClose={() => {
                 setVisible(false)
             }}
-            arrowSize={{
-                height: 8,
-                width: 16,
-            }}
             arrowStyle={{
-                marginHorizontal: SCALE_SIZE(100)
+                height: SCALE_SIZE(0), width: SCALE_SIZE(0)
             }}
             content={< ToolItem items={['Swimming Pool', 'Restaurant', 'Spa', 'Library', 'Tennis', 'Lockers']}
                 selectedItems={selectedFilterItems}
@@ -380,7 +381,7 @@ const EquipmentToolTip = (props) => {
                     }
                     setSelectedFilterItems(array)
                 }} />}>
-            < TouchableOpacity style={styles.listContainer}
+            <TouchableOpacity style={styles.listContainer}
                 onPress={() => setVisible(true)}>
                 <Text
                     style={styles.title}

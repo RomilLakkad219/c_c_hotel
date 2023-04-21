@@ -129,14 +129,15 @@ const EditProfile = (props) => {
                         onPress={() => {
                             showDatePicker()
                         }}>
-                        <TextInput style={styles.input}
-                            value={dateOfBirth}
-                            editable={false}
-                            pointerEvents='none'
-                            onChangeText={(text) => {
-                                setDateOfBirth(text)
-                            }}>
-                        </TextInput>
+                        <View style={styles.input}
+                            pointerEvents='none'>
+                            <TextInput
+                                value={dateOfBirth}
+                                onChangeText={(text) => {
+                                    setDateOfBirth(text)
+                                }}>
+                            </TextInput>
+                        </View>
                         <Image
                             style={styles.calender}
                             resizeMode="contain"
@@ -174,7 +175,6 @@ const EditProfile = (props) => {
                             pointerEvents='none'>
                             <TextInput
                                 value={gender}
-                                pointerEvents='none'
                                 onChangeText={(text) => {
                                     setGender(text)
                                 }}>
@@ -228,16 +228,15 @@ const EditProfile = (props) => {
                         onPress={() => {
                             countryRef.current.open()
                         }}>
-                        <TextInput
-                            style={styles.input}
-                            editable={false}
-                            pointerEvents='none'
-                            // placeholderTextColor={COLORS.black}
-                            value={country}
-                            onChangeText={(text) => {
-                                setCountry(text)
-                            }}>
-                        </TextInput>
+                        <View style={styles.input}
+                            pointerEvents='none'>
+                            <TextInput
+                                value={country}
+                                onChangeText={(text) => {
+                                    setCountry(text)
+                                }}>
+                            </TextInput>
+                        </View>
                         <Image
                             style={styles.calender}
                             resizeMode="contain"

@@ -153,12 +153,10 @@ const styles = StyleSheet.create({
         height: SCALE_SIZE(30),
         width: SCALE_SIZE(30),
         tintColor: COLORS.white,
-        marginTop:SCALE_SIZE(35)
     },
     heartImage: {
         height: SCALE_SIZE(58),
         width: SCALE_SIZE(58),
-        marginTop:SCALE_SIZE(35)
     },
     shareImage: {
         height: SCALE_SIZE(58),
