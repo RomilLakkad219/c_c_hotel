@@ -7,8 +7,8 @@ import RBSheet from "react-native-raw-bottom-sheet";
 //COMPONENT
 import { Text } from "../component";
 
-//ASSET
-import { COLORS, FONT_NAME, SCALE_SIZE, STRING } from "../constant";
+//CONSTANT
+import { COLORS, FONT_NAME, SCALE_SIZE } from "../constant";
 
 //PACKAGES
 import { useSafeAreaInsets } from "react-native-safe-area-context";
