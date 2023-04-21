@@ -71,6 +71,11 @@ const Booking = (props) => {
                 <FlatList data={['', '']}
                     showsVerticalScrollIndicator={false}
                     keyExtractor={(item, index) => index.toString()}
+                    ListHeaderComponent={() => {
+                        return (
+                            <View style={{ marginTop: SCALE_SIZE(51) }}></View>
+                        )
+                    }}
                     renderItem={({ item, index }) => {
                         return (
                             <TouchableOpacity style={styles.itemContainer}

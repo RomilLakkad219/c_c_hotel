@@ -116,7 +116,10 @@ const ContinentToolTip = (props) => {
                 setVisible(false)
             }}
             arrowStyle={{
-                height: SCALE_SIZE(0), width: SCALE_SIZE(0)
+                height: 0, width: 0
+            }}
+            arrowSize={{
+                height: 0, width: 0
             }}
             content={<ToolItem items={['Africa', 'Asia', 'Europe', 'North America', 'Oceania', 'South America']}
                 selectedItems={selectedFilterItems}
@@ -168,6 +171,9 @@ const CountriesToolTip = (props) => {
             arrowStyle={{
                 height: SCALE_SIZE(0), width: SCALE_SIZE(0)
             }}
+            arrowSize={{
+                height: 0, width: 0
+            }}
             content={<ToolItem items={['India', 'Australia', 'America', 'Russia', 'England', 'France']}
                 selectedItems={selectedFilterItems}
                 onPress={(item, index) => {
@@ -216,7 +222,10 @@ const RegionToolTip = (props) => {
                 setVisible(false)
             }}
             arrowStyle={{
-               height: SCALE_SIZE(0), width: SCALE_SIZE(0)
+                height: SCALE_SIZE(0), width: SCALE_SIZE(0)
+            }}
+            arrowSize={{
+                height: 0, width: 0
             }}
             content={<ToolItem items={['Cape Town', 'Biscay', 'Occitanie', 'Pays de la Loire', 'French Brittany', 'Ile-de-France']}
                 selectedItems={selectedFilterItems}
@@ -266,6 +275,9 @@ const ExperienceToolTip = (props) => {
             }}
             arrowStyle={{
                 height: SCALE_SIZE(0), width: SCALE_SIZE(0)
+            }}
+            arrowSize={{
+                height: 0, width: 0
             }}
             content={<ToolItem items={['Beach', 'Tea Route', 'Trendy', 'Village', 'Weddings', 'Zen']}
                 selectedItems={selectedFilterItems}
@@ -317,6 +329,9 @@ const ServiceToolTip = (props) => {
             arrowStyle={{
                 height: SCALE_SIZE(0), width: SCALE_SIZE(0)
             }}
+            arrowSize={{
+                height: 0, width: 0
+            }}
             content={<ToolItem items={['Bicycle Rental', 'Concierge', 'Daily Press', 'Cooking Lessons', 'Weddings', 'Electric Vehicle']}
                 selectedItems={selectedFilterItems}
                 onPress={(item, index) => {
@@ -366,6 +381,9 @@ const EquipmentToolTip = (props) => {
             }}
             arrowStyle={{
                 height: SCALE_SIZE(0), width: SCALE_SIZE(0)
+            }}
+            arrowSize={{
+                height: 0, width: 0
             }}
             content={< ToolItem items={['Swimming Pool', 'Restaurant', 'Spa', 'Library', 'Tennis', 'Lockers']}
                 selectedItems={selectedFilterItems}

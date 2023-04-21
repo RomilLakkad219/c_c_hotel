@@ -16,8 +16,8 @@ import { COLORS, FONT_NAME, REGEX, SCALE_SIZE, SHOW_TOAST, STRING } from "../../
 const Login = (props) => {
 
     const [isSecurePassword, setSecurePassword] = useState(true);
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('')
+    const [email, setEmail] = useState('dharaValanda@gmail.com');
+    const [password, setPassword] = useState('dhV@19')
 
     function onLogin() {
             if (!email) {

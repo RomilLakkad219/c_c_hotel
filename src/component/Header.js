@@ -116,6 +116,9 @@ const FilterToolTip = (props) => {
             arrowStyle={{
                 height: SCALE_SIZE(0), width: SCALE_SIZE(0)
             }}
+            arrowSize={{
+                height: 0, width: 0
+            }}
             content={<ToolItem items={[STRING.beach, STRING.village, STRING.cityShopping, STRING.mountainSky, STRING.nature, STRING.waterFront]}
                 selectedItems={selectedFilterItems}
                 onPress={(item, index) => {
@@ -160,30 +163,30 @@ const styles = StyleSheet.create({
         justifyContent: 'center'
     },
     backImage: {
-        height: 25,
-        width: 25,
+        height: SCALE_SIZE(25),
+        width: SCALE_SIZE(25),
         alignSelf: 'center'
     },
     downImage: {
-        height: 20,
-        width: 20,
+        height: SCALE_SIZE(20),
+        width: SCALE_SIZE(20),
         alignSelf: 'center'
     },
     profileView: {
-        height: 40,
-        width: 40,
+        height: SCALE_SIZE(40),
+        width: SCALE_SIZE(40),
         backgroundColor: COLORS.gray,
-        borderRadius: 20,
-        marginRight: 15
+        borderRadius: SCALE_SIZE(20),
+        marginRight: SCALE_SIZE(15)
     },
     profileHighlight: {
-        height: 40,
-        width: 40,
-        borderRadius: 20,
+        height: SCALE_SIZE(40),
+        width: SCALE_SIZE(40),
+        borderRadius: SCALE_SIZE(20),
         borderWidth: 1,
         borderColor: COLORS.blue,
         backgroundColor: COLORS.gray,
-        marginRight: 15
+        marginRight: SCALE_SIZE(15)
     },
     tooltipContainer: {
         height: SCALE_SIZE(173),
@@ -193,13 +196,13 @@ const styles = StyleSheet.create({
         marginHorizontal: SCALE_SIZE(20)
     },
     editProfile: {
-        height: 26,
-        width: 26,
+        height: SCALE_SIZE(26),
+        width: SCALE_SIZE(26),
         alignSelf: 'center'
     },
     dashboardImage: {
-        height: 29,
-        width: 29,
+        height: SCALE_SIZE(29),
+        width: SCALE_SIZE(29),
         alignSelf: 'center'
     },
 })

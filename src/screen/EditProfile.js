@@ -131,7 +131,7 @@ const EditProfile = (props) => {
                         }}>
                         <View style={styles.input}
                             pointerEvents='none'>
-                            <TextInput
+                            <TextInput style={{ marginTop: SCALE_SIZE(20) }}
                                 value={dateOfBirth}
                                 onChangeText={(text) => {
                                     setDateOfBirth(text)
@@ -173,7 +173,7 @@ const EditProfile = (props) => {
                         }}>
                         <View style={styles.input}
                             pointerEvents='none'>
-                            <TextInput
+                            <TextInput style={{ marginTop: SCALE_SIZE(20) }}
                                 value={gender}
                                 onChangeText={(text) => {
                                     setGender(text)
@@ -230,7 +230,7 @@ const EditProfile = (props) => {
                         }}>
                         <View style={styles.input}
                             pointerEvents='none'>
-                            <TextInput
+                            <TextInput style={{ marginTop: SCALE_SIZE(20) }}
                                 value={country}
                                 onChangeText={(text) => {
                                     setCountry(text)

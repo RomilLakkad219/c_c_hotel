@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { StyleSheet, TouchableOpacity, SafeAreaView, ImageBackground, Image, Platform } from 'react-native'
+import { StyleSheet, TouchableOpacity, SafeAreaView, ImageBackground, Image} from 'react-native'
 
 //ASSET
 import { IMAGES } from "../../asset";
@@ -120,10 +120,6 @@ const styles = StyleSheet.create({
         color: COLORS.blue,
         backgroundColor: '#EEF2FF',
         borderColor:COLORS.blue
-        // borderTopColor: COLORS.blue,
-        // borderLeftColor: COLORS.blue,
-        // borderRightColor: COLORS.blue,
-        // borderBottomColor: COLORS.blue,
     },
     submitButton: {
         marginTop: SCALE_SIZE(80),
