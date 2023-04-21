@@ -29,7 +29,7 @@ const Header = (props) => {
                         {props.title}
                     </Text>
                     <Image
-                        style={styles.downImage}
+                        style={[styles.downImage, { marginHorizontal: SCALE_SIZE(16) }]}
                         resizeMode="contain"
                         source={IMAGES.ic_down} />
                 </TouchableOpacity>
@@ -167,10 +167,9 @@ const styles = StyleSheet.create({
         alignSelf: 'center'
     },
     downImage: {
-        alignSelf: 'center',
-        marginLeft: 10,
-        height: 15,
-        width: 15,
+        height: 20,
+        width: 20,
+        alignSelf: 'center'
     },
     profileView: {
         height: 40,
