@@ -1,5 +1,5 @@
 import React from "react";
-import { View, StyleSheet, SafeAreaView, Image } from 'react-native'
+import { View, StyleSheet, SafeAreaView, Image, Text as RNText } from 'react-native'
 
 //CONSTANT
 import { COLORS, SCALE_SIZE, FONT_NAME, STRING } from "../constant";
@@ -23,8 +23,7 @@ const Map = (props) => {
     return (
         <View style={styles.container}>
             <SafeAreaView />
-            <Header onBack={() => { onBack() }}
-                style={{ paddingBottom: SCALE_SIZE(21) }} />
+            <Header onBack={() => { onBack() }} />
             <View style={styles.container}>
                 <MapView style={styles.map}
                     initialRegion={{
@@ -37,16 +36,13 @@ const Map = (props) => {
                         coordinate={{
                             latitude: 37.78825,
                             longitude: -122.4324,
-                        }}
-                        image={IMAGES.map_bg}>
+                        }}>
                         <Callout
                             tooltip={true}
                             style={{ backgroundColor: "#ffffff" }}>
                             <View style={styles.hotelView}>
-                                <Image
-                                    style={styles.mapHotelBg}
-                                    resizeMode="contain"
-                                    source={IMAGES.map_hotel_bg} />
+                                <View
+                                    style={styles.mapHotelBg} />
                                 <View style={styles.textView}>
                                     <Text
                                         size={SCALE_SIZE(14)}
@@ -62,14 +58,12 @@ const Map = (props) => {
                                         color={COLORS.borderGray}>
                                         {'Abidjan, Ivory Coast'}
                                     </Text>
-                                    <Rating
+                                    {/* <Rating
                                         style={styles.starContainer}
-                                        type='custom'
-                                        ratingImage={IMAGES.ic_star}
-                                        ratingColor='yellow'
+                                        type='star'
                                         ratingCount={4}
                                         imageSize={12}>
-                                    </Rating>
+                                    </Rating> */}
                                 </View>
                             </View>
                         </Callout>
@@ -90,17 +84,16 @@ const styles = StyleSheet.create({
     },
     hotelView: {
         backgroundColor: COLORS.white,
-        marginTop: SCALE_SIZE(52),
-        alignSelf: 'center',
         flexDirection: 'row',
-        position: 'absolute',
+        alignItems: 'center',
         paddingHorizontal: SCALE_SIZE(12),
         paddingVertical: SCALE_SIZE(14),
-        borderRadius: SCALE_SIZE(13)
+        borderRadius: SCALE_SIZE(13),
     },
     mapHotelBg: {
-        height: SCALE_SIZE(68),
-        width: SCALE_SIZE(90),
+        height: SCALE_SIZE(100),
+        width: SCALE_SIZE(100),
+        backgroundColor: 'rgba(0,0,0,0.3)'
     },
     textView: {
         flexDirection: 'column',

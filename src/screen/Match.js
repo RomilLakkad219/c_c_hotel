@@ -209,11 +209,12 @@ const RegionToolTip = (props) => {
             isVisible={visible}
             contentStyle={styles.tooltipContainer}
             placement='bottom'
+            backgroundColor={'transparent'}
             onClose={() => {
                 setVisible(false)
             }}
             arrowStyle={{
-                marginHorizontal: SCALE_SIZE(100)
+               height: SCALE_SIZE(0), width: SCALE_SIZE(0)
             }}
             content={<ToolItem items={['Cape Town', 'Biscay', 'Occitanie', 'Pays de la Loire', 'French Brittany', 'Ile-de-France']}
                 selectedItems={selectedFilterItems}
@@ -490,10 +491,9 @@ const styles = StyleSheet.create({
         height: SCALE_SIZE(173),
         backgroundColor: COLORS.white,
         width: SCALE_SIZE(205),
-        borderColor: COLORS.gray,
-        borderWidth: 2,
         borderRadius: SCALE_SIZE(10),
-        left: SCALE_SIZE(100)
+        left: SCALE_SIZE(100),
+        elevation: 4
     },
 })
 

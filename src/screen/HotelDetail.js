@@ -19,10 +19,10 @@ const HotelDetail = (props) => {
                 source={IMAGES.hoteldetail_bg}>
                 <SafeAreaView />
                 <View style={styles.imageContainer}>
-                    <SafeAreaView />
-                    <TouchableOpacity onPress={() => {
-                        props.navigation.goBack()
-                    }}>
+                    <TouchableOpacity
+                        onPress={() => {
+                            props.navigation.goBack()
+                        }}>
                         <Image
                             style={styles.backArrow}
                             resizeMode="contain"
@@ -138,7 +138,7 @@ const styles = StyleSheet.create({
     headerContainer: {
         height: Dimensions.get('screen').width,
         width: Dimensions.get('screen').width,
-        paddingBottom: SCALE_SIZE(18),
+        paddingVertical: SCALE_SIZE(18),
         overflow: 'hidden',
         borderBottomLeftRadius: SCALE_SIZE(30),
         borderBottomRightRadius: SCALE_SIZE(30)
@@ -152,7 +152,6 @@ const styles = StyleSheet.create({
     backArrow: {
         height: SCALE_SIZE(30),
         width: SCALE_SIZE(30),
-        alignSelf: 'center',
         tintColor: COLORS.white,
     },
     heartImage: {

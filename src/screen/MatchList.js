@@ -108,7 +108,7 @@ const styles = StyleSheet.create({
         backgroundColor: COLORS.white
     },
     headerContainer: {
-        paddingBottom: SCALE_SIZE(20),
+        paddingBottom: SCALE_SIZE(10),
         elevation: 4,
         shadowColor: '#000',
         shadowOpacity: 0.3,

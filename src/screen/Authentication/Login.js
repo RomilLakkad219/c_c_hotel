@@ -108,7 +108,7 @@ const Login = (props) => {
                         {STRING.google}
                     </Text>
                 </TouchableOpacity>
-                <View style={{ marginTop: SCALE_SIZE(60) }}>
+                <View style={{ marginVertical: SCALE_SIZE(60) }}>
                     <Text
                         align='center'
                         size={SCALE_SIZE(20)}
