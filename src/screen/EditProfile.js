@@ -170,15 +170,16 @@ const EditProfile = (props) => {
                         onPress={() => {
                             genderRef.current.open()
                         }}>
-                        <TextInput style={styles.input}
-                            value={gender}
-                            editable={false}
-                            pointerEvents='none'
-                             // placeholderTextColor={COLORS.black}
-                            onChangeText={(text) => {
-                                setGender(text)
-                            }}>
-                        </TextInput>
+                        <View style={styles.input}
+                            pointerEvents='none'>
+                            <TextInput
+                                value={gender}
+                                pointerEvents='none'
+                                onChangeText={(text) => {
+                                    setGender(text)
+                                }}>
+                            </TextInput>
+                        </View>
                         <Image
                             style={styles.calender}
                             resizeMode="contain"
