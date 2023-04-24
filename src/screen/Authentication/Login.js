@@ -17,7 +17,7 @@ const Login = (props) => {
 
     const [isSecurePassword, setSecurePassword] = useState(true);
     const [email, setEmail] = useState('dharaValanda@gmail.com');
-    const [password, setPassword] = useState('dV@19')
+    const [password, setPassword] = useState('dV@1922')
 
     function onLogin() {
             if (!email) {

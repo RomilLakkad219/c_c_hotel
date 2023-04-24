@@ -1,5 +1,5 @@
 import React from "react";
-import { View, TouchableOpacity, FlatList, Image, ImageBackground, StyleSheet } from 'react-native'
+import { View, TouchableOpacity, FlatList, Image, ImageBackground, StyleSheet, Alert } from 'react-native'
 
 //ASSET
 import { IMAGES } from "../asset";
