@@ -151,7 +151,7 @@ const Setting = (props) => {
                 style={styles.logOutButton}>
                 <Text
                     size={18}
-                    family={FONT_NAME.medium}
+                    family={FONT_NAME.semiBold}
                     color={COLORS.blue}>
                     {STRING.logOut}
                 </Text>

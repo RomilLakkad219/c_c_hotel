@@ -2,8 +2,8 @@ import React, { useRef, useState } from "react";
 import { View, StyleSheet, SafeAreaView, TouchableOpacity, Image, TextInput, ScrollView } from 'react-native'
 
 //PACKAGES
-import RBSheet from "react-native-raw-bottom-sheet";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
+import moment from "moment";
 
 //ASSET
 import { IMAGES } from "../asset";
@@ -13,7 +13,6 @@ import { BottomSheet, Header, Text } from "../component";
 
 //CONSTANT
 import { COLORS, FONT_NAME, SCALE_SIZE, SHOW_TOAST, STRING } from "../constant";
-import moment from "moment";
 
 const EditProfile = (props) => {
 
@@ -103,7 +102,7 @@ const EditProfile = (props) => {
                 </View>
                 <View style={styles.nameContainer}>
                     <Text
-                        style={{ width: SCALE_SIZE(120) }}
+                        style={{ width: SCALE_SIZE(140) }}
                         size={SCALE_SIZE(16)}
                         family={FONT_NAME.medium}
                         color={COLORS.black}>
@@ -119,7 +118,7 @@ const EditProfile = (props) => {
                 </View>
                 <View style={styles.nameContainer}>
                     <Text
-                        style={{ width: SCALE_SIZE(120) }}
+                        style={{ width: SCALE_SIZE(140) }}
                         size={SCALE_SIZE(16)}
                         family={FONT_NAME.medium}
                         color={COLORS.black}>
@@ -146,7 +145,7 @@ const EditProfile = (props) => {
                 </View>
                 <View style={styles.nameContainer}>
                     <Text
-                        style={{ width: SCALE_SIZE(120) }}
+                        style={{ width: SCALE_SIZE(140) }}
                         size={SCALE_SIZE(16)}
                         family={FONT_NAME.medium}
                         color={COLORS.black}>
@@ -161,7 +160,7 @@ const EditProfile = (props) => {
                 </View>
                 <View style={styles.nameContainer}>
                     <Text
-                        style={{ width: SCALE_SIZE(120) }}
+                        style={{ width: SCALE_SIZE(140) }}
                         size={SCALE_SIZE(16)}
                         family={FONT_NAME.medium}
                         color={COLORS.black}>
@@ -188,7 +187,7 @@ const EditProfile = (props) => {
                 </View>
                 <View style={styles.nameContainer}>
                     <Text
-                        style={{ width: SCALE_SIZE(120) }}
+                        style={{ width: SCALE_SIZE(140) }}
                         size={SCALE_SIZE(16)}
                         family={FONT_NAME.medium}
                         color={COLORS.black}>
@@ -203,7 +202,7 @@ const EditProfile = (props) => {
                 </View>
                 <View style={styles.nameContainer}>
                     <Text
-                        style={{ width: SCALE_SIZE(120) }}
+                        style={{ width: SCALE_SIZE(140) }}
                         size={SCALE_SIZE(16)}
                         family={FONT_NAME.medium}
                         color={COLORS.black}>
@@ -218,7 +217,7 @@ const EditProfile = (props) => {
                 </View>
                 <View style={styles.nameContainer}>
                     <Text
-                        style={{ width: SCALE_SIZE(120) }}
+                        style={{ width: SCALE_SIZE(140) }}
                         size={SCALE_SIZE(16)}
                         family={FONT_NAME.medium}
                         color={COLORS.black}>
@@ -246,7 +245,7 @@ const EditProfile = (props) => {
                 </View>
                 <View style={styles.nameContainer}>
                     <Text
-                        style={{ width: SCALE_SIZE(130) }}
+                        style={{ width: SCALE_SIZE(140) }}
                         size={SCALE_SIZE(16)}
                         family={FONT_NAME.medium}
                         color={COLORS.black}>
@@ -318,21 +317,22 @@ const styles = StyleSheet.create({
     nameContainer: {
         alignItems: 'center',
         flexDirection: 'row',
-        marginTop: SCALE_SIZE(20),
+        marginTop: SCALE_SIZE(10),
         marginHorizontal: SCALE_SIZE(35),
-        height: SCALE_SIZE(60),
     },
     input: {
         flex: 1.0,
-        height: SCALE_SIZE(60),
-        borderBottomWidth: 1,
-        borderColor: COLORS.gray,
         fontFamily: FONT_NAME.medium,
-        fontSize: SCALE_SIZE(16)
+        fontSize: SCALE_SIZE(16),
+        backgroundColor: '#F6F6F6',
+        height: SCALE_SIZE(50),
+        padding: 0,
+        borderRadius: SCALE_SIZE(4),
+        paddingHorizontal: SCALE_SIZE(10)
     },
     calender: {
-        height: SCALE_SIZE(20),
-        width: SCALE_SIZE(20),
+        height: SCALE_SIZE(15),
+        width: SCALE_SIZE(15),
         alignSelf: 'center'
     },
     downImage: {
@@ -377,7 +377,10 @@ const styles = StyleSheet.create({
     directionContainer: {
         flex: 1.0,
         flexDirection: 'row',
-        height: SCALE_SIZE(60)
+        alignItems: 'center',
+        backgroundColor: '#F6F6F6',
+        borderRadius: SCALE_SIZE(4),
+        paddingRight: SCALE_SIZE(10)
     }
 })
 

@@ -10,7 +10,12 @@ import { Text } from "../component"
 //ASSET
 import { IMAGES } from "../asset"
 
+//SCREENS
+import { SCREENS } from "../screen";
+
 const BookingSelectionPopup = (props) => {
+
+    const navigation = props.navigation
 
     return (
         <Modal transparent={true}
@@ -79,7 +84,10 @@ const BookingSelectionPopup = (props) => {
                                     source={IMAGES.ic_calender} />
                             </TouchableOpacity>
                         </View>
-                        <TouchableOpacity style={styles.searchButton}>
+                        <TouchableOpacity style={styles.searchButton}
+                            onPress={() => {
+                                navigation.navigate(SCREENS.Search.name)
+                            }}>
                             <Text
                                 size={16}
                                 align='center'

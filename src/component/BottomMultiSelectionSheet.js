@@ -24,6 +24,7 @@ const BottomMultiSelectionSheet = (props) => {
         <RBSheet ref={props.onRef}
             closeOnDragDown={true}
             closeOnPressMask={true}
+            onClose={props.onClose}
             customStyles={{
                 container: {
                     backgroundColor: '#FFF',

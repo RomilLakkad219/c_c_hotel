@@ -29,6 +29,7 @@ import Blog from "./Blog";
 import LegalNotice from "./LegalNotice";
 import PersonalData from "./PersonalData";
 import AboutDeveloper from "./AboutDeveloper";
+import Search from "./Search";
 
 export const SCREENS = {
     Splash: {
@@ -134,5 +135,9 @@ export const SCREENS = {
     AboutDeveloper: {
         name: 'AboutDeveloper',
         component: AboutDeveloper
+    },
+    Search: {
+        name: 'Search',
+        component: Search
     }
 }

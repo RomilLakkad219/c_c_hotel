@@ -40,54 +40,54 @@ const ResetPassword = (props) => {
                     resizeMode="contain"
                     source={IMAGES.back_arrow} />
             </TouchableOpacity>
-            <Image
-                style={styles.resetPasswordBackground}
-                resizeMode="contain"
-                source={IMAGES.reset_pw_bg} />
-            <Text
-                style={styles.resetPasswordText}
-                size={SCALE_SIZE(33)}
-                family={FONT_NAME.medium}
-                color={COLORS.black}>
-                {STRING.reset}
-            </Text>
-            <Text style={styles.passwordText}
-                size={SCALE_SIZE(33)}
-                family={FONT_NAME.medium}
-                color={COLORS.black}>
-                {STRING.password}
-            </Text>
-            <Input
-                style={styles.newPasswordInput}
-                value={newPassword}
-                title={STRING.newPassword}
-                secureTextEntry={isSecurePassword}
-                onChangeText={(text) => {
-                    setNewPassword(text)
-                }}
-                icon={isSecurePassword ? IMAGES.ic_eye_password : IMAGES.ic_s_password}
-                onPressIcon={() => {
-                    setSecurePassword(!isSecurePassword)
-                }} />
-            <Input
-                style={styles.confirmPasswordInput}
-                value={confirmPassword}
-                title={STRING.confirmPassword}
-                secureTextEntry={isVisiblePassword}
-                onChangeText={(text) => {
-                    setConfirmPassword(text)
-                }}
-                icon={isVisiblePassword ? IMAGES.ic_eye_password : IMAGES.ic_s_password}
-                onPressIcon={() => {
-                    setIsVisiblePassword(!isVisiblePassword)
-                }} />
-            <Button
-                style={styles.submitButton}
-                onPress={() => {
-                    onSubmit()
-                }}
-                title={STRING.submit} />
-            <SafeAreaView />
+                <Image
+                    style={styles.resetPasswordBackground}
+                    resizeMode="contain"
+                    source={IMAGES.reset_pw_bg} />
+                <Text
+                    style={styles.resetPasswordText}
+                    size={SCALE_SIZE(33)}
+                    family={FONT_NAME.medium}
+                    color={COLORS.black}>
+                    {STRING.reset}
+                </Text>
+                <Text style={styles.passwordText}
+                    size={SCALE_SIZE(33)}
+                    family={FONT_NAME.medium}
+                    color={COLORS.black}>
+                    {STRING.password}
+                </Text>
+                <Input
+                    style={styles.newPasswordInput}
+                    value={newPassword}
+                    title={STRING.newPassword}
+                    secureTextEntry={isSecurePassword}
+                    onChangeText={(text) => {
+                        setNewPassword(text)
+                    }}
+                    icon={isSecurePassword ? IMAGES.ic_eye_password : IMAGES.ic_s_password}
+                    onPressIcon={() => {
+                        setSecurePassword(!isSecurePassword)
+                    }} />
+                <Input
+                    style={styles.confirmPasswordInput}
+                    value={confirmPassword}
+                    title={STRING.confirmPassword}
+                    secureTextEntry={isVisiblePassword}
+                    onChangeText={(text) => {
+                        setConfirmPassword(text)
+                    }}
+                    icon={isVisiblePassword ? IMAGES.ic_eye_password : IMAGES.ic_s_password}
+                    onPressIcon={() => {
+                        setIsVisiblePassword(!isVisiblePassword)
+                    }} />
+                <Button
+                    style={styles.submitButton}
+                    onPress={() => {
+                        onSubmit()
+                    }}
+                    title={STRING.submit} />
+                <SafeAreaView />
         </ImageBackground>
     )
 }
@@ -100,7 +100,7 @@ const styles = StyleSheet.create({
         height: SCALE_SIZE(30),
         width: SCALE_SIZE(30),
         marginHorizontal: SCALE_SIZE(35),
-        marginTop:SCALE_SIZE(35)
+        marginTop: SCALE_SIZE(35)
     },
     resetPasswordBackground: {
         height: SCALE_SIZE(226),

@@ -1,21 +1,17 @@
 import React, { useState } from "react";
-import { View, StyleSheet, SafeAreaView, TouchableOpacity, Image, TextInput, FlatList } from 'react-native'
+import { View, StyleSheet, SafeAreaView, Image, TextInput } from 'react-native'
 
 //PACKAGES
 import MapView, { Marker } from 'react-native-maps';
-import { Rating } from 'react-native-ratings'
 
 //ASSET
 import { IMAGES } from "../../asset";
 
 //COMPONENT
-import { Header, Text } from "../../component";
+import { BookingSelectionPopup, Header } from "../../component";
 
 //CONSTANT
 import { COLORS, FONT_NAME, SCALE_SIZE, STRING } from "../../constant";
-
-//SCREENS
-import { SCREENS } from "..";
 
 const Booking = (props) => {
 
@@ -24,7 +20,7 @@ const Booking = (props) => {
     }
 
     const [search, setSearch] = useState('');
-    const [isSelectedSearch, setIsSelectedSearch] = useState(false)
+    const [visible, setVisible] = useState(false)
 
     return (
         <View style={styles.container}>
@@ -33,7 +29,9 @@ const Booking = (props) => {
                 <Header
                     style={{ backgroundColor: 'transparent' }}
                     onBack={() => onBack()}
-                    onDashboard={() => { }} />
+                    onDashboard={() => {
+                        setVisible(true)
+                    }} />
                 <View
                     style={styles.searchInputContainer}>
                     <TextInput
@@ -67,62 +65,13 @@ const Booking = (props) => {
                     </Marker>
                 </MapView>
             </View>
-            <View style={styles.hotelContainer}>
-                <FlatList data={['', '']}
-                    showsVerticalScrollIndicator={false}
-                    keyExtractor={(item, index) => index.toString()}
-                    ListHeaderComponent={() => {
-                        return (
-                            <View style={{ marginTop: SCALE_SIZE(51) }}></View>
-                        )
-                    }}
-                    renderItem={({ item, index }) => {
-                        return (
-                            <TouchableOpacity style={styles.itemContainer}
-                                onPress={() => {
-                                    props.navigation.navigate(SCREENS.HotelDetail.name)
-                                }}>
-                                <View style={{ flexDirection: 'row' }}>
-                                    <Image style={styles.imageView}
-                                        resizeMode="contain"
-                                        source={IMAGES.popularhotel_bg} />
-                                    <View style={styles.directionView}>
-                                        <Text
-                                            style={styles.itemText}
-                                            size={SCALE_SIZE(18)}
-                                            color={COLORS.headerTitleGray}
-                                            family={FONT_NAME.medium}>
-                                            {"Oberio Hotel"}
-                                        </Text>
-                                        <Text
-                                            style={styles.southAmerica}
-                                            size={SCALE_SIZE(16)}
-                                            color={COLORS.gray}
-                                            family={FONT_NAME.medium}>
-                                            {"South America"}
-                                        </Text>
-                                        <Rating
-                                            style={styles.starContainer}
-                                            type='star'
-                                            ratingCount={4}
-                                            imageSize={12}>
-                                        </Rating>
-                                        <TouchableOpacity style={styles.discoverButton}>
-                                            <Text
-                                                align='center'
-                                                size={SCALE_SIZE(12)}
-                                                color={COLORS.white}
-                                                family={FONT_NAME.semiBold}>
-                                                {STRING.discover}
-                                            </Text>
-                                        </TouchableOpacity>
-                                    </View>
-                                </View>
-                            </TouchableOpacity>
-                        )
-                    }}>
-                </FlatList>
-            </View>
+            <BookingSelectionPopup
+                visible={visible}
+                navigation={props.navigation}
+                onPress={() => {
+                    setVisible(false)
+                }}>
+            </BookingSelectionPopup>
         </View>
     )
 }
@@ -176,56 +125,6 @@ const styles = StyleSheet.create({
         height: SCALE_SIZE(30),
         width: SCALE_SIZE(30),
         alignSelf: 'center'
-    },
-    hotelContainer: {
-        backgroundColor: COLORS.white,
-        borderTopLeftRadius: SCALE_SIZE(36),
-        borderTopRightRadius: SCALE_SIZE(36),
-        flex: 1.0,
-        marginTop: SCALE_SIZE(-30)
-    },
-    directionView: {
-        flexDirection: 'column',
-        justifyContent: 'center'
-    },
-    itemContainer: {
-        borderWidth: 1,
-        borderColor: '#DEDEDE',
-        backgroundColor: COLORS.white,
-        borderRadius: SCALE_SIZE(10),
-        marginTop: SCALE_SIZE(15),
-        marginHorizontal: SCALE_SIZE(35),
-        paddingBottom: SCALE_SIZE(15)
-    },
-    imageView: {
-        height: SCALE_SIZE(117),
-        width: SCALE_SIZE(124),
-        alignSelf: 'center',
-        marginTop: SCALE_SIZE(16),
-        marginLeft: SCALE_SIZE(16),
-        paddingBottom: SCALE_SIZE(15)
-    },
-    itemText: {
-        marginTop: SCALE_SIZE(16),
-        marginHorizontal: SCALE_SIZE(16)
-    },
-    southAmerica: {
-        marginHorizontal: SCALE_SIZE(16),
-        marginTop: SCALE_SIZE(1)
-    },
-    discoverButton: {
-        height: SCALE_SIZE(31),
-        width: SCALE_SIZE(77),
-        borderRadius: SCALE_SIZE(24),
-        backgroundColor: COLORS.black,
-        justifyContent: 'center',
-        marginTop: SCALE_SIZE(13),
-        marginLeft: SCALE_SIZE(13)
-    },
-    starContainer: {
-        alignItems: 'flex-start',
-        marginHorizontal: SCALE_SIZE(17),
-        marginTop: SCALE_SIZE(9)
     }
 })
 

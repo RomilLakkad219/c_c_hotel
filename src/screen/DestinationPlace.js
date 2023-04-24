@@ -20,6 +20,7 @@ const DestinationPlace = (props) => {
     const destinationRef = useRef()
 
     const [search, setSearch] = useState('');
+    const [selectedIndex, setSelectedIndex] = useState(-1)
     const [selectedFilterItems, setSelectedFilterItems] = useState([]);
 
     const placeOption =
@@ -90,17 +91,22 @@ const DestinationPlace = (props) => {
                     keyExtractor={(item, index) => index.toString()}
                     renderItem={({ item, index }) => {
                         return (
-                            <TouchableOpacity style={styles.placeContainer} onPress={() => {
+                            <TouchableOpacity style={[styles.placeContainer, {
+                               backgroundColor:  selectedIndex == index ? COLORS.blue : '#f3f3f3'
+                            }]} onPress={() => {
+                                setSelectedIndex(index)
                                 destinationRef.current.open()
                             }}>
                                 <Text
                                     align='center'
                                     size={SCALE_SIZE(16)}
-                                    color={COLORS.white}
+                                    color={selectedIndex == index ? COLORS.white : COLORS.black}
                                     family={FONT_NAME.medium}>
                                     {item.title}
                                 </Text>
-                                <Image style={styles.downImage}
+                                <Image style={[styles.downImage, {
+                                    tintColor: selectedIndex == index ? COLORS.white : COLORS.black
+                                }]}
                                     resizeMode="contain"
                                     source={IMAGES.ic_down} />
                             </TouchableOpacity>
@@ -149,6 +155,7 @@ const DestinationPlace = (props) => {
                 onRef={destinationRef}
                 selectedItem={selectedFilterItems}
                 data={['Praia', 'Mindelo', 'Sal Rei']}
+                onClose={() => setSelectedIndex(-1)}
                 onPressItem={(e) => {
                     const array = [...selectedFilterItems]
                     if (selectedFilterItems.includes(e)) {
@@ -191,7 +198,6 @@ const styles = StyleSheet.create({
     },
     placeContainer: {
         height: SCALE_SIZE(49),
-        backgroundColor: COLORS.blue,
         borderRadius: SCALE_SIZE(30),
         justifyContent: 'center',
         marginTop: SCALE_SIZE(33),
@@ -205,7 +211,7 @@ const styles = StyleSheet.create({
         height: SCALE_SIZE(15),
         width: SCALE_SIZE(9),
         alignSelf: 'center',
-        marginHorizontal: SCALE_SIZE(10),
+        marginLeft: SCALE_SIZE(10),
         tintColor: COLORS.white
     },
     beachSideHotelText: {

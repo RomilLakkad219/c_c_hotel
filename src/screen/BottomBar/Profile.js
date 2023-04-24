@@ -24,9 +24,10 @@ const Profile = (props) => {
             <Header onBack={() => onBack()}
                 title={STRING.myProfile} />
             <View style={{ flexDirection: 'row' }}>
-                <View style={styles.profile}>
-
-                </View>
+                <Image
+                    style={styles.profile}
+                    resizeMode="contain"
+                    source={IMAGES.ic_profile} />
                 <View style={{ flexDirection: 'column' }}>
                     <Text
                         style={styles.nameText}
@@ -99,9 +100,6 @@ const styles = StyleSheet.create({
     profile: {
         height: SCALE_SIZE(100),
         width: SCALE_SIZE(100),
-        borderRadius: SCALE_SIZE(50),
-        borderColor: COLORS.gray,
-        backgroundColor: COLORS.gray,
         marginTop: SCALE_SIZE(39),
         marginHorizontal: SCALE_SIZE(35)
     },

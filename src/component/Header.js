@@ -5,7 +5,7 @@ import { View, StyleSheet, Platform, TouchableOpacity, Image } from 'react-nativ
 import { IMAGES } from "../asset";
 
 //COMPONENT
-import { BookingSelectionPopup, Text, ToolItem } from '../component'
+import { Text, ToolItem } from '../component'
 
 //CONSTANT
 import { COLORS, FONT_NAME, SCALE_SIZE, STRING } from "../constant";
@@ -14,9 +14,6 @@ import { COLORS, FONT_NAME, SCALE_SIZE, STRING } from "../constant";
 import Tooltip from "react-native-walkthrough-tooltip";
 
 const Header = (props) => {
-
-    const [ishighLighted, setIsHighlighted] = useState(false);
-    const [visible, setVisible] = useState(false)
 
     if (props.type == 'home') {
         return (
@@ -35,11 +32,11 @@ const Header = (props) => {
                 </TouchableOpacity>
                 <View style={{ flex: 1.0 }} />
                 <TouchableOpacity onPress={() => {
-                    setIsHighlighted(!ishighLighted)
                 }}>
-                    <View style={ishighLighted ? styles.profileHighlight : styles.profileView}>
-
-                    </View>
+                    <Image
+                        style={styles.profileView}
+                        resizeMode="contain"
+                        source={IMAGES.ic_profile} />
                 </TouchableOpacity>
             </View>
         )
@@ -81,7 +78,7 @@ const Header = (props) => {
                     }
                     {props.onDashboard &&
                         <TouchableOpacity style={styles.backContainer}
-                            onPress={() => { setVisible(true) }}>
+                            onPress={() => props.onDashboard()}>
                             <Image
                                 style={styles.dashboardImage}
                                 resizeMode="contain"
@@ -89,11 +86,6 @@ const Header = (props) => {
                         </TouchableOpacity>
                     }
                 </View>
-                <BookingSelectionPopup visible={visible}
-                    onPress={() => {
-                        setVisible(false)
-                    }}>
-                </BookingSelectionPopup>
             </View>
         )
     }
@@ -175,8 +167,6 @@ const styles = StyleSheet.create({
     profileView: {
         height: SCALE_SIZE(40),
         width: SCALE_SIZE(40),
-        backgroundColor: COLORS.gray,
-        borderRadius: SCALE_SIZE(20),
         marginRight: SCALE_SIZE(15)
     },
     profileHighlight: {

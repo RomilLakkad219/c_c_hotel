@@ -1,18 +1,17 @@
 import React from "react";
-import { View, StyleSheet, SafeAreaView, Image, Text as RNText } from 'react-native'
+import { View, StyleSheet, SafeAreaView } from 'react-native'
 
 //CONSTANT
 import { COLORS, SCALE_SIZE, FONT_NAME, STRING } from "../constant";
 
 //PACKAGES
 import MapView, { Callout, Marker } from 'react-native-maps'
-import { Rating } from 'react-native-ratings'
-
-//ASSET
-import { IMAGES } from "../asset";
 
 //COMPONENT
 import { Header, Text } from "../component";
+
+//PACKAGES
+import WebView from "react-native-webview";
 
 const Map = (props) => {
 
@@ -22,8 +21,12 @@ const Map = (props) => {
 
     return (
         <View style={styles.container}>
-            <SafeAreaView />
-            <Header onBack={() => { onBack() }} />
+            <View style={styles.transparent}>
+                <SafeAreaView />
+                <Header
+                    style={{ backgroundColor: 'transparent' }}
+                    onBack={() => { onBack() }} />
+            </View>
             <View style={styles.container}>
                 <MapView style={styles.map}
                     initialRegion={{
@@ -41,8 +44,10 @@ const Map = (props) => {
                             tooltip={true}
                             style={{ backgroundColor: "#ffffff" }}>
                             <View style={styles.hotelView}>
-                                <View
-                                    style={styles.mapHotelBg} />
+                                <View>
+                                    <WebView style={{ height: SCALE_SIZE(50), width: SCALE_SIZE(50) }}
+                                        source={{ uri: 'https://media-cdn.tripadvisor.com/media/photo-s/14/60/4e/ef/image-hotel-resto.jpg' }}></WebView>
+                                </View>
                                 <View style={styles.textView}>
                                     <Text
                                         size={SCALE_SIZE(14)}
@@ -91,11 +96,6 @@ const styles = StyleSheet.create({
         paddingVertical: SCALE_SIZE(14),
         borderRadius: SCALE_SIZE(13)
     },
-    mapHotelBg: {
-        height: SCALE_SIZE(100),
-        width: SCALE_SIZE(100),
-        backgroundColor: 'rgba(0,0,0,0.3)'
-    },
     textView: {
         flexDirection: 'column',
         marginHorizontal: SCALE_SIZE(9)
@@ -103,6 +103,13 @@ const styles = StyleSheet.create({
     starContainer: {
         alignItems: 'flex-start',
         marginTop: SCALE_SIZE(5)
+    },
+    transparent: {
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        zIndex: 5000
     }
 })
 
