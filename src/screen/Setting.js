@@ -15,6 +15,8 @@ import { COLORS, FONT_NAME, SCALE_SIZE, STRING } from "../constant";
 
 //SCREENS
 import { SCREENS } from ".";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { CommonActions } from "@react-navigation/native";
 
 const Setting = (props) => {
 
@@ -158,8 +160,19 @@ const Setting = (props) => {
             </TouchableOpacity>
             <LogoutPopup
                 visible={modalVisible}
-                onPressYes={() => { setModalVisible(false) }}
-                onPressNo={() => { setModalVisible(false) }} />
+                onPressYes={async () => {
+                    setModalVisible(false)
+                    await AsyncStorage.clear()
+                    props.navigation.dispatch(CommonActions.reset({
+                        index: 0,
+                        routes: [{
+                            name: SCREENS.Login.name
+                        }]
+                    }))
+                }}
+                onPressNo={() => {
+                    setModalVisible(false)
+                }} />
             <RateTheAppPopUp
                 visible={visible}
                 onPress={() => {

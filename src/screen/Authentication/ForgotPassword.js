@@ -8,21 +8,44 @@ import { SCREENS } from "..";
 import { IMAGES } from "../../asset";
 
 //COMPONENT
-import { Button, Input, Text } from "../../component";
+import { Button, Input, ProgressView, Text } from "../../component";
 
 //CONSTANT
 import { COLORS, FONT_NAME, SCALE_SIZE, SHOW_TOAST, STRING } from "../../constant";
 
+//API
+import { forgotPassword } from "../../api";
+
 const ForgotPassword = (props) => {
 
-    const [email, setEmail] = useState('')
+    const [email, setEmail] = useState('');
+    const [isLoading, setIsLoading] = useState(false)
 
     function onSubmit() {
         if (!email) {
             SHOW_TOAST('Enter Your Email')
         }
         else {
+            OnForgotPassword()
+        }
+    }
+
+    async function OnForgotPassword() {
+        const params = {
+            user_email: email,
+        }
+
+        setIsLoading(true)
+        const result = await forgotPassword(params)
+        setIsLoading(false)
+        console.log(result)
+
+        if (result.status) {
             props.navigation.navigate(SCREENS.Otp.name)
+
+        }
+        else {
+            SHOW_TOAST(result.error)
         }
     }
 
@@ -77,6 +100,7 @@ const ForgotPassword = (props) => {
                 }}
                 style={styles.submitButton}
                 title={STRING.submit} />
+            {isLoading && <ProgressView />}
         </ImageBackground>
     )
 }
@@ -95,7 +119,7 @@ const styles = StyleSheet.create({
         height: SCALE_SIZE(30),
         width: SCALE_SIZE(30),
         marginHorizontal: SCALE_SIZE(35),
-        marginTop:SCALE_SIZE(35)
+        marginTop: SCALE_SIZE(35)
     },
     forgotText: {
         marginTop: SCALE_SIZE(37),

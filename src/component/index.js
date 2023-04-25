@@ -11,6 +11,7 @@ import FavouriteList from './FavouriteList'
 import RateTheAppPopUp from './RateTheAppPopUp'
 import BottomSheet from './BottomSheet'
 import BottomMultiSelectionSheet from './BottomMultiSelectionSheet'
+import ProgressView from './ProgressView'
 
 export {
     Text,
@@ -25,5 +26,6 @@ export {
     FavouriteList,
     RateTheAppPopUp,
     BottomSheet,
-    BottomMultiSelectionSheet
+    BottomMultiSelectionSheet,
+    ProgressView
 }

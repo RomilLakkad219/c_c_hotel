@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { View, StyleSheet, SafeAreaView, TouchableOpacity, Image, TextInput, ScrollView } from 'react-native'
 
 //PACKAGES
@@ -9,10 +9,16 @@ import moment from "moment";
 import { IMAGES } from "../asset";
 
 //COMPONENT
-import { BottomSheet, Header, Text } from "../component";
+import { BottomSheet, Header, ProgressView, Text } from "../component";
 
 //CONSTANT
 import { COLORS, FONT_NAME, SCALE_SIZE, SHOW_TOAST, STRING } from "../constant";
+
+//API
+import { updateProfile, userProfile } from "../api";
+
+//CONTEXT
+import { AuthContext } from "../context";
 
 const EditProfile = (props) => {
 
@@ -31,6 +37,13 @@ const EditProfile = (props) => {
     const genderRef = useRef();
     const countryRef = useRef();
     const [isDatePickerVisible, setIsDatePickerVisible] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
+
+    const { user } = useContext(AuthContext)
+
+    useEffect(() => {
+        getUserProfile()
+    }, [])
 
     const showDatePicker = () => {
         setIsDatePickerVisible(true)
@@ -74,7 +87,67 @@ const EditProfile = (props) => {
             SHOW_TOAST('Enter Your Postal Code')
         }
         else {
-            SHOW_TOAST('PROCESS IS COMPLETED')
+            onUpdateProfile()
+        }
+    }
+
+    async function getUserProfile() {
+        const params = {
+            user_id: user?.[0]?.user_id
+        }
+
+        setIsLoading(true)
+        const result = await userProfile(params)
+        setIsLoading(false)
+
+        if (result.status) {
+            if (result?.data?.status == "1") {
+                setName(result?.data?.result?.user?.[0]?.user_name ?? '-')
+                setDateOfBirth(result?.data?.result?.user?.[0]?.user_dob ?? '-')
+                setMobileNumber(result?.data?.result?.user?.[0]?.user_mb_no ?? '-')
+                setGender(result?.data?.result?.user?.[0]?.user_gender ?? '-')
+                setAddress(result?.data?.result?.user?.[0]?.user_address ?? '-')
+                setCity(result?.data?.result?.user?.[0]?.user_city ?? '-')
+                setCountry(result?.data?.result?.user?.[0]?.user_country ?? '-')
+                setPostalCode(result?.data?.result?.user?.[0]?.user_postcode ?? '-')
+            }
+        }
+        else {
+            SHOW_TOAST(result.error)
+        }
+
+    }
+
+    async function onUpdateProfile() {
+        const params = {
+            user_id: user?.[0]?.user_id,
+            user_name: name,
+            user_mb_no: mobileNumber,
+            user_dob: `${dateOfBirth}/${moment(date).format('YYYY MM DD')}`,
+            user_gender: gender,
+            user_address: address,
+            user_city: city,
+            user_country: country,
+            user_postcode: postalCode,
+            user_fb_url: '',
+            user_twitter_url: '',
+            user_instagram_url: '',
+            user_linkedin_url: '',
+            user_session: '',
+            user_session_id: ''
+        }
+
+        setIsLoading(true)
+        const result = await updateProfile(params)
+        setIsLoading(false)
+
+        if (result.status) {
+            if (result?.data?.status == '1') {
+                console.log(JSON.stringify(result))
+            }
+        }
+        else {
+            SHOW_TOAST(result.error)
         }
     }
 
@@ -294,6 +367,7 @@ const EditProfile = (props) => {
                     onCancel={hideDatePicker}
                     maximumDate={new Date()} />
             </ScrollView>
+            {isLoading && <ProgressView />}
         </View>
     )
 }
@@ -328,7 +402,7 @@ const styles = StyleSheet.create({
         height: SCALE_SIZE(50),
         padding: 0,
         borderRadius: SCALE_SIZE(4),
-        paddingHorizontal: SCALE_SIZE(10)
+        paddingHorizontal: SCALE_SIZE(10),
     },
     calender: {
         height: SCALE_SIZE(15),

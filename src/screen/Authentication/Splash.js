@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext, useEffect } from "react";
 import { View, StyleSheet, SafeAreaView, ImageBackground } from 'react-native'
 
 //ASSET
@@ -13,10 +13,46 @@ import { Button, Text } from "../../component";
 //CONSTANT
 import { COLORS, FONT_NAME, SCALE_SIZE, STRING } from "../../constant";
 
+//PACKAGES
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
+//CONTEXT
+import { AuthContext } from "../../context";
+import { CommonActions } from "@react-navigation/native";
+
 const Splash = (props) => {
 
+    const { setUser } = useContext(AuthContext)
+
+    useEffect(() => {
+        checkUser()
+    }, [])
+
+    async function checkUser() {
+        const result = await AsyncStorage.getItem('user_details')
+        if (result) {
+            const user = JSON.parse(result)
+            setUser(user)
+            moveToHome()
+        }
+    }
+
+    function moveToHome() {
+        props.navigation.dispatch(CommonActions.reset({
+            index: 0,
+            routes: [{
+                name: SCREENS.BottomBar.name
+            }]
+        }))
+    }
+
     function moveToLogin() {
-        props.navigation.navigate(SCREENS.Login.name)
+        props.navigation.dispatch(CommonActions.reset({
+            index: 0,
+            routes: [{
+                name: SCREENS.Login.name
+            }]
+        }))
     }
 
     return (

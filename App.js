@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { View, StyleSheet, Platform, StatusBar, LogBox } from 'react-native'
 
 //PACKAGES
@@ -19,6 +19,9 @@ import KeyboardManager from 'react-native-keyboard-manager';
 
 //CONSTANT
 import { COLORS, SCALE_SIZE } from './src/constant';
+
+//CONTEXT
+import { AuthProvider } from './src/context';
 
 LogBox.ignoreAllLogs(true)
 
@@ -65,23 +68,25 @@ const App = (props) => {
 
   return (
     <View style={styles.container}>
-      <StatusBar backgroundColor={'#fff'} barStyle={'dark-content'} translucent={false}/>
-      <NavigationContainer>
-        <Navigator
-          initialRouteName={SCREENS.Splash.name}
-          screenOptions={{ headerShown: false, gestureEnabled: false, }}>
-          {_.toArray(SCREENS).map((item, index) => {
-            return item.component ? (
-              <Screen
-                key={item.name}
-                name={item.name}
-                component={item.component}
-              />
-            ) : null;
-          })}
-        </Navigator>
-      </NavigationContainer>
-      <Toast config={toastConfig} />
+      <AuthProvider>
+        <StatusBar backgroundColor={'#fff'} barStyle={'dark-content'} translucent={false} />
+        <NavigationContainer>
+          <Navigator
+            initialRouteName={SCREENS.Splash.name}
+            screenOptions={{ headerShown: false, gestureEnabled: false, }}>
+            {_.toArray(SCREENS).map((item, index) => {
+              return item.component ? (
+                <Screen
+                  key={item.name}
+                  name={item.name}
+                  component={item.component}
+                />
+              ) : null;
+            })}
+          </Navigator>
+        </NavigationContainer>
+        <Toast config={toastConfig} />
+      </AuthProvider>
     </View>
   )
 }

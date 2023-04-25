@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { View, StyleSheet, Image, ImageBackground, TouchableOpacity, ScrollView } from 'react-native'
 
 //SCREENS
@@ -8,33 +8,74 @@ import { SCREENS } from "..";
 import { IMAGES } from "../../asset";
 
 //COMPONENT
-import { Button, Input, Text } from "../../component";
+import { Button, Input, ProgressView, Text } from "../../component";
 
 //CONSTANT
 import { COLORS, FONT_NAME, REGEX, SCALE_SIZE, SHOW_TOAST, STRING } from "../../constant";
 
+//API
+import { login } from "../../api";
+
+//PACKAGES
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
+//CONTEXT
+import { AuthContext } from "../../context";
+
 const Login = (props) => {
 
+    const { setUser } = useContext(AuthContext)
+
     const [isSecurePassword, setSecurePassword] = useState(true);
-    const [email, setEmail] = useState('dharaValanda@gmail.com');
-    const [password, setPassword] = useState('dV@1922')
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [isLoading, setIsLoading] = useState(false)
 
     function onLogin() {
-            if (!email) {
-                SHOW_TOAST('Enter Your Email')
-            }
-            else if (REGEX.emailRegex.test(email) == false) {
-                SHOW_TOAST('Enter Valid Email')
-            }
-            else if (!password) {
-                SHOW_TOAST('Enter Your Password')
-            }
-            else if (REGEX.passwordRegex.test(password) == false) {
-                SHOW_TOAST('Password must contain 6 characters. 1 Numeric 1 Alphabet, 1 Special')
-            }
-            else {
+        if (!email) {
+            SHOW_TOAST('Enter Your Email')
+        }
+        else if (REGEX.emailRegex.test(email) == false) {
+            SHOW_TOAST('Enter Valid Email')
+        }
+        else if (!password) {
+            SHOW_TOAST('Enter Your Password')
+        }
+        else if (REGEX.passwordRegex.test(password) == false) {
+            SHOW_TOAST('Password must contain 6 characters. 1 Numeric 1 Alphabet, 1 Special')
+        }
+        else {
+            Login()
+        }
+    }
+
+    async function Login() {
+        const params = {
+            user_email: email,
+            user_password: password,
+            user_fcm_key: '',
+            user_device_type: ''
+        }
+
+        setIsLoading(true)
+        const result = await login(params)
+        setIsLoading(false)
+
+        if (result.status) {
+            if (result?.data?.status == '1') {
+                const user = result?.data?.result
+                setUser(user)
+                await AsyncStorage.setItem('user_details', JSON.stringify(user))
                 props.navigation.navigate(SCREENS.BottomBar.name)
             }
+            else {
+                SHOW_TOAST(result?.data?.msg ?? "Something went wrong!")
+            }
+
+        }
+        else {
+            SHOW_TOAST(result.error)
+        }
     }
 
     return (
@@ -127,6 +168,7 @@ const Login = (props) => {
                     </Text>
                 </View>
             </ScrollView>
+            {isLoading && <ProgressView />}
         </ImageBackground>
     )
 }

@@ -100,12 +100,12 @@ const DestinationPlace = (props) => {
                                 <Text
                                     align='center'
                                     size={SCALE_SIZE(16)}
-                                    color={selectedIndex == index ? COLORS.white : COLORS.black}
+                                    color={selectedIndex == index ? COLORS.white : COLORS.headerTitleGray}
                                     family={FONT_NAME.medium}>
                                     {item.title}
                                 </Text>
                                 <Image style={[styles.downImage, {
-                                    tintColor: selectedIndex == index ? COLORS.white : COLORS.black
+                                    tintColor: selectedIndex == index ? COLORS.white : COLORS.headerTitleGray
                                 }]}
                                     resizeMode="contain"
                                     source={IMAGES.ic_down} />
