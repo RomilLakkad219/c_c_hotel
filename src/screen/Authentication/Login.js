@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { View, StyleSheet, Image, ImageBackground, TouchableOpacity, ScrollView } from 'react-native'
 
 //SCREENS
@@ -11,16 +11,27 @@ import { IMAGES } from "../../asset";
 import { Button, Input, ProgressView, Text } from "../../component";
 
 //CONSTANT
-import { COLORS, FONT_NAME, REGEX, SCALE_SIZE, SHOW_TOAST, STRING } from "../../constant";
+import { COLORS, FONT_NAME, REGEX, SCALE_SIZE, SHOW_SUCCESS_TOAST, SHOW_TOAST, STRING } from "../../constant";
 
 //API
 import { login } from "../../api";
 
 //PACKAGES
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import {
+    GoogleSignin,
+    GoogleSigninButton,
+    statusCodes,
+} from '@react-native-google-signin/google-signin';
 
 //CONTEXT
 import { AuthContext } from "../../context";
+
+//API
+import { updateUserSocialProfile } from "../../api/user";
+
+//PACKAGES
+import { CommonActions } from "@react-navigation/native";
 
 const Login = (props) => {
 
@@ -30,6 +41,12 @@ const Login = (props) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [isLoading, setIsLoading] = useState(false)
+
+    useEffect(() => {
+        GoogleSignin.configure({
+            webClientId: '934167333540-3m4c43m7m9r6ni7sdgnsidf90u3b0n5i.apps.googleusercontent.com'
+        });
+    }, [])
 
     function onLogin() {
         if (!email) {
@@ -66,7 +83,12 @@ const Login = (props) => {
                 const user = result?.data?.result
                 setUser(user)
                 await AsyncStorage.setItem('user_details', JSON.stringify(user))
-                props.navigation.navigate(SCREENS.BottomBar.name)
+                props.navigation.dispatch(CommonActions.reset({
+                    index: 0,
+                    routes: [{
+                        name: SCREENS.BottomBar.name
+                    }]
+                }))
             }
             else {
                 SHOW_TOAST(result?.data?.msg ?? "Something went wrong!")
@@ -76,6 +98,31 @@ const Login = (props) => {
         else {
             SHOW_TOAST(result.error)
         }
+    }
+
+    async function googleSignin() {
+        try {
+            await GoogleSignin.hasPlayServices();
+            const userInfo = await GoogleSignin.signIn();
+            updateSocialProfileDetails(userInfo)
+        } catch (error) {
+            if (error.code === statusCodes.SIGN_IN_CANCELLED) {
+                // user cancelled the login flow
+            } else if (error.code === statusCodes.IN_PROGRESS) {
+                // operation (e.g. sign in) is in progress already
+            } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
+                // play services not available or outdated
+            } else {
+                // some other error happened
+            }
+        }
+    };
+
+    async function updateSocialProfileDetails(userInfo) {
+        const params = {
+            user_id: userInfo?.user?.id
+        }
+        // const result = await updateUserSocialProfile(params)
     }
 
     return (
@@ -136,7 +183,10 @@ const Login = (props) => {
                     </Text>
                     <View style={styles.borderAfterLine}></View>
                 </View>
-                <TouchableOpacity style={styles.googleButton}>
+                <TouchableOpacity style={styles.googleButton}
+                    onPress={() => {
+                        googleSignin()
+                    }}>
                     <Image
                         style={styles.googleLogo}
                         resizeMode="contain"

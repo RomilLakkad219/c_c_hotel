@@ -20,17 +20,32 @@
 	<string>$(MARKETING_VERSION)</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>com.googleusercontent.apps.934167333540-3m4c43m7m9r6ni7sdgnsidf90u3b0n5i</string>
+			</array>
+		</dict>
+	</array>
 	<key>CFBundleVersion</key>
 	<string>$(CURRENT_PROJECT_VERSION)</string>
-	<key>LSRequiresIPhoneOS</key>
-	<true/>
 	<key>NSAppTransportSecurity</key>
 	<dict>
 		<key>NSAllowsArbitraryLoads</key>
 		<true/>
 	</dict>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string></string>
+	<key>NSAppleMusicUsageDescription</key>
+	<string>Needs an media library for app</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Needs an camera for app</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Needs microphone usage for app</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Needs an photo library usage for app</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>Poppins-Black.ttf</string>

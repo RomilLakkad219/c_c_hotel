@@ -2,7 +2,7 @@ import React, { useRef, useState } from "react";
 import { View, StyleSheet, TouchableOpacity, SafeAreaView, FlatList, Image, Switch } from 'react-native'
 
 //PACKAGES
-import RBSheet from "react-native-raw-bottom-sheet";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 //ASSET
 import { IMAGES } from "../asset";
@@ -15,7 +15,7 @@ import { COLORS, FONT_NAME, SCALE_SIZE, STRING } from "../constant";
 
 //SCREENS
 import { SCREENS } from ".";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+
 import { CommonActions } from "@react-navigation/native";
 
 const Setting = (props) => {

@@ -4,6 +4,7 @@ import { View, StyleSheet, SafeAreaView, TouchableOpacity, Image, TextInput, Scr
 //PACKAGES
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import moment from "moment";
+import { launchCamera, launchImageLibrary } from "react-native-image-picker";
 
 //ASSET
 import { IMAGES } from "../asset";
@@ -22,9 +23,8 @@ import { AuthContext } from "../context";
 
 const EditProfile = (props) => {
 
-    function onBack() {
-        props.navigation.goBack()
-    }
+    const mediaRef = useRef();
+    const { user } = useContext(AuthContext)
 
     const [name, setName] = useState('');
     const [dateOfBirth, setDateOfBirth] = useState('');
@@ -38,8 +38,7 @@ const EditProfile = (props) => {
     const countryRef = useRef();
     const [isDatePickerVisible, setIsDatePickerVisible] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
-
-    const { user } = useContext(AuthContext)
+    const [image, setImage] = useState('');
 
     useEffect(() => {
         getUserProfile()
@@ -56,9 +55,13 @@ const EditProfile = (props) => {
     const handleConfirm = (date) => {
         console.log('A date has been picked', date);
 
-        const dateStr = moment(date).format('YYYY MM DD')
+        const dateStr = moment(date).format('YYYY-MM-DD')
         setDateOfBirth(dateStr)
         hideDatePicker()
+    }
+
+    function onBack() {
+        props.navigation.goBack()
     }
 
     function onSave() {
@@ -103,13 +106,16 @@ const EditProfile = (props) => {
         if (result.status) {
             if (result?.data?.status == "1") {
                 setName(result?.data?.result?.user?.[0]?.user_name ?? '-')
-                setDateOfBirth(result?.data?.result?.user?.[0]?.user_dob ?? '-')
                 setMobileNumber(result?.data?.result?.user?.[0]?.user_mb_no ?? '-')
                 setGender(result?.data?.result?.user?.[0]?.user_gender ?? '-')
                 setAddress(result?.data?.result?.user?.[0]?.user_address ?? '-')
                 setCity(result?.data?.result?.user?.[0]?.user_city ?? '-')
                 setCountry(result?.data?.result?.user?.[0]?.user_country ?? '-')
                 setPostalCode(result?.data?.result?.user?.[0]?.user_postcode ?? '-')
+                const dateFormate = result?.data?.result?.user?.[0]?.user_dob
+                if (dateFormate && dateFormate != '0000-00-00') {
+                    setDateOfBirth(dateFormate)
+                }
             }
         }
         else {
@@ -119,11 +125,12 @@ const EditProfile = (props) => {
     }
 
     async function onUpdateProfile() {
+
         const params = {
             user_id: user?.[0]?.user_id,
             user_name: name,
             user_mb_no: mobileNumber,
-            user_dob: `${dateOfBirth}/${moment(date).format('YYYY MM DD')}`,
+            user_dob: dateOfBirth,
             user_gender: gender,
             user_address: address,
             user_city: city,
@@ -140,10 +147,12 @@ const EditProfile = (props) => {
         setIsLoading(true)
         const result = await updateProfile(params)
         setIsLoading(false)
+        console.log(result)
 
         if (result.status) {
             if (result?.data?.status == '1') {
                 console.log(JSON.stringify(result))
+                props.navigation.goBack()
             }
         }
         else {
@@ -151,6 +160,24 @@ const EditProfile = (props) => {
         }
     }
 
+    async function openLibrary() {
+        const result = await launchImageLibrary({
+            mediaType: 'photo',
+            height: 100,
+            width: 100,
+            videoQuality:'high'
+        })
+        setImage(result?.assets?.[0]?.uri)
+    }
+
+    async function openCamera() {
+        const cameraResult = await launchCamera({
+            mediaType: 'photo',
+            cameraType: 'back',
+        })
+        console.log(cameraResult)
+
+    }
     return (
         <View style={styles.container}>
             <SafeAreaView />
@@ -159,11 +186,13 @@ const EditProfile = (props) => {
                 title={STRING.editProfile} />
             <ScrollView showsVerticalScrollIndicator={false}>
                 <View style={{ flexDirection: 'row' }}>
-                    <TouchableOpacity>
+                    <TouchableOpacity onPress={() => {
+                        mediaRef?.current?.open()
+                    }}>
                         <Image
                             style={styles.imageUpload}
-                            resizeMode="contain"
-                            source={IMAGES.image_bg} />
+                            resizeMode="cover"
+                            source={image ? { uri: image } : IMAGES.image_bg} />
                     </TouchableOpacity>
                     <Text
                         style={styles.uploadImageText}
@@ -366,9 +395,26 @@ const EditProfile = (props) => {
                     onConfirm={handleConfirm}
                     onCancel={hideDatePicker}
                     maximumDate={new Date()} />
+                <BottomSheet onRef={mediaRef}
+                    data={['Camera', 'Gallery']}
+                    onPressItem={(e, index) => {
+                        mediaRef?.current?.close()
+                        if (index == 0) {
+                            setTimeout(() => {
+                                openCamera()
+                            }, 500);
+                        }
+                        else if (index == 1) {
+                            setTimeout(() => {
+                                openLibrary()
+                            }, 1000);
+                        }
+                    }}>
+
+                </BottomSheet>
             </ScrollView>
             {isLoading && <ProgressView />}
-        </View>
+        </View >
     )
 }
 
@@ -382,7 +428,8 @@ const styles = StyleSheet.create({
         width: SCALE_SIZE(100),
         alignSelf: 'center',
         marginTop: SCALE_SIZE(39),
-        marginLeft: SCALE_SIZE(35)
+        marginLeft: SCALE_SIZE(35),
+        borderRadius:SCALE_SIZE(50)
     },
     uploadImageText: {
         marginTop: SCALE_SIZE(74),

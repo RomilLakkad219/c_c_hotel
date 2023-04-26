@@ -33,7 +33,7 @@ const BottomSheet = (props) => {
                         style={props.selectedItem == e ? styles.optionSelectedBox : styles.optionBox}
                         key={e + index}
                         onPress={() => {
-                            props.onPressItem(e)
+                            props.onPressItem(e, index)
                         }}>
                         <Text
                             size={18}

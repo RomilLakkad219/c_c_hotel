@@ -5,5 +5,6 @@ export const WEB_SERVICE = {
     signUp: BASE_URL + 'mAdd/login',
     forgotPassword: BASE_URL + 'forget',
     userProfile: BASE_URL + 'fields/profile',
-    updateProfile: BASE_URL + 'mAdd/profile'
+    updateProfile: BASE_URL + 'mAdd/profile',
+    updateUserSocialProfile:BASE_URL+'mAdd/profile'
 }

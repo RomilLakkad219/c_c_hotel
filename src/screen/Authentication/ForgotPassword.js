@@ -42,7 +42,6 @@ const ForgotPassword = (props) => {
 
         if (result.status) {
             props.navigation.navigate(SCREENS.Otp.name)
-
         }
         else {
             SHOW_TOAST(result.error)

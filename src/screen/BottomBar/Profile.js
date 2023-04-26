@@ -39,6 +39,8 @@ const Profile = (props) => {
             user_id: user?.[0]?.user_id,
         }
 
+        console.log(user)
+
         setIsLoading(true)
         const result = await userProfile(params)
         setIsLoading(false)

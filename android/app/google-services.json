@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "934167333540",
+    "project_id": "cchotel-6c5e0",
+    "storage_bucket": "cchotel-6c5e0.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:934167333540:android:e90ac59890875a3cfe3431",
+        "android_client_info": {
+          "package_name": "com.c_c_hotels"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "934167333540-315i0mc1ahiffss3g0gqsdg0ogmi75h6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDIXziElfoP6lGLRGzE_LCOp5fpkAU4z14"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "934167333540-315i0mc1ahiffss3g0gqsdg0ogmi75h6.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "934167333540-3m4c43m7m9r6ni7sdgnsidf90u3b0n5i.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "org.reactjs.native.example.C-C-Hotels",
+                "app_store_id": "22"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

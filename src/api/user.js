@@ -39,10 +39,17 @@ async function updateProfile(params) {
     return result
 }
 
+async function updateUserSocialProfile(params) {
+    let url = WEB_SERVICE.updateUserSocialProfile
+    const result = await postRequest(url, params)
+    return result
+}
+
 export {
     signUp,
     login,
     forgotPassword,
     userProfile,
-    updateProfile
+    updateProfile,
+    updateUserSocialProfile
 }
