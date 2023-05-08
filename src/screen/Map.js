@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { View, StyleSheet, SafeAreaView } from 'react-native'
 
 //CONSTANT
@@ -8,15 +8,50 @@ import { COLORS, SCALE_SIZE, FONT_NAME, STRING } from "../constant";
 import MapView, { Callout, Marker } from 'react-native-maps'
 
 //COMPONENT
-import { Header, Text } from "../component";
+import { Header, ProgressView, Text } from "../component";
 
 //PACKAGES
 import WebView from "react-native-webview";
 
+//API
+import { home } from "../api";
+
+//CONTEXT
+import { AuthContext } from "../context";
+
 const Map = (props) => {
+
+    const { user } = useContext(AuthContext)
+
+    const [hotel, setHotel] = useState([]);
+    const [isLoading, setIsLoading] = useState(false);
+
+    useEffect(() => {
+        getHome()
+    }, [])
 
     function onBack() {
         props.navigation.goBack()
+    }
+
+    async function getHome() {
+        const params = {
+            user_id: user?.[0]?.user_id
+        }
+
+        setIsLoading(true)
+        const result = await home(params)
+        setIsLoading(false)
+
+        console.log(JSON.stringify(result))
+
+        if (result.status) {
+            const response = result?.data?.result ?? []
+            setHotel(response)
+        }
+        else {
+            SHOW_TOAST(result.error)
+        }
     }
 
     return (
@@ -37,8 +72,8 @@ const Map = (props) => {
                     }}>
                     <Marker
                         coordinate={{
-                            latitude: 37.78825,
-                            longitude: -122.4324,
+                            latitude: hotel?.hotel_lat,
+                            longitude: hotel?.hotel_long,
                         }}>
                         <Callout
                             tooltip={true}
@@ -76,6 +111,7 @@ const Map = (props) => {
                     </Marker>
                 </MapView>
             </View>
+            {isLoading && <ProgressView />}
         </View>
     )
 }

@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useContext, useRef, useState } from "react";
 import { View, StyleSheet, TouchableOpacity, SafeAreaView, FlatList, Image, Switch } from 'react-native'
 
 //PACKAGES
@@ -8,19 +8,27 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { IMAGES } from "../asset";
 
 //COMPONENT
-import { BottomSheet, Header, LogoutPopup, RateTheAppPopUp, Text } from "../component";
+import { BottomSheet, Header, LogoutPopup, ProgressView, RateTheAppPopUp, Text } from "../component";
 
 //ASSET
-import { COLORS, FONT_NAME, SCALE_SIZE, STRING } from "../constant";
+import { COLORS, FONT_NAME, SCALE_SIZE, SHOW_SUCCESS_TOAST, SHOW_TOAST, STRING } from "../constant";
 
 //SCREENS
 import { SCREENS } from ".";
 
 import { CommonActions } from "@react-navigation/native";
 
+//CONTEXT
+import { AuthContext } from "../context";
+
+//API
+import { languageChange, subscribe } from "../api";
+
 const Setting = (props) => {
 
     const languageRef = useRef();
+
+    const { user, profile, fetchProfile} = useContext(AuthContext)
 
     const settingData = [
         {
@@ -66,18 +74,64 @@ const Setting = (props) => {
         },
     ]
 
-    const [selectedLanguage, setSelectedLanguage] = useState(STRING.english)
+    const [selectedLanguage, setSelectedLanguage] = useState(profile?.user_lang)
 
-    const [changable, setChangable] = useState(false);
     const [modalVisible, setModalVisible] = useState(false);
-    const [visible, setVisible] = useState(false)
+    const [visible, setVisible] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
+    const [isSubscribe, setIsSubscribe] = useState(false)
 
-    const [isEnabled, setIsEnabled] = useState(false);
-    const toggleSwitch = () => setIsEnabled(previousState => !previousState);
 
+    const toggleSwitch = () => {
+        setIsSubscribe(!isSubscribe)
+        getSubscribe()
+    }
 
     function onBack() {
         props.navigation.goBack()
+    }
+
+    async function getSubscribe() {
+        const params = {
+            user_id: user?.[0]?.user_id,
+        }
+
+        setIsLoading(true)
+        const result = await subscribe(params)
+        setIsLoading(false)
+
+        console.log(result)
+
+        if (result.status) {
+            const subscriberes = result?.data?.sub_status
+            if (subscriberes == '1') {
+                SHOW_SUCCESS_TOAST('SUBSCRIBED')
+            }
+            else {
+                SHOW_TOAST('UNSUBSCRIBED')
+            }
+        }
+        else {
+            SHOW_TOAST(result.error)
+        }
+    }
+
+    async function setLanguage(languageName) {
+        const params = {
+            user_id: user?.[0]?.user_id,
+            user_lang: languageName,
+        }
+
+        setIsLoading(true)
+        const result = await languageChange(params)
+        setIsLoading(false)
+
+        if (result.status) {
+           fetchProfile()
+        }
+        else {
+            SHOW_TOAST(result.error)
+        }
     }
 
     return (
@@ -134,7 +188,7 @@ const Setting = (props) => {
                                 {item.isSwitch ?
                                     <Switch
                                         onValueChange={toggleSwitch}
-                                        value={isEnabled} />
+                                        value={isSubscribe} />
                                     :
                                     <Image
                                         style={styles.itemImage}
@@ -185,7 +239,10 @@ const Setting = (props) => {
                 onPressItem={(e) => {
                     languageRef?.current?.close()
                     setSelectedLanguage(e)
+                    setLanguage(e)
+                    
                 }} />
+            {isLoading && <ProgressView />}
         </View>
     )
 }

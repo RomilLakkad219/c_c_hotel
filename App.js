@@ -72,7 +72,7 @@ const App = (props) => {
         <StatusBar backgroundColor={'#fff'} barStyle={'dark-content'} translucent={false} />
         <NavigationContainer>
           <Navigator
-            initialRouteName={SCREENS.Splash.name}
+            initialRouteName={SCREENS.Prepare.name}
             screenOptions={{ headerShown: false, gestureEnabled: false, }}>
             {_.toArray(SCREENS).map((item, index) => {
               return item.component ? (

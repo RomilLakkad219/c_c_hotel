@@ -6,6 +6,7 @@ import { IMAGES } from "../asset";
 
 //CONSTANT
 import { COLORS, FONT_NAME, SCALE_SIZE, STRING } from "../constant";
+import { BASE_IMAGE_URL } from "../constant/WebService";
 
 //SCREENS
 import { SCREENS } from "../screen";
@@ -14,10 +15,13 @@ import { SCREENS } from "../screen";
 import { Text } from '../component'
 
 const HotelCarousel = (props) => {
+
+    const item=props.item 
+    
     return (
         <ImageBackground style={styles.carouselContainer}
-            resizeMode='contain'
-            source={IMAGES.carousel_bg}>
+            resizeMode='cover'
+            source={{uri:BASE_IMAGE_URL+item?.hotel_galary_photos??''}}>
             <TouchableOpacity>
                 <Image
                     style={styles.heartImage}
@@ -32,21 +36,23 @@ const HotelCarousel = (props) => {
             </TouchableOpacity>
             <View style={{ flex: 1.0 }} />
             <TouchableOpacity onPress={() => {
-                props.navigation.navigate(SCREENS.HotelDetail.name)
+                props.navigation.navigate(SCREENS.HotelDetail.name,{
+                    item:item
+                })
             }}
                 style={{ marginBottom: SCALE_SIZE(27) }}>
                 <Text style={styles.auraHouseText}
                     size={SCALE_SIZE(28)}
                     color={COLORS.white}
                     family={FONT_NAME.bold}>
-                    {STRING.auraHouse}
+                    {item?.hotel_trader_name??''}
                 </Text>
                 <View style={styles.rateContainer}>
                     <Text style={styles.franceText}
                         size={SCALE_SIZE(20)}
                         color={COLORS.white}
                         family={FONT_NAME.medium}>
-                        {STRING.france}
+                        {item?.hotel_country??''}
                     </Text>
                     <Image style={styles.starImage}
                         resizeMode='contain'
@@ -69,6 +75,9 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         width: Dimensions.get('window').width - SCALE_SIZE(70),
         height: Dimensions.get('window').width - SCALE_SIZE(80),
+        borderRadius:SCALE_SIZE(20),
+        overflow:'hidden',
+        backgroundColor:'rgba(0,0,0,0.3)'
     },
     heartImage: {
         height: SCALE_SIZE(58),
@@ -104,7 +113,7 @@ const styles = StyleSheet.create({
     },
     numberText: {
         marginRight: SCALE_SIZE(25),
-    },
+    }
 
 })
 

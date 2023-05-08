@@ -1,5 +1,5 @@
-import React, { useContext, useEffect, useState } from "react";
-import { View, StyleSheet, SafeAreaView, Image, TouchableOpacity, Alert } from 'react-native'
+import React, { useContext, useState } from "react";
+import { View, StyleSheet, SafeAreaView, Image, TouchableOpacity } from 'react-native'
 
 //SCREENS
 import { SCREENS } from "..";
@@ -11,50 +11,21 @@ import { IMAGES } from "../../asset";
 import { Header, ProgressView, Text } from "../../component";
 
 //CONSTANT
-import { COLORS, FONT_NAME, SCALE_SIZE, SHOW_SUCCESS_TOAST, SHOW_TOAST, STRING } from "../../constant";
+import { COLORS, FONT_NAME, SCALE_SIZE, STRING } from "../../constant";
 
 //CONTEXT
 import { AuthContext } from "../../context";
 
-//API
-import { userProfile } from "../../api";
-
 const Profile = (props) => {
 
-    const { user } = useContext(AuthContext);
+    const { user, profile } = useContext(AuthContext);
 
     const [isLoading, setIsLoading] = useState(false)
-    const [profile, setProfile] = useState(null)
-
-    useEffect(() => {
-        getUserProfile()
-    }, [])
 
     function onBack() {
         props.navigation.goBack()
     }
 
-    async function getUserProfile() {
-        const params = {
-            user_id: user?.[0]?.user_id,
-        }
-
-        console.log(user)
-
-        setIsLoading(true)
-        const result = await userProfile(params)
-        setIsLoading(false)
-
-        if (result.status) {
-            if (result?.data?.status == "1") {
-                setProfile(result?.data)
-            }
-        }
-        else {
-            SHOW_TOAST(result.error)
-        }
-
-    }
     return (
         <View style={styles.container}>
             <SafeAreaView />
@@ -71,13 +42,13 @@ const Profile = (props) => {
                         size={SCALE_SIZE(20)}
                         color={COLORS.headerTitleGray}
                         family={FONT_NAME.medium}>
-                        {profile?.result?.user?.[0]?.user_name ?? "-"}
+                        {profile?.user_name ?? "-"}
                     </Text>
                     <Text style={styles.emailText}
                         size={SCALE_SIZE(16)}
                         color={COLORS.gray}
                         family={FONT_NAME.medium}>
-                        {profile?.result?.user?.[0]?.user_email ?? '-'}
+                        {profile?.user_email ?? '-'}
                     </Text>
                 </View>
             </View>

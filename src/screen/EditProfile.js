@@ -16,7 +16,7 @@ import { BottomSheet, Header, ProgressView, Text } from "../component";
 import { COLORS, FONT_NAME, SCALE_SIZE, SHOW_TOAST, STRING } from "../constant";
 
 //API
-import { updateProfile, userProfile } from "../api";
+import { updateProfile } from "../api";
 
 //CONTEXT
 import { AuthContext } from "../context";
@@ -24,18 +24,19 @@ import { AuthContext } from "../context";
 const EditProfile = (props) => {
 
     const mediaRef = useRef();
-    const { user } = useContext(AuthContext)
-
-    const [name, setName] = useState('');
-    const [dateOfBirth, setDateOfBirth] = useState('');
-    const [mobileNumber, setMobileNumber] = useState('');
-    const [gender, setGender] = useState('');
-    const [address, setAddress] = useState('');
-    const [city, setCity] = useState('');
-    const [country, setCountry] = useState('');
-    const [postalCode, setPostalCode] = useState('');
     const genderRef = useRef();
     const countryRef = useRef();
+
+    const { user, profile, fetchProfile } = useContext(AuthContext)
+
+    const [name, setName] = useState(profile?.user_name);
+    const [dateOfBirth, setDateOfBirth] = useState(profile?.user_dob);
+    const [mobileNumber, setMobileNumber] = useState(profile?.user_mb_no);
+    const [gender, setGender] = useState(profile?.user_gender);
+    const [address, setAddress] = useState(profile?.user_address);
+    const [city, setCity] = useState(profile?.user_city);
+    const [country, setCountry] = useState(profile?.user_country);
+    const [postalCode, setPostalCode] = useState(profile?.user_postcode);
     const [isDatePickerVisible, setIsDatePickerVisible] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [image, setImage] = useState('');
@@ -54,7 +55,6 @@ const EditProfile = (props) => {
 
     const handleConfirm = (date) => {
         console.log('A date has been picked', date);
-
         const dateStr = moment(date).format('YYYY-MM-DD')
         setDateOfBirth(dateStr)
         hideDatePicker()
@@ -95,33 +95,10 @@ const EditProfile = (props) => {
     }
 
     async function getUserProfile() {
-        const params = {
-            user_id: user?.[0]?.user_id
+        const dateFormate = profile?.user_dob
+        if (dateFormate && dateFormate != '0000-00-00') {
+            setDateOfBirth(dateFormate)
         }
-
-        setIsLoading(true)
-        const result = await userProfile(params)
-        setIsLoading(false)
-
-        if (result.status) {
-            if (result?.data?.status == "1") {
-                setName(result?.data?.result?.user?.[0]?.user_name ?? '-')
-                setMobileNumber(result?.data?.result?.user?.[0]?.user_mb_no ?? '-')
-                setGender(result?.data?.result?.user?.[0]?.user_gender ?? '-')
-                setAddress(result?.data?.result?.user?.[0]?.user_address ?? '-')
-                setCity(result?.data?.result?.user?.[0]?.user_city ?? '-')
-                setCountry(result?.data?.result?.user?.[0]?.user_country ?? '-')
-                setPostalCode(result?.data?.result?.user?.[0]?.user_postcode ?? '-')
-                const dateFormate = result?.data?.result?.user?.[0]?.user_dob
-                if (dateFormate && dateFormate != '0000-00-00') {
-                    setDateOfBirth(dateFormate)
-                }
-            }
-        }
-        else {
-            SHOW_TOAST(result.error)
-        }
-
     }
 
     async function onUpdateProfile() {
@@ -147,11 +124,11 @@ const EditProfile = (props) => {
         setIsLoading(true)
         const result = await updateProfile(params)
         setIsLoading(false)
-        console.log(result)
 
         if (result.status) {
             if (result?.data?.status == '1') {
                 console.log(JSON.stringify(result))
+                fetchProfile()
                 props.navigation.goBack()
             }
         }
@@ -165,7 +142,7 @@ const EditProfile = (props) => {
             mediaType: 'photo',
             height: 100,
             width: 100,
-            videoQuality:'high'
+            videoQuality: 'high'
         })
         setImage(result?.assets?.[0]?.uri)
     }
@@ -429,7 +406,7 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         marginTop: SCALE_SIZE(39),
         marginLeft: SCALE_SIZE(35),
-        borderRadius:SCALE_SIZE(50)
+        borderRadius: SCALE_SIZE(50)
     },
     uploadImageText: {
         marginTop: SCALE_SIZE(74),

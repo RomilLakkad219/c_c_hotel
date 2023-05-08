@@ -5,6 +5,7 @@ import SignUp from "./Authentication/SignUp";
 import ForgotPassword from "./Authentication/ForgotPassword";
 import Otp from "./Authentication/Otp";
 import ResetPassword from "./Authentication/ResetPassword";
+import Prepare from "./Prepare";
 
 //BOTTOMBAR
 import BottomBar from "./BottomBar/BottomBar";
@@ -35,6 +36,10 @@ export const SCREENS = {
     Splash: {
         name: 'Splash',
         component: Splash
+    },
+    Prepare:{
+        name:'Prepare',
+        component:Prepare
     },
     Login: {
         name: 'Login',

@@ -1,22 +1,99 @@
-import React from "react";
-import { View, StyleSheet, TouchableOpacity, ScrollView, ImageBackground, Dimensions, Image, SafeAreaView, FlatList, Platform } from 'react-native'
+import React, { useContext, useEffect, useState } from "react";
+import { View, StyleSheet, TouchableOpacity, ScrollView, ImageBackground, Dimensions, Image, SafeAreaView, FlatList, Platform ,Modal} from 'react-native'
 
 //ASSET
 import { IMAGES } from "../asset";
 
 //COMPONENT
-import { Button, Text } from '../component'
+import { Button, ProgressView, Text } from '../component'
 
 //CONSTANT
-import { COLORS, SCALE_SIZE, FONT_NAME, STRING } from "../constant";
+import { COLORS, SCALE_SIZE, FONT_NAME, STRING, SHOW_TOAST } from "../constant";
+
+//CONTEXT
+import { AuthContext } from "../context";
+
+//API
+import { hotelDetail } from "../api";
+import { BASE_IMAGE_URL } from "../constant/WebService";
+
+import ImageViewer from 'react-native-image-zoom-viewer';
+
 
 const HotelDetail = (props) => {
+
+    const {user}=useContext(AuthContext);
+
+    const {item}=props.route.params
+
+    const[isLoading,setIsLoading]=useState(false);
+    const[hotelDetailResult,sethotelDetailResult]=useState([]);
+    const[imageViewerVisible,setImageViewerVisible]=useState(false)
+
+    useEffect(()=>{
+        getHotelDetails()
+    },[])
+
+    async function getHotelDetails(){
+       const params={
+        hotel_id:item?.hotel_id,
+        user_id:user?.[0]?.user_id
+    }
+
+    setIsLoading(true)
+    const result=await hotelDetail(params)
+    setIsLoading(false)
+
+    console.log(JSON.stringify(result))
+
+    if(result.status){
+        const res= result?.data?.result?.hotel?.[0]
+        console.log(res)
+        sethotelDetailResult(res)
+    }
+    else{
+        SHOW_TOAST(result.error)
+    }
+
+    }
+
+    const galleryThumbImage=()=>{
+        const imageThumb=hotelDetailResult?.hotel_galary_thumb?.trim(',')
+        console.log('IMG',imageThumb)
+        if(imageThumb)
+        {
+            return []
+        }
+        return null
+    }
+
+    const galleryImage=galleryThumbImage()
+
+    const images = [{
+        // Simplest usage.
+        url: 'https://avatars2.githubusercontent.com/u/7970947?v=3&s=460',
+     
+        // width: number
+        // height: number
+        // Optional, if you know the image size, you can set the optimization performance
+     
+        // You can pass props to <Image />.
+        props: {
+            // headers: ...
+        }
+    }, {
+        url: '',
+        props: {
+            // Or you can set source directory.
+            // source: require('../background.png')
+        }
+    }]
 
     return (
         <View style={styles.container}>
             <ImageBackground style={styles.headerContainer}
                 resizeMode='cover'
-                source={IMAGES.hoteldetail_bg}>
+                source={{uri:BASE_IMAGE_URL+item?.hotel_galary_photos}}>
                 <SafeAreaView />
                 <View style={styles.imageContainer}>
                     <TouchableOpacity
@@ -57,7 +134,7 @@ const HotelDetail = (props) => {
                         size={SCALE_SIZE(22)}
                         color={COLORS.white}
                         family={FONT_NAME.semiBold}>
-                        {'$36 /Person'}
+                        {'$'+ item?.hotel_avg_price+' /Person'}
                     </Text>
                 </View>
             </ImageBackground>
@@ -66,7 +143,8 @@ const HotelDetail = (props) => {
                     <FlatList
                         horizontal={true}
                         showsHorizontalScrollIndicator={false}
-                        data={[{ image: IMAGES.hotel_bg }, { image: IMAGES.hotel_bg }, { image: IMAGES.hotel_bg }, { image: IMAGES.hotel_bg }, { image: IMAGES.hotel_bg }]}
+                        // data={[{ image: IMAGES.hotel_bg }, { image: IMAGES.hotel_bg }, { image: IMAGES.hotel_bg }, { image: IMAGES.hotel_bg }, { image: IMAGES.hotel_bg }]}
+                        data={galleryImage}
                         ListHeaderComponent={() => {
                             return (
                                 <View style={{ width: SCALE_SIZE(25) }}></View>
@@ -80,12 +158,15 @@ const HotelDetail = (props) => {
                         keyExtractor={(item, index) => index.toString()}
                         renderItem={({ item, index }) => {
                             return (
-                                <View style={styles.itemContainer}>
+                                <TouchableOpacity style={styles.itemContainer}
+                                onPress={()=>{
+                                    setImageViewerVisible(true)
+                                }}>
                                     <Image
                                         style={styles.itemImage}
                                         resizeMode="contain"
                                         source={item.image} />
-                                </View>
+                                </TouchableOpacity>
                             )
                         }}>
                     </FlatList>
@@ -95,14 +176,14 @@ const HotelDetail = (props) => {
                     size={SCALE_SIZE(28)}
                     color={COLORS.black}
                     family={FONT_NAME.medium}>
-                    {STRING.villaMia}
+                    {hotelDetailResult?.hotel_continent??''}
                 </Text>
                 <View style={styles.directionView}>
                     <Text style={styles.coastText}
                         size={SCALE_SIZE(22)}
                         color={COLORS.gray}
                         family={FONT_NAME.medium}>
-                        {STRING.coast}
+                        {hotelDetailResult?.hotel_city+', '+hotelDetailResult?.hotel_country??''}
                     </Text>
                     <TouchableOpacity style={styles.websiteButton}>
                         <Text
@@ -118,7 +199,7 @@ const HotelDetail = (props) => {
                     size={SCALE_SIZE(22)}
                     color={COLORS.lightBlack}
                     family={FONT_NAME.regular}>
-                    {STRING.factEstablish}
+                    {hotelDetailResult?.hotel_english_presentation??''}
                 </Text>
                 <Button
                     onPress={() => {
@@ -126,6 +207,13 @@ const HotelDetail = (props) => {
                     style={styles.bookNowButton}
                     title={STRING.bookNow} />
             </ScrollView>
+                    <Modal visible={imageViewerVisible}
+                    transparent={true}>
+                        <ImageViewer imageUrls={images}>
+
+                        </ImageViewer>
+                    </Modal>
+            {isLoading&&<ProgressView/>}
         </View>
     )
 }

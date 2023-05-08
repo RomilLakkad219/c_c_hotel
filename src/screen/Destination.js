@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { View, StyleSheet, SafeAreaView, FlatList, ImageBackground, Dimensions, TouchableOpacity } from 'react-native'
 
 //SCREENS
@@ -8,26 +8,41 @@ import { SCREENS } from ".";
 import { IMAGES } from "../asset";
 
 //COMPONENT
-import { Header, Text } from "../component";
+import { Header, ProgressView, Text } from "../component";
 
 //CONSTANT
-import { COLORS, FONT_NAME, SCALE_SIZE, STRING } from "../constant";
+import { COLORS, FONT_NAME, SCALE_SIZE, SHOW_TOAST, STRING } from "../constant";
+
+//API
+import { destination } from "../api";
 
 const Destination = (props) => {
+
+
+    const [isLoading, setIsLoading] = useState(false);
+    const [destinationResult, setDestinationResult] = useState([])
+
+    useEffect(() => {
+        getDestination()
+    }, [])
 
     function onBack() {
         props.navigation.goBack()
     }
 
-    const destinationData = [
-        { image: IMAGES.asia_bg, title: 'AFRICA' },
-        { image: IMAGES.asia_bg, title: 'ASIA' },
-        { image: IMAGES.europe_bg, title: 'EUROPE' },
-        { image: IMAGES.northamerica_bg, title: 'NORTH AMERICA' },
-        { image: IMAGES.northamerica_bg, title: 'OCEANIA' },
-        { image: IMAGES.southamerica_bg, title: 'SOUTH AMERICA' },
+    async function getDestination() {
+        setIsLoading(true)
+        const result = await destination()
+        setIsLoading(false)
 
-    ]
+        if (result.status) {
+            const res = result?.data?.result ?? []
+            setDestinationResult(res)
+        }
+        else {
+            SHOW_TOAST(result.error)
+        }
+    }
 
     return (
         <View style={styles.container}>
@@ -37,7 +52,7 @@ const Destination = (props) => {
             <View>
                 <FlatList
                     style={{ marginHorizontal: SCALE_SIZE(35) }}
-                    data={destinationData}
+                    data={destinationResult}
                     numColumns={2}
                     keyExtractor={(item, index) => index.toString()}
                     renderItem={({ item, index }) => {
@@ -49,14 +64,14 @@ const Destination = (props) => {
                                     marginLeft: index % 2 == 1 ? SCALE_SIZE(20) : 0
                                 }]}
                                     resizeMode='cover'
-                                    source={item.image}>
+                                    source={{ uri: item?.cont_img_url ?? '' }}>
                                     <View style={styles.transparentView}>
                                         <Text
                                             size={SCALE_SIZE(16)}
                                             align='center'
                                             color={COLORS.white}
                                             family={FONT_NAME.semiBold}>
-                                            {item.title}
+                                            {item?.cont_english_design ?? ''}
                                         </Text>
                                     </View>
                                 </ImageBackground>
@@ -65,6 +80,7 @@ const Destination = (props) => {
                     }}>
                 </FlatList>
             </View>
+            {isLoading && <ProgressView />}
         </View>
     )
 }
@@ -80,8 +96,8 @@ const styles = StyleSheet.create({
         borderRadius: SCALE_SIZE(10),
         marginTop: SCALE_SIZE(20),
         justifyContent: 'flex-end',
-        alignSelf:'center',
-        overflow:'hidden',
+        alignSelf: 'center',
+        overflow: 'hidden',
     },
     transparentView: {
         backgroundColor: 'rgba(0,0,0,0.33)',

@@ -1,26 +1,45 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useContext, useEffect } from "react";
 import { View, StyleSheet, SafeAreaView, TextInput, Image, FlatList, TouchableOpacity, Dimensions, ImageBackground, ScrollView, Alert } from 'react-native'
 
 //ASSET
 import { IMAGES } from "../../asset";
 
 //COMPONENT
-import { Header, HotelCarousel, Text } from "../../component";
+import { BottomSheet, Header, HotelCarousel, ProgressView, Text } from "../../component";
 
 //CONSTANT
-import { COLORS, STRING, SCALE_SIZE, FONT_NAME } from "../../constant";
+import { COLORS, STRING, SCALE_SIZE, FONT_NAME, SHOW_SUCCESS_TOAST, SHOW_TOAST } from "../../constant";
 
 //PACKAGES
-import Carousel  from 'react-native-snap-carousel';
+import Carousel from 'react-native-snap-carousel';
 
 //SCREENS
 import { SCREENS } from "..";
 
+//CONTEXT
+import { AuthContext } from "../../context";
+
+//API
+import { home, languageChange } from "../../api";
+
 const Home = (props) => {
+
+    const { user, fetchProfile, profile } = useContext(AuthContext)
+
+    const item = props.route.params
+
+    const languageRef = useRef()
 
     const [search, setSearch] = useState('');
     const isCarousel = useRef();
-    const [index, setIndex] = useState(0)
+    const [index, setIndex] = useState(0);
+    const [isLoading, setIsLoading] = useState(false);
+    const [selectedLanguage, setSelectedLanguage] = useState(false);
+    const [hotel, setHotel] = useState([])
+
+    useEffect(() => {
+        getHome()
+    }, [])
 
     const hotelData =
         [
@@ -61,14 +80,53 @@ const Home = (props) => {
         }
     ]
 
+    async function getHome() {
+        const params = {
+            user_id: user?.[0]?.user_id
+        }
+
+        setIsLoading(true)
+        const result = await home(params)
+        setIsLoading(false)
+
+        console.log(JSON.stringify(result))
+
+        if (result.status) {
+            const imgres = result?.data?.result ?? []
+            const response = imgres.slice(0, 10)
+            setHotel(response)
+        }
+        else {
+            SHOW_TOAST(result.error)
+        }
+    }
+
+    async function setLanguage(languageName) {
+        const params = {
+            user_id: user?.[0]?.user_id,
+            user_lang: languageName,
+        }
+
+        setIsLoading(true)
+        const result = await languageChange(params)
+        setIsLoading(false)
+
+        if (result.status) {
+            fetchProfile()
+        }
+        else {
+            SHOW_TOAST(result.error)
+        }
+    }
+
     return (
         <View style={styles.container}>
             <SafeAreaView />
             <Header
                 type={'home'}
                 onDown={() => { }}
-                onLanguage={() => { }}
-                title={'ENG'} />
+                onLanguage={() => { languageRef.current.open() }}
+                title={profile?.user_lang} />
             <ScrollView showsVerticalScrollIndicator={false}>
                 <View style={styles.searchInputContainer}>
                     <TextInput
@@ -145,8 +203,8 @@ const Home = (props) => {
                     layout='default'
                     layoutCardOffset={9}
                     ref={isCarousel}
-                    data={['', '', '', '', '', '', '', '', '']}
-                    renderItem={() => <HotelCarousel navigation={props.navigation} />}
+                    data={hotel}
+                    renderItem={({ item, index }) => <HotelCarousel navigation={props.navigation} item={item} />}
                     sliderWidth={Dimensions.get('window').width}
                     itemWidth={Dimensions.get('window').width - SCALE_SIZE(70)}
                     useScrollView={true}
@@ -184,6 +242,17 @@ const Home = (props) => {
                     </FlatList>
                 </View>
             </ScrollView>
+            <BottomSheet
+                onRef={languageRef}
+                selectedItem={selectedLanguage}
+                data={[STRING.english, STRING.spanish, STRING.french]}
+                onPressItem={(e) => {
+                    languageRef?.current?.close()
+                    setSelectedLanguage(e)
+                    setLanguage(e)
+
+                }} />
+            {isLoading && <ProgressView />}
         </View>
     )
 }

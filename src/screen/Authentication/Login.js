@@ -24,9 +24,6 @@ import {
     statusCodes,
 } from '@react-native-google-signin/google-signin';
 
-//CONTEXT
-import { AuthContext } from "../../context";
-
 //API
 import { updateUserSocialProfile } from "../../api/user";
 
@@ -34,8 +31,6 @@ import { updateUserSocialProfile } from "../../api/user";
 import { CommonActions } from "@react-navigation/native";
 
 const Login = (props) => {
-
-    const { setUser } = useContext(AuthContext)
 
     const [isSecurePassword, setSecurePassword] = useState(true);
     const [email, setEmail] = useState('');
@@ -81,14 +76,17 @@ const Login = (props) => {
         if (result.status) {
             if (result?.data?.status == '1') {
                 const user = result?.data?.result
-                setUser(user)
                 await AsyncStorage.setItem('user_details', JSON.stringify(user))
-                props.navigation.dispatch(CommonActions.reset({
-                    index: 0,
-                    routes: [{
-                        name: SCREENS.BottomBar.name
-                    }]
-                }))
+
+                setTimeout(() => {
+                    props.navigation.dispatch(CommonActions.reset({
+                        index: 0,
+                        routes: [{
+                            name: SCREENS.Prepare.name
+                        }]
+                    }))
+                }, 1000);
+             
             }
             else {
                 SHOW_TOAST(result?.data?.msg ?? "Something went wrong!")

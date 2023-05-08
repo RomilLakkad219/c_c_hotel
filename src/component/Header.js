@@ -18,7 +18,7 @@ const Header = (props) => {
     if (props.type == 'home') {
         return (
             <View style={styles.headerContainer}>
-                <TouchableOpacity style={{ flexDirection: 'row', alignSelf: 'center', marginLeft: 15 }}>
+                <TouchableOpacity style={{ flexDirection: 'row', alignSelf: 'center', marginLeft: 15 }} onPress={props.onLanguage}>
                     <Text
                         size={SCALE_SIZE(22)}
                         family={FONT_NAME.medium}

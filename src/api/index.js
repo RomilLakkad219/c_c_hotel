@@ -3,7 +3,12 @@ import {
     signUp,
     forgotPassword,
     userProfile,
-    updateProfile
+    updateProfile,
+    home,
+    destination,
+    subscribe,
+    languageChange,
+    hotelDetail
 } from './user'
 
 export {
@@ -11,5 +16,10 @@ export {
     signUp,
     forgotPassword,
     userProfile,
-    updateProfile
+    updateProfile,
+    home ,
+    destination ,
+    subscribe,
+    languageChange,
+    hotelDetail
 }
