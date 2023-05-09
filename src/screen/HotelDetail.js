@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { View, StyleSheet, TouchableOpacity, ScrollView, ImageBackground, Dimensions, Image, SafeAreaView, FlatList, Platform ,Modal} from 'react-native'
+import { View, StyleSheet, TouchableOpacity, ScrollView, ImageBackground, Dimensions, Image, SafeAreaView, FlatList, Modal } from 'react-native'
 
 //ASSET
 import { IMAGES } from "../asset";
@@ -9,91 +9,82 @@ import { Button, ProgressView, Text } from '../component'
 
 //CONSTANT
 import { COLORS, SCALE_SIZE, FONT_NAME, STRING, SHOW_TOAST } from "../constant";
+import { BASE_IMAGE_URL } from "../constant/WebService";
 
 //CONTEXT
 import { AuthContext } from "../context";
 
 //API
 import { hotelDetail } from "../api";
-import { BASE_IMAGE_URL } from "../constant/WebService";
 
+//PACKAGES
 import ImageViewer from 'react-native-image-zoom-viewer';
-
 
 const HotelDetail = (props) => {
 
-    const {user}=useContext(AuthContext);
+    const { user } = useContext(AuthContext);
 
-    const {item}=props.route.params
+    const { item } = props.route.params
 
-    const[isLoading,setIsLoading]=useState(false);
-    const[hotelDetailResult,sethotelDetailResult]=useState([]);
-    const[imageViewerVisible,setImageViewerVisible]=useState(false)
+    const [isLoading, setIsLoading] = useState(false);
+    const [hotelDetailResult, sethotelDetailResult] = useState(null);
+    const [imageViewerVisible, setImageViewerVisible] = useState(false)
 
-    useEffect(()=>{
+    useEffect(() => {
         getHotelDetails()
-    },[])
+    }, [])
 
-    async function getHotelDetails(){
-       const params={
-        hotel_id:item?.hotel_id,
-        user_id:user?.[0]?.user_id
-    }
-
-    setIsLoading(true)
-    const result=await hotelDetail(params)
-    setIsLoading(false)
-
-    console.log(JSON.stringify(result))
-
-    if(result.status){
-        const res= result?.data?.result?.hotel?.[0]
-        console.log(res)
-        sethotelDetailResult(res)
-    }
-    else{
-        SHOW_TOAST(result.error)
-    }
-
-    }
-
-    const galleryThumbImage=()=>{
-        const imageThumb=hotelDetailResult?.hotel_galary_thumb?.trim(',')
-        console.log('IMG',imageThumb)
-        if(imageThumb)
-        {
-            return []
+    async function getHotelDetails() {
+        const params = {
+            hotel_id: item?.hotel_id,
+            user_id: user?.[0]?.user_id
         }
-        return null
+
+        setIsLoading(true)
+        const result = await hotelDetail(params)
+        setIsLoading(false)
+
+        if (result.status) {
+            const res = result?.data?.result?.hotel?.[0]
+            sethotelDetailResult(res)
+        }
+        else {
+            SHOW_TOAST(result.error)
+        }
     }
 
-    const galleryImage=galleryThumbImage()
+    const galleryThumbImage = () => {
+        if (hotelDetailResult) {
+            const imagesArray = hotelDetailResult?.hotel_galary_photos?.split(',')
+            return imagesArray
+        }
 
-    const images = [{
-        // Simplest usage.
-        url: 'https://avatars2.githubusercontent.com/u/7970947?v=3&s=460',
-     
-        // width: number
-        // height: number
-        // Optional, if you know the image size, you can set the optimization performance
-     
-        // You can pass props to <Image />.
-        props: {
-            // headers: ...
+        return []
+    }
+
+    const galleryViewerImage = () => {
+        if (hotelDetailResult) {
+            const imagesArray = hotelDetailResult?.hotel_galary_photos?.split(',')
+            const newArray = imagesArray.map((e) => {
+                return {
+                    url: e.trim()
+                }
+            })
+            return newArray
         }
-    }, {
-        url: '',
-        props: {
-            // Or you can set source directory.
-            // source: require('../background.png')
-        }
-    }]
+
+        return []
+    }
+
+    const galleryImage = galleryThumbImage()
+
+    const images = galleryViewerImage()
 
     return (
         <View style={styles.container}>
             <ImageBackground style={styles.headerContainer}
                 resizeMode='cover'
-                source={{uri:BASE_IMAGE_URL+item?.hotel_galary_photos}}>
+                source={{ uri: BASE_IMAGE_URL + item?.hotel_galary_photos }}>
                 <SafeAreaView />
                 <View style={styles.imageContainer}>
                     <TouchableOpacity
@@ -134,7 +125,7 @@ const HotelDetail = (props) => {
                         size={SCALE_SIZE(22)}
                         color={COLORS.white}
                         family={FONT_NAME.semiBold}>
-                        {'$'+ item?.hotel_avg_price+' /Person'}
+                        {'$' + item?.hotel_avg_price + ' /Person'}
                     </Text>
                 </View>
             </ImageBackground>
@@ -143,7 +134,6 @@ const HotelDetail = (props) => {
                     <FlatList
                         horizontal={true}
                         showsHorizontalScrollIndicator={false}
-                        // data={[{ image: IMAGES.hotel_bg }, { image: IMAGES.hotel_bg }, { image: IMAGES.hotel_bg }, { image: IMAGES.hotel_bg }, { image: IMAGES.hotel_bg }]}
                         data={galleryImage}
                         ListHeaderComponent={() => {
                             return (
@@ -159,13 +149,13 @@ const HotelDetail = (props) => {
                         renderItem={({ item, index }) => {
                             return (
                                 <TouchableOpacity style={styles.itemContainer}
-                                onPress={()=>{
-                                    setImageViewerVisible(true)
-                                }}>
+                                    onPress={() => {
+                                        setImageViewerVisible(true)
+                                    }}>
                                     <Image
                                         style={styles.itemImage}
-                                        resizeMode="contain"
-                                        source={item.image} />
+                                        resizeMode="cover"
+                                        source={{ uri: item.trim() }} />
                                 </TouchableOpacity>
                             )
                         }}>
@@ -176,14 +166,14 @@ const HotelDetail = (props) => {
                     size={SCALE_SIZE(28)}
                     color={COLORS.black}
                     family={FONT_NAME.medium}>
-                    {hotelDetailResult?.hotel_continent??''}
+                    {hotelDetailResult?.hotel_continent ?? ''}
                 </Text>
                 <View style={styles.directionView}>
                     <Text style={styles.coastText}
                         size={SCALE_SIZE(22)}
                         color={COLORS.gray}
                         family={FONT_NAME.medium}>
-                        {hotelDetailResult?.hotel_city+', '+hotelDetailResult?.hotel_country??''}
+                        {(hotelDetailResult?.hotel_city ?? '') + ' , ' + (hotelDetailResult?.hotel_country ?? '')}
                     </Text>
                     <TouchableOpacity style={styles.websiteButton}>
                         <Text
@@ -199,7 +189,7 @@ const HotelDetail = (props) => {
                     size={SCALE_SIZE(22)}
                     color={COLORS.lightBlack}
                     family={FONT_NAME.regular}>
-                    {hotelDetailResult?.hotel_english_presentation??''}
+                    {hotelDetailResult?.hotel_english_presentation ?? ''}
                 </Text>
                 <Button
                     onPress={() => {
@@ -207,13 +197,21 @@ const HotelDetail = (props) => {
                     style={styles.bookNowButton}
                     title={STRING.bookNow} />
             </ScrollView>
-                    <Modal visible={imageViewerVisible}
-                    transparent={true}>
-                        <ImageViewer imageUrls={images}>
-
-                        </ImageViewer>
-                    </Modal>
-            {isLoading&&<ProgressView/>}
+            <Modal visible={imageViewerVisible}
+                transparent={true}>
+                <SafeAreaView style={styles.safeAreaViewStyle}>
+                <ImageViewer imageUrls={images}
+                    enableSwipeDown={true}
+                    onSwipeDown={() => {
+                        setImageViewerVisible(false)
+                    }}
+                    onClick={() => {
+                        setImageViewerVisible(false)
+                    }}>
+                </ImageViewer>
+                </SafeAreaView>
+            </Modal>
+            {isLoading && <ProgressView />}
         </View>
     )
 }
@@ -229,7 +227,8 @@ const styles = StyleSheet.create({
         paddingVertical: SCALE_SIZE(18),
         overflow: 'hidden',
         borderBottomLeftRadius: SCALE_SIZE(30),
-        borderBottomRightRadius: SCALE_SIZE(30)
+        borderBottomRightRadius: SCALE_SIZE(30),
+        backgroundColor: 'rgba(0,0,0,0.8)'
     },
     imageContainer: {
         flexDirection: 'row',
@@ -276,7 +275,9 @@ const styles = StyleSheet.create({
     itemImage: {
         height: SCALE_SIZE(122),
         width: SCALE_SIZE(126),
-        alignSelf: 'center'
+        alignSelf: 'center',
+        borderRadius: SCALE_SIZE(20),
+        overflow: 'hidden'
     },
     villaMiaText: {
         marginTop: SCALE_SIZE(35),
@@ -308,6 +309,10 @@ const styles = StyleSheet.create({
         marginHorizontal: SCALE_SIZE(77),
         marginTop: SCALE_SIZE(24),
         marginBottom: SCALE_SIZE(34)
+    },
+    safeAreaViewStyle:{
+        flex:1.0,
+        backgroundColor: '#000'
     }
 })
 

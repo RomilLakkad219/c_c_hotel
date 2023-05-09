@@ -1,11 +1,17 @@
-import React from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { View, StyleSheet, SafeAreaView, FlatList } from 'react-native'
 
 //COMPONENT
-import { FavouriteList, Header } from '../component';
+import { FavouriteList, Header, ProgressView } from '../component';
 
 //CONSTANT
 import { COLORS, STRING } from '../constant';
+
+//CONTEXT
+import { AuthContext } from "../context";
+
+//API
+import { home } from "../api";
 
 const PopularHotel = (props) => {
 
@@ -13,12 +19,43 @@ const PopularHotel = (props) => {
         props.navigation.goBack()
     }
 
+    const { user } = useContext(AuthContext);
+
+    const [isLoading, setIsLoading] = useState(false);
+    const [hotelData, setHotelData] = useState([])
+
+    console.log(hotelData)
+
+    useEffect(() => {
+        getAllHotel()
+    }, [])
+
+    async function getAllHotel() {
+        const params = {
+            user_id: user?.[0]?.user_id
+        }
+
+        setIsLoading(true)
+        const result = await home(params)
+        setIsLoading(false)
+
+        if (result.status) {
+            const response = result?.data?.result ?? []
+            setHotelData(response)
+        }
+        else {
+            SHOW_TOAST(result.error)
+        }
+
+    }
+
     return (
         <View style={styles.container}>
             <SafeAreaView />
             <Header onBack={() => onBack()}
                 title={STRING.popularHotel} />
-            <FlatList data={['', '']}
+            <FlatList data={hotelData}
+                showsVerticalScrollIndicator={false}
                 keyExtractor={(item, index) => index.toString()}
                 renderItem={({ item, index }) => {
                     return (
@@ -27,6 +64,7 @@ const PopularHotel = (props) => {
                     )
                 }}>
             </FlatList>
+            {isLoading && <ProgressView />}
         </View>
     )
 }

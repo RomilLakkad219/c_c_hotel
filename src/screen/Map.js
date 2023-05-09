@@ -2,7 +2,8 @@ import React, { useContext, useEffect, useState } from "react";
 import { View, StyleSheet, SafeAreaView } from 'react-native'
 
 //CONSTANT
-import { COLORS, SCALE_SIZE, FONT_NAME, STRING } from "../constant";
+import { COLORS, SCALE_SIZE, FONT_NAME } from "../constant";
+import { BASE_IMAGE_URL } from "../constant/WebService";
 
 //PACKAGES
 import MapView, { Callout, Marker } from 'react-native-maps'
@@ -19,11 +20,18 @@ import { home } from "../api";
 //CONTEXT
 import { AuthContext } from "../context";
 
+//SCREENS
+import { SCREENS } from ".";
+
 const Map = (props) => {
 
-    const { user } = useContext(AuthContext)
+    const { user } = useContext(AuthContext);
 
-    const [hotel, setHotel] = useState([]);
+    const item = props.route.params
+
+    console.log(item)
+
+    const [hotelResult, setHotelResult] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
@@ -47,7 +55,7 @@ const Map = (props) => {
 
         if (result.status) {
             const response = result?.data?.result ?? []
-            setHotel(response)
+            setHotelResult(response)
         }
         else {
             SHOW_TOAST(result.error)
@@ -70,45 +78,54 @@ const Map = (props) => {
                         latitudeDelta: 0.0922,
                         longitudeDelta: 0.0421,
                     }}>
-                    <Marker
-                        coordinate={{
-                            latitude: hotel?.hotel_lat,
-                            longitude: hotel?.hotel_long,
-                        }}>
-                        <Callout
-                            tooltip={true}
-                            style={{ backgroundColor: "#ffffff" }}>
-                            <View style={styles.hotelView}>
-                                <View>
-                                    <WebView style={{ height: SCALE_SIZE(50), width: SCALE_SIZE(50) }}
-                                        source={{ uri: 'https://media-cdn.tripadvisor.com/media/photo-s/14/60/4e/ef/image-hotel-resto.jpg' }}></WebView>
-                                </View>
-                                <View style={styles.textView}>
-                                    <Text
-                                        size={SCALE_SIZE(14)}
-                                        align='left'
-                                        family={FONT_NAME.medium}
-                                        color={COLORS.black}>
-                                        {STRING.villaMia}
-                                    </Text>
-                                    <Text
-                                        size={SCALE_SIZE(9)}
-                                        align='left'
-                                        family={FONT_NAME.medium}
-                                        color={COLORS.borderGray}>
-                                        {'Abidjan, Ivory Coast'}
-                                    </Text>
-                                    {/* <Rating
-                                        style={styles.starContainer}
-                                        type='star'
-                                        startingValue={2}
-                                        ratingCount={4}
-                                        imageSize={12}>
-                                    </Rating> */}
-                                </View>
-                            </View>
-                        </Callout>
-                    </Marker>
+                    {hotelResult.map((e, index) => {
+                        return (
+                            <Marker
+                                coordinate={{
+                                    latitude: e?.hotel_lat,
+                                    longitude: e?.hotel_long,
+                                }}>
+                                <Callout
+                                    onPress={() => {
+                                        props.navigation.navigate(SCREENS.HotelDetail.name, {item:e })
+                                    }}
+                                    key={index}
+                                    tooltip={true}
+                                    style={{ backgroundColor: "#ffffff" }}>
+                                    <View style={styles.hotelView}>
+                                        <View>
+                                            <WebView style={styles.webview}
+                                                source={{ uri: BASE_IMAGE_URL + e?.hotel_galary_photos }}></WebView>
+                                        </View>
+                                        <View style={styles.textView}>
+                                            <Text
+                                                size={SCALE_SIZE(14)}
+                                                align='left'
+                                                family={FONT_NAME.medium}
+                                                color={COLORS.black}>
+                                                {/* {e?.hotel_continent} */}
+                                                {e?.hotel_trader_name}
+                                            </Text>
+                                            <Text
+                                                size={SCALE_SIZE(9)}
+                                                align='left'
+                                                family={FONT_NAME.medium}
+                                                color={COLORS.borderGray}>
+                                                {e?.hotel_city + ', ' + e?.hotel_country}
+                                            </Text>
+                                            {/* <Rating
+                                                style={styles.starContainer}
+                                                type='star'
+                                                startingValue={2}
+                                                ratingCount={4}
+                                                imageSize={12}>
+                                            </Rating> */}
+                                        </View>
+                                    </View>
+                                </Callout>
+                            </Marker>
+                        )
+                    })}
                 </MapView>
             </View>
             {isLoading && <ProgressView />}
@@ -146,6 +163,10 @@ const styles = StyleSheet.create({
         left: 0,
         right: 0,
         zIndex: 5000
+    },
+    webview:{
+        height: SCALE_SIZE(50),
+        width: SCALE_SIZE(50)
     }
 })
 

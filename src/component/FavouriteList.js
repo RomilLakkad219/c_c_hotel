@@ -9,7 +9,8 @@ import LinearGradient from "react-native-linear-gradient";
 import { SCREENS } from "../screen";
 
 //CONSTANT
-import { COLORS, FONT_NAME, SCALE_SIZE, STRING } from "../constant";
+import { COLORS, FONT_NAME, SCALE_SIZE, SHOW_TOAST, STRING } from "../constant";
+import { BASE_IMAGE_URL } from "../constant/WebService";
 
 //COMPONENT
 import { Text } from "../component"
@@ -25,11 +26,13 @@ const FavouriteList = (props) => {
     return (
         <TouchableOpacity style={styles.itemContainer}
             onPress={() => {
-                navigation.navigate(SCREENS.HotelDetail.name)
+                navigation.navigate(SCREENS.HotelDetail.name,{
+                    item:item
+                })
             }}>
             <Image style={styles.imageView}
-                resizeMode="contain"
-                source={IMAGES.popularhotel_bg} />
+                resizeMode="cover"
+                source={{uri:BASE_IMAGE_URL+item?.hotel_galary_photos??''}} />
             <View style={{ flex: 1.0 }}>
                 <View style={{ flexDirection: 'row' }}>
                     <Text
@@ -38,7 +41,7 @@ const FavouriteList = (props) => {
                         numberOfLines={1}
                         color={COLORS.headerTitleGray}
                         family={FONT_NAME.medium}>
-                        {"Oberio Hotel"}
+                        {item?.hotel_trader_name??''}
                     </Text>
                     <Image
                         style={styles.heartImage}
@@ -50,7 +53,7 @@ const FavouriteList = (props) => {
                     size={SCALE_SIZE(16)}
                     color={COLORS.gray}
                     family={FONT_NAME.medium}>
-                    {"South America"}
+                    {item?.hotel_country??''}
                 </Text>
                 <Rating
                     style={styles.starContainer}
@@ -101,6 +104,8 @@ const styles = StyleSheet.create({
         height: SCALE_SIZE(117),
         width: SCALE_SIZE(124),
         alignSelf: 'center',
+        borderRadius:SCALE_SIZE(20),
+        overflow:'hidden'
     },
     itemText: {
         flex: 1.0,
@@ -137,7 +142,6 @@ const styles = StyleSheet.create({
         marginHorizontal: SCALE_SIZE(17),
         marginTop: SCALE_SIZE(5)
     }
-
 })
 
 export default FavouriteList;

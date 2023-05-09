@@ -77,7 +77,7 @@ const styles = StyleSheet.create({
         height: Dimensions.get('window').width - SCALE_SIZE(80),
         borderRadius:SCALE_SIZE(20),
         overflow:'hidden',
-        backgroundColor:'rgba(0,0,0,0.3)'
+        backgroundColor:'rgba(0,0,0,0.8)'
     },
     heartImage: {
         height: SCALE_SIZE(58),
@@ -114,7 +114,6 @@ const styles = StyleSheet.create({
     numberText: {
         marginRight: SCALE_SIZE(25),
     }
-
 })
 
 export default HotelCarousel;
