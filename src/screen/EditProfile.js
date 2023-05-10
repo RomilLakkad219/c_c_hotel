@@ -166,8 +166,6 @@ const EditProfile = (props) => {
         const result = await getCountry(params)
         setIsLoading(false)
 
-        console.log(JSON.stringify(result))
-
         if (result.status) {
             if (countryResult) {
                 fetchProfile()

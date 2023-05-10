@@ -85,48 +85,50 @@ const HotelDetail = (props) => {
             <ImageBackground style={styles.headerContainer}
                 resizeMode='cover'
                 source={{ uri: BASE_IMAGE_URL + item?.hotel_galary_photos }}>
-                <SafeAreaView />
-                <View style={styles.imageContainer}>
-                    <TouchableOpacity
-                        onPress={() => {
-                            props.navigation.goBack()
-                        }}>
-                        <Image
-                            style={styles.backArrow}
-                            resizeMode="contain"
-                            source={IMAGES.back_arrow} />
-                    </TouchableOpacity>
-                    <View style={{ flex: 1.0 }}></View>
+                <View style={styles.transparent}>
+                    <SafeAreaView />
+                    <View style={styles.imageContainer}>
+                        <TouchableOpacity
+                            onPress={() => {
+                                props.navigation.goBack()
+                            }}>
+                            <Image
+                                style={styles.backArrow}
+                                resizeMode="contain"
+                                source={IMAGES.back_arrow} />
+                        </TouchableOpacity>
+                        <View style={{ flex: 1.0 }}></View>
+                        <TouchableOpacity>
+                            <Image
+                                style={styles.heartImage}
+                                resizeMode="contain"
+                                source={IMAGES.ic_heart} />
+                        </TouchableOpacity>
+                    </View>
                     <TouchableOpacity>
                         <Image
-                            style={styles.heartImage}
+                            style={styles.shareImage}
                             resizeMode="contain"
-                            source={IMAGES.ic_heart} />
+                            source={IMAGES.ic_share} />
                     </TouchableOpacity>
-                </View>
-                <TouchableOpacity>
-                    <Image
-                        style={styles.shareImage}
-                        resizeMode="contain"
-                        source={IMAGES.ic_share} />
-                </TouchableOpacity>
-                <View style={{ flex: 1.0 }}></View>
-                <View style={styles.rateContainer}>
-                    <Image style={styles.starImage}
-                        resizeMode='contain'
-                        source={IMAGES.ic_star} />
-                    <Text style={styles.numberText}
-                        size={SCALE_SIZE(20)}
-                        color={COLORS.white}
-                        family={FONT_NAME.semiBold}>
-                        {'4.9'}
-                    </Text>
-                    <Text
-                        size={SCALE_SIZE(22)}
-                        color={COLORS.white}
-                        family={FONT_NAME.semiBold}>
-                        {'$' + item?.hotel_avg_price + ' /Person'}
-                    </Text>
+                    <View style={{ flex: 1.0 }}></View>
+                    <View style={styles.rateContainer}>
+                        <Image style={styles.starImage}
+                            resizeMode='contain'
+                            source={IMAGES.ic_star} />
+                        <Text style={styles.numberText}
+                            size={SCALE_SIZE(20)}
+                            color={COLORS.white}
+                            family={FONT_NAME.semiBold}>
+                            {'4.9'}
+                        </Text>
+                        <Text
+                            size={SCALE_SIZE(22)}
+                            color={COLORS.white}
+                            family={FONT_NAME.semiBold}>
+                            {'$' + item?.hotel_avg_price + ' /Person'}
+                        </Text>
+                    </View>
                 </View>
             </ImageBackground>
             <ScrollView showsVerticalScrollIndicator={false}>
@@ -200,15 +202,15 @@ const HotelDetail = (props) => {
             <Modal visible={imageViewerVisible}
                 transparent={true}>
                 <SafeAreaView style={styles.safeAreaViewStyle}>
-                <ImageViewer imageUrls={images}
-                    enableSwipeDown={true}
-                    onSwipeDown={() => {
-                        setImageViewerVisible(false)
-                    }}
-                    onClick={() => {
-                        setImageViewerVisible(false)
-                    }}>
-                </ImageViewer>
+                    <ImageViewer imageUrls={images}
+                        enableSwipeDown={true}
+                        onSwipeDown={() => {
+                            setImageViewerVisible(false)
+                        }}
+                        onClick={() => {
+                            setImageViewerVisible(false)
+                        }}>
+                    </ImageViewer>
                 </SafeAreaView>
             </Modal>
             {isLoading && <ProgressView />}
@@ -224,7 +226,6 @@ const styles = StyleSheet.create({
     headerContainer: {
         height: Dimensions.get('screen').width,
         width: Dimensions.get('screen').width,
-        paddingVertical: SCALE_SIZE(18),
         overflow: 'hidden',
         borderBottomLeftRadius: SCALE_SIZE(30),
         borderBottomRightRadius: SCALE_SIZE(30),
@@ -309,9 +310,13 @@ const styles = StyleSheet.create({
         marginTop: SCALE_SIZE(24),
         marginBottom: SCALE_SIZE(34)
     },
-    safeAreaViewStyle:{
-        flex:1.0,
+    safeAreaViewStyle: {
+        flex: 1.0,
         backgroundColor: '#000'
+    },
+    transparent: {
+        flex: 1.0,
+        backgroundColor: 'rgba(0,0,0,0.3)'
     }
 })
 
