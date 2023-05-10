@@ -412,11 +412,13 @@ const EditProfile = (props) => {
                         if (index == 0) {
                             setTimeout(() => {
                                 openCamera()
+                                setSelectedMedia(e?.name)
                             }, 500);
                         }
                         else if (index == 1) {
                             setTimeout(() => {
                                 openLibrary()
+                                setSelectedMedia(e?.name)
                             }, 1000);
                         }
                     }}>

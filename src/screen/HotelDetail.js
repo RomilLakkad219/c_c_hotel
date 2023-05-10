@@ -296,7 +296,6 @@ const styles = StyleSheet.create({
         height: SCALE_SIZE(44),
         width: SCALE_SIZE(105),
         borderRadius: SCALE_SIZE(24),
-        // marginHorizontal: SCALE_SIZE(33),
         justifyContent: 'center',
         alignSelf: 'center',
         marginRight: SCALE_SIZE(35)
