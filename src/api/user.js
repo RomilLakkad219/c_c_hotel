@@ -75,6 +75,12 @@ async function hotelDetail(params) {
     return result
 }
 
+async function getCountry(params) {
+    let url = WEB_SERVICE.getCountry
+    const result = await postRequest(url, params)
+    return result
+}
+
 export {
     signUp,
     login,
@@ -86,5 +92,6 @@ export {
     destination,
     subscribe,
     languageChange,
-    hotelDetail
+    hotelDetail,
+    getCountry
 }

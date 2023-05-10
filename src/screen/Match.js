@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { View, StyleSheet, SafeAreaView, FlatList, Image, TouchableOpacity } from 'react-native'
 
 //SCREENS
@@ -8,14 +8,20 @@ import { SCREENS } from ".";
 import { IMAGES } from "../asset";
 
 //COMPONENT
-import { Button, Header, Text, ToolItem } from "../component";
+import { Button, Header, ProgressView, Text, ToolItem } from "../component";
 
 //CONSTANT
-import { COLORS, SCALE_SIZE, STRING, FONT_NAME } from "../constant";
+import { COLORS, SCALE_SIZE, STRING, FONT_NAME, SHOW_TOAST } from "../constant";
 
 //PACKAGES
 import Tooltip from "react-native-walkthrough-tooltip";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
+
+//CONTEXT
+import { AuthContext } from "../context";
+
+//API
+import { destination, getCountry } from "../api";
 
 const Match = (props) => {
 
@@ -103,7 +109,34 @@ const ContinentToolTip = (props) => {
 
     const [visible, setVisible] = useState(false);
     const [selectedFilterItems, setSelectedFilterItems] = useState([]);
+    const [isLoading, setIsLoading] = useState(false);
+    const [destinationResult, setDestinationResult] = useState([])
     const item = props.item
+
+    useEffect(() => {
+        getDestination()
+    }, [])
+
+    async function getDestination() {
+        setIsLoading(true)
+        const result = await destination()
+        setIsLoading(false)
+
+        if (result.status) {
+            if (destinationResult) {
+                const res = result?.data?.result ?? []
+                const destinationContinent = res.map((e) => {
+                    return {
+                        name: e.cont_english_design
+                    }
+                })
+                setDestinationResult(destinationContinent)
+            }
+        }
+        else {
+            SHOW_TOAST(result.error)
+        }
+    }
 
     return (
         <Tooltip
@@ -121,17 +154,17 @@ const ContinentToolTip = (props) => {
             arrowSize={{
                 height: 0, width: 0
             }}
-            content={<ToolItem items={['Africa', 'Asia', 'Europe', 'North America', 'Oceania', 'South America']}
+            content={<ToolItem items={destinationResult}
                 selectedItems={selectedFilterItems}
                 onPress={(item, index) => {
                     const array = [...selectedFilterItems]
-                    if (selectedFilterItems.includes(index)) {
-                        const arrayIndex = array.indexOf(index)
+                    if (selectedFilterItems.includes(item)) {
+                        const arrayIndex = array.indexOf(item)
                         array.splice(arrayIndex, 1)
                         setSelectedFilterItems(array)
                     }
                     else {
-                        array.push(index)
+                        array.push(item)
                     }
                     setSelectedFilterItems(array)
                 }} />}>
@@ -142,7 +175,7 @@ const ContinentToolTip = (props) => {
                     size={SCALE_SIZE(12)}
                     color={COLORS.gray}
                     family={FONT_NAME.medium}>
-                    {'Which continent attracts you ?'}
+                    {selectedFilterItems.length ? selectedFilterItems.map((e) => e.name).join(' , ') : 'Which continent attracts you ?'}
                 </Text>
                 <Image
                     style={styles.image}
@@ -150,6 +183,7 @@ const ContinentToolTip = (props) => {
                     source={IMAGES.ic_down}>
                 </Image>
             </TouchableOpacity>
+            {isLoading && <ProgressView />}
         </Tooltip>
     )
 }
@@ -157,7 +191,41 @@ const ContinentToolTip = (props) => {
 const CountriesToolTip = (props) => {
 
     const [visible, setVisible] = useState(false)
-    const [selectedFilterItems, setSelectedFilterItems] = useState([])
+    const [selectedFilterItems, setSelectedFilterItems] = useState([]);
+    const [isLoading, setIsLoading] = useState(false);
+    const [countryResult, setCountryResult] = useState([]);
+
+    const { user } = useContext(AuthContext)
+
+    useEffect(() => {
+        getCountries()
+    }, [])
+
+    async function getCountries() {
+        const params = {
+            user_id: user?.[0]?.user_id,
+        }
+
+        setIsLoading(true)
+        const result = await getCountry(params)
+        setIsLoading(false)
+
+        if (result.status) {
+            if (countryResult) {
+                const countryArray = result?.data?.result ?? []
+                const response = countryArray.map((e) => {
+                    return {
+                        id: e.cnt_id,
+                        name: e.country
+                    }
+                })
+                setCountryResult(response)
+            }
+        }
+        else {
+            SHOW_TOAST(result.error)
+        }
+    }
 
     return (
         <Tooltip
@@ -174,17 +242,18 @@ const CountriesToolTip = (props) => {
             arrowSize={{
                 height: 0, width: 0
             }}
-            content={<ToolItem items={['India', 'Australia', 'America', 'Russia', 'England', 'France']}
+            content={<ToolItem
+                items={countryResult}
                 selectedItems={selectedFilterItems}
                 onPress={(item, index) => {
                     const array = [...selectedFilterItems]
-                    if (selectedFilterItems.includes(index)) {
-                        const arrayIndex = array.indexOf(index)
+                    if (selectedFilterItems.includes(item)) {
+                        const arrayIndex = array.indexOf(item)
                         array.splice(arrayIndex, 1)
                         setSelectedFilterItems(array)
                     }
                     else {
-                        array.push(index)
+                        array.push(item)
                     }
                     setSelectedFilterItems(array)
                 }} />}>
@@ -195,7 +264,7 @@ const CountriesToolTip = (props) => {
                     size={SCALE_SIZE(12)}
                     color={COLORS.gray}
                     family={FONT_NAME.medium}>
-                    {'Which countries would you like to visit ?'}
+                    {selectedFilterItems.length ? selectedFilterItems.map((e) => e.name).join(' , ') : 'Which countries would you like to visit ?'}
                 </Text>
                 <Image
                     style={styles.image}
@@ -203,6 +272,7 @@ const CountriesToolTip = (props) => {
                     source={IMAGES.ic_down}>
                 </Image>
             </TouchableOpacity>
+            {isLoading && <ProgressView />}
         </Tooltip>
     )
 }
@@ -227,7 +297,7 @@ const RegionToolTip = (props) => {
             arrowSize={{
                 height: 0, width: 0
             }}
-            content={<ToolItem items={['Cape Town', 'Biscay', 'Occitanie', 'Pays de la Loire', 'French Brittany', 'Ile-de-France']}
+            content={<ToolItem items={[{ name: 'Cape Town' }, { name: 'Biscay' }, { name: 'Occitanie' }, { name: 'Pays de la Loire' }, { name: 'French Brittany' }, { name: 'Ile-de-France' }]}
                 selectedItems={selectedFilterItems}
                 onPress={(item, index) => {
                     const array = [...selectedFilterItems]
@@ -279,7 +349,7 @@ const ExperienceToolTip = (props) => {
             arrowSize={{
                 height: 0, width: 0
             }}
-            content={<ToolItem items={['Beach', 'Tea Route', 'Trendy', 'Village', 'Weddings', 'Zen']}
+            content={<ToolItem items={[{ name: 'Beach' }, { name: 'Tea Route' }, { name: 'Trendy' }, { name: 'Village' }, { name: 'Weddings' }, { name: 'Zen' }]}
                 selectedItems={selectedFilterItems}
                 onPress={(item, index) => {
                     const array = [...selectedFilterItems]
@@ -332,7 +402,7 @@ const ServiceToolTip = (props) => {
             arrowSize={{
                 height: 0, width: 0
             }}
-            content={<ToolItem items={['Bicycle Rental', 'Concierge', 'Daily Press', 'Cooking Lessons', 'Weddings', 'Electric Vehicle']}
+            content={<ToolItem items={[{ name: 'Bicycle Rental' }, { name: 'Concierge' }, { name: 'Daily Press' }, { name: 'Cooking Lessons' }, { name: 'Weddings' }, { name: 'Electric Vehicle' }]}
                 selectedItems={selectedFilterItems}
                 onPress={(item, index) => {
                     const array = [...selectedFilterItems]
@@ -385,7 +455,7 @@ const EquipmentToolTip = (props) => {
             arrowSize={{
                 height: 0, width: 0
             }}
-            content={< ToolItem items={['Swimming Pool', 'Restaurant', 'Spa', 'Library', 'Tennis', 'Lockers']}
+            content={< ToolItem items={[{ name: 'Swimming Pool' }, { name: 'Restaurant' }, { name: 'Spa' }, { name: 'Library' }, { name: 'Tennis' }, { name: 'Lockers' }]}
                 selectedItems={selectedFilterItems}
                 onPress={(item, index) => {
                     const array = [...selectedFilterItems]

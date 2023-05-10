@@ -24,8 +24,8 @@ export default function ToolItem(props) {
                 return (
                     <TouchableOpacity onPress={() => props.onPress(item, index)} style={props.style}>
                         <View style={styles.container}>
-                            <View style={selectedItems.includes(index) ? styles.blueView : styles.normalView}>
-                                <ImageBackground style={selectedItems.includes(index) ? styles.selectedBox : styles.squareBox}
+                            <View style={selectedItems.includes(item) ? styles.blueView : styles.normalView}>
+                                <ImageBackground style={selectedItems.includes(item) ? styles.selectedBox : styles.squareBox}
                                     resizeMode='contain'>
                                     <Image
                                         style={styles.right_bg}
@@ -36,7 +36,7 @@ export default function ToolItem(props) {
                                     size={SCALE_SIZE(12)}
                                     family={FONT_NAME.medium}
                                     color={COLORS.headerTitleGray}>
-                                    {item}
+                                    {item?.name}
                                 </Text>
                             </View>
                         </View>

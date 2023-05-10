@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, TouchableOpacity } from 'react-native'
+import { StyleSheet, TouchableOpacity, ScrollView, Dimensions } from 'react-native'
 
 //PACKAGES
 import RBSheet from "react-native-raw-bottom-sheet";
@@ -17,6 +17,10 @@ const BottomSheet = (props) => {
 
     const data = props.data
     const bottomInsert = useSafeAreaInsets().bottom
+
+    const dataHeight = (data.length * SCALE_SIZE(50)) + SCALE_SIZE(50) + bottomInsert
+    const screenHeight = Dimensions.get('screen').height - 100
+
     return (
         <RBSheet ref={props.onRef}
             closeOnDragDown={true}
@@ -24,26 +28,28 @@ const BottomSheet = (props) => {
             customStyles={{
                 container: {
                     backgroundColor: '#FFF',
-                    height: (data.length * SCALE_SIZE(50)) + SCALE_SIZE(50) + bottomInsert
+                    height: Math.min(dataHeight, screenHeight)
                 }
             }}>
-            {data.map((e, index) => {
-                return (
-                    <TouchableOpacity
-                        style={props.selectedItem == e ? styles.optionSelectedBox : styles.optionBox}
-                        key={e + index}
-                        onPress={() => {
-                            props.onPressItem(e, index)
-                        }}>
-                        <Text
-                            size={18}
-                            family={FONT_NAME.medium}
-                            color={COLORS.headerTitleGray}>
-                            {e}
-                        </Text>
-                    </TouchableOpacity>
-                )
-            })}
+            <ScrollView showsVerticalScrollIndicator={false}>
+                {data.map((e, index) => {
+                    return (
+                        <TouchableOpacity
+                            style={props.selectedItem == e?.name ? styles.optionSelectedBox : styles.optionBox}
+                            key={e + index}
+                            onPress={() => {
+                                props.onPressItem(e, index)
+                            }}>
+                            <Text
+                                size={18}
+                                family={FONT_NAME.medium}
+                                color={COLORS.headerTitleGray}>
+                                {e.name}
+                            </Text>
+                        </TouchableOpacity>
+                    )
+                })}
+            </ScrollView>
         </RBSheet>
     )
 }

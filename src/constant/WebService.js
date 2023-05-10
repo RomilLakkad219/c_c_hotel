@@ -13,5 +13,6 @@ export const WEB_SERVICE = {
     destinations: BASE_URL + 'fields/destinations',
     subscribe: BASE_URL + 'subscribe',
     languageChange: BASE_URL + 'mAdd/lang_change',
-    hotelDetail: BASE_URL + 'fields/hotel_detail'
+    hotelDetail: BASE_URL + 'fields/hotel_detail',
+    getCountry: BASE_URL + 'fields/country_list'
 }

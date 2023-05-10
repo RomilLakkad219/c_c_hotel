@@ -8,7 +8,8 @@ import {
     destination,
     subscribe,
     languageChange,
-    hotelDetail
+    hotelDetail,
+    getCountry
 } from './user'
 
 export {
@@ -21,5 +22,6 @@ export {
     destination ,
     subscribe,
     languageChange,
-    hotelDetail
+    hotelDetail,
+    getCountry
 }

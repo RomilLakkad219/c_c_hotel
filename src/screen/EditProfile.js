@@ -16,7 +16,7 @@ import { BottomSheet, Header, ProgressView, Text } from "../component";
 import { COLORS, FONT_NAME, SCALE_SIZE, SHOW_TOAST, STRING } from "../constant";
 
 //API
-import { updateProfile } from "../api";
+import { getCountry, updateProfile } from "../api";
 
 //CONTEXT
 import { AuthContext } from "../context";
@@ -40,9 +40,12 @@ const EditProfile = (props) => {
     const [isDatePickerVisible, setIsDatePickerVisible] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [image, setImage] = useState('');
+    const [countryResult, setCountryResult] = useState([]);
+    const [selectedMedia, setSelectedMedia] = useState(false)
 
     useEffect(() => {
         getUserProfile()
+        getCountries()
     }, [])
 
     const showDatePicker = () => {
@@ -127,7 +130,6 @@ const EditProfile = (props) => {
 
         if (result.status) {
             if (result?.data?.status == '1') {
-                console.log(JSON.stringify(result))
                 fetchProfile()
                 props.navigation.goBack()
             }
@@ -153,8 +155,38 @@ const EditProfile = (props) => {
             cameraType: 'back',
         })
         console.log(cameraResult)
-
     }
+
+    async function getCountries() {
+        const params = {
+            user_id: user?.[0]?.user_id,
+        }
+
+        setIsLoading(true)
+        const result = await getCountry(params)
+        setIsLoading(false)
+
+        console.log(JSON.stringify(result))
+
+        if (result.status) {
+            if (countryResult) {
+                fetchProfile()
+                const countryResponse = result?.data?.result ?? []
+                const array = countryResponse.map((e, index) => {
+                    return {
+                        id: e.cnt_id,
+                        name: e.country
+                    }
+                })
+                setCountryResult(array)
+            }
+        }
+        else {
+            SHOW_TOAST(result.error)
+        }
+    }
+
+
     return (
         <View style={styles.container}>
             <SafeAreaView />
@@ -353,18 +385,18 @@ const EditProfile = (props) => {
                 <BottomSheet
                     onRef={genderRef}
                     selectedItem={gender}
-                    data={['Male', 'Female', 'Other']}
+                    data={[{ id: 0, name: 'Male' }, { id: 1, name: 'Female' }, { id: 2, name: 'Other' }]}
                     onPressItem={(e) => {
                         genderRef?.current?.close()
-                        setGender(e)
+                        setGender(e?.name)
                     }} />
                 <BottomSheet
                     onRef={countryRef}
                     selectedItem={country}
-                    data={['France', 'Finland', 'Fiji Island']}
+                    data={countryResult}
                     onPressItem={(e) => {
                         countryRef?.current?.close()
-                        setCountry(e)
+                        setCountry(e?.name)
                     }} />
                 <DateTimePickerModal
                     isVisible={isDatePickerVisible}
@@ -373,7 +405,8 @@ const EditProfile = (props) => {
                     onCancel={hideDatePicker}
                     maximumDate={new Date()} />
                 <BottomSheet onRef={mediaRef}
-                    data={['Camera', 'Gallery']}
+                    selectedItem={selectedMedia}
+                    data={[{ id: 0, name: 'Camera' }, { id: 1, name: 'Gallery' }]}
                     onPressItem={(e, index) => {
                         mediaRef?.current?.close()
                         if (index == 0) {
@@ -387,7 +420,6 @@ const EditProfile = (props) => {
                             }, 1000);
                         }
                     }}>
-
                 </BottomSheet>
             </ScrollView>
             {isLoading && <ProgressView />}

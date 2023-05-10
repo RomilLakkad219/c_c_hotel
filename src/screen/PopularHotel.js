@@ -24,8 +24,6 @@ const PopularHotel = (props) => {
     const [isLoading, setIsLoading] = useState(false);
     const [hotelData, setHotelData] = useState([])
 
-    console.log(hotelData)
-
     useEffect(() => {
         getAllHotel()
     }, [])

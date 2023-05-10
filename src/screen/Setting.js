@@ -28,7 +28,7 @@ const Setting = (props) => {
 
     const languageRef = useRef();
 
-    const { user, profile, fetchProfile} = useContext(AuthContext)
+    const { user, profile, fetchProfile } = useContext(AuthContext)
 
     const settingData = [
         {
@@ -127,7 +127,7 @@ const Setting = (props) => {
         setIsLoading(false)
 
         if (result.status) {
-           fetchProfile()
+            fetchProfile()
         }
         else {
             SHOW_TOAST(result.error)
@@ -235,12 +235,12 @@ const Setting = (props) => {
             <BottomSheet
                 onRef={languageRef}
                 selectedItem={selectedLanguage}
-                data={[STRING.english, STRING.spanish, STRING.french]}
+                data={[{ id: 0, name: STRING.english }, { id: 1, name: STRING.spanish }, { id: 2, name: STRING.french }]}
                 onPressItem={(e) => {
                     languageRef?.current?.close()
-                    setSelectedLanguage(e)
+                    setSelectedLanguage(e.name)
                     setLanguage(e)
-                    
+
                 }} />
             {isLoading && <ProgressView />}
         </View>

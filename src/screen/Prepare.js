@@ -46,7 +46,6 @@ const Prepare = (props) => {
         if (result.status) {
             if (result?.data?.status == "1") {
                 const profile = result?.data?.result?.user?.[0]
-                console.log(JSON.stringify(profile))
                 setProfile(profile)
                 moveToHome()
             }
