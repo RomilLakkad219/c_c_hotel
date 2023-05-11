@@ -48,11 +48,18 @@ const MatchList = (props) => {
             <View style={styles.hotelContainer}>
                 <FlatList data={['', '']}
                     keyExtractor={(item, index) => index.toString()}
+                    ListHeaderComponent={() => {
+                        return (
+                            <View style={{ marginTop: SCALE_SIZE(52) }}></View>
+                        )
+                    }}
                     renderItem={({ item, index }) => {
                         return (
                             <TouchableOpacity style={styles.itemContainer}
                                 onPress={() => {
-                                    props.navigation.navigate(SCREENS.HotelDetail.name)
+                                    props.navigation.navigate(SCREENS.HotelDetail.name,{
+                                        item:item
+                                    })
                                 }}>
                                 <View style={{ flexDirection: 'row' }}>
                                     <Image style={styles.imageView}

@@ -1,5 +1,5 @@
 import React, { useState, useRef, useContext, useEffect } from "react";
-import { View, StyleSheet, SafeAreaView, TextInput, Image, FlatList, TouchableOpacity, Dimensions, ImageBackground, ScrollView, Alert } from 'react-native'
+import { View, StyleSheet, SafeAreaView, TextInput, Image, FlatList, TouchableOpacity, Dimensions, ScrollView } from 'react-native'
 
 //ASSET
 import { IMAGES } from "../../asset";
@@ -8,7 +8,7 @@ import { IMAGES } from "../../asset";
 import { BottomSheet, Header, HotelCarousel, ProgressView, Text } from "../../component";
 
 //CONSTANT
-import { COLORS, STRING, SCALE_SIZE, FONT_NAME, SHOW_SUCCESS_TOAST, SHOW_TOAST } from "../../constant";
+import { COLORS, STRING, SCALE_SIZE, FONT_NAME, SHOW_TOAST } from "../../constant";
 
 //PACKAGES
 import Carousel from 'react-native-snap-carousel';
@@ -243,12 +243,11 @@ const Home = (props) => {
             <BottomSheet
                 onRef={languageRef}
                 selectedItem={selectedLanguage}
-                data={[STRING.english, STRING.spanish, STRING.french]}
+                data={[{ id: 0, name: STRING.english }, { id: 1, name: STRING.spanish }, { id: 2, name: STRING.french }]}
                 onPressItem={(e) => {
                     languageRef?.current?.close()
-                    setSelectedLanguage(e)
-                    setLanguage(e)
-
+                    setSelectedLanguage(e?.name)
+                    setLanguage(e?.name)
                 }} />
             {isLoading && <ProgressView />}
         </View>

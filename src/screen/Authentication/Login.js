@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { View, StyleSheet, Image, ImageBackground, TouchableOpacity, ScrollView } from 'react-native'
 
 //SCREENS
@@ -11,7 +11,7 @@ import { IMAGES } from "../../asset";
 import { Button, Input, ProgressView, Text } from "../../component";
 
 //CONSTANT
-import { COLORS, FONT_NAME, REGEX, SCALE_SIZE, SHOW_SUCCESS_TOAST, SHOW_TOAST, STRING } from "../../constant";
+import { COLORS, FONT_NAME, REGEX, SCALE_SIZE, SHOW_TOAST, STRING } from "../../constant";
 
 //API
 import { login } from "../../api";

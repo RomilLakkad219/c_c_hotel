@@ -2,7 +2,7 @@ import React from "react";
 import { View, StyleSheet, SafeAreaView, FlatList } from 'react-native'
 
 //COMPONENT
-import { FavouriteList, Header } from "../../component";
+import { FavouriteList, Header, Text } from "../../component";
 
 //CONSTANT
 import { COLORS, STRING } from "../../constant";

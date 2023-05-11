@@ -582,8 +582,8 @@ const styles = StyleSheet.create({
         width: SCALE_SIZE(205),
         borderRadius: SCALE_SIZE(10),
         left: SCALE_SIZE(100),
-        elevation: 4
-    },
+        elevation: 4,
+    }
 })
 
 export default Match;

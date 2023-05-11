@@ -100,8 +100,6 @@ const Setting = (props) => {
         const result = await subscribe(params)
         setIsLoading(false)
 
-        console.log(result)
-
         if (result.status) {
             const subscriberes = result?.data?.sub_status
             if (subscriberes == '1') {
