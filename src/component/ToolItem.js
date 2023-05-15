@@ -1,5 +1,5 @@
 import React from "react";
-import { View, TouchableOpacity, FlatList, Image, ImageBackground, StyleSheet, Alert } from 'react-native'
+import { View, TouchableOpacity, FlatList, Image, ImageBackground, StyleSheet } from 'react-native'
 
 //ASSET
 import { IMAGES } from "../asset";
@@ -36,7 +36,7 @@ export default function ToolItem(props) {
                                     size={SCALE_SIZE(12)}
                                     family={FONT_NAME.medium}
                                     color={COLORS.headerTitleGray}>
-                                    {item?.name}
+                                    {item.name}
                                 </Text>
                             </View>
                         </View>
@@ -60,7 +60,7 @@ const styles = StyleSheet.create({
         marginHorizontal: SCALE_SIZE(10),
         alignItems: 'center'
     },
-    normalView:{
+    normalView: {
         borderRadius: SCALE_SIZE(6),
         height: SCALE_SIZE(32),
         width: SCALE_SIZE(152),

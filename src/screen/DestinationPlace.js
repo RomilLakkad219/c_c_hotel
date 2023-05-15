@@ -1,27 +1,28 @@
-import React, { useRef, useState } from "react";
-import { View, StyleSheet, SafeAreaView, TextInput, TouchableOpacity, Image, FlatList, Dimensions, ScrollView } from 'react-native'
+import React, { useEffect, useRef, useState } from "react";
+import { View, StyleSheet, SafeAreaView, TextInput, TouchableOpacity, Image, FlatList, Dimensions, ScrollView, ImageBackground } from 'react-native'
 
 //ASSET
 import { IMAGES } from "../asset";
 
 //COMPONENT
-import { Header, Text, ToolItem, HotelCarousel, BottomSheet, BottomMultiSelectionSheet } from "../component";
+import { Header, Text, BottomMultiSelectionSheet, ProgressView } from "../component";
 
 //CONSTANT
-import { COLORS, STRING, SCALE_SIZE, FONT_NAME } from "../constant";
+import { COLORS, STRING, SCALE_SIZE, FONT_NAME, SHOW_SUCCESS_TOAST, SHOW_TOAST } from "../constant";
 
-//PACKAGES
-import Carousel from 'react-native-snap-carousel';
-import RBSheet from "react-native-raw-bottom-sheet";
+//API
+import { getDestinationPlace } from "../api";
 
 const DestinationPlace = (props) => {
 
-    const isCarousel = useRef();
     const destinationRef = useRef()
+
+    const { item } = props.route.params
 
     const [search, setSearch] = useState('');
     const [selectedIndex, setSelectedIndex] = useState(-1)
     const [selectedFilterItems, setSelectedFilterItems] = useState([]);
+    const [isLoading, setIsLoading] = useState(false)
 
     const placeOption =
         [
@@ -45,9 +46,32 @@ const DestinationPlace = (props) => {
             }
         ]
 
+    useEffect(() => {
+        getDestinationPlaces()
+    }, [])
+
 
     function onBack() {
         props.navigation.goBack()
+    }
+
+    async function getDestinationPlaces() {
+        const params = {
+            hotel_continent: item?.cont_english_design
+        }
+
+        setIsLoading(true)
+        const result = await getDestinationPlace(params)
+        setIsLoading(false)
+        console.log(JSON.stringify(result))
+
+        if (result.status) {
+
+            SHOW_SUCCESS_TOAST('get places')
+        }
+        else {
+            SHOW_TOAST(result.error)
+        }
     }
 
 
@@ -92,7 +116,7 @@ const DestinationPlace = (props) => {
                     renderItem={({ item, index }) => {
                         return (
                             <TouchableOpacity style={[styles.placeContainer, {
-                               backgroundColor:  selectedIndex == index ? COLORS.blue : '#f3f3f3'
+                                backgroundColor: selectedIndex == index ? COLORS.blue : '#f3f3f3'
                             }]} onPress={() => {
                                 setSelectedIndex(index)
                                 destinationRef.current.open()
@@ -116,9 +140,8 @@ const DestinationPlace = (props) => {
             </View>
             <ScrollView showsVerticalScrollIndicator={false}>
                 <View>
-                    <FlatList
+                    <FlatList data={['', '', '', '', '', '', '', '']}
                         showsVerticalScrollIndicator={false}
-                        data={[{ title: 'Popular Hotel In Praia' }, { title: 'Popular Hotel In Praia' }, { title: 'Popular Hotel In Praia' }, { title: 'Popular Hotel In Praia' }, { title: 'Popular Hotel In Praia' }, { title: 'Popular Hotel In Praia' }]}
                         keyExtractor={(item, index) => index.toString()}
                         renderItem={({ item, index }) => {
                             return (
@@ -128,25 +151,64 @@ const DestinationPlace = (props) => {
                                             size={SCALE_SIZE(20)}
                                             color={COLORS.black}
                                             family={FONT_NAME.medium}>
-                                            {item.title}
+                                            {'Popular Hotel In Praia'}
                                         </Text>
                                         <Image style={styles.forwardImage}
                                             resizeMode='contain'
                                             source={IMAGES.ic_forward} />
                                     </TouchableOpacity>
-                                    <Carousel
-                                        layout='default'
-                                        layoutCardOffset={9}
-                                        ref={isCarousel}
-                                        data={['', '', '', '', '', '']}
-                                        renderItem={() => <HotelCarousel navigation={props.navigation} />}
-                                        sliderWidth={Dimensions.get('window').width}
-                                        itemWidth={Dimensions.get('window').width - SCALE_SIZE(70)}
-                                        useScrollView={true}>
-                                    </Carousel>
+                                    <ImageBackground style={styles.carouselContainer}
+                                        resizeMode='cover'
+                                    // source={{ uri: BASE_IMAGE_URL + item?.hotel_galary_photos ?? '' }}
+                                    >
+                                        <TouchableOpacity>
+                                            <Image
+                                                style={styles.heartImage}
+                                                resizeMode="contain"
+                                                source={IMAGES.ic_heart} />
+                                        </TouchableOpacity>
+                                        <TouchableOpacity>
+                                            <Image
+                                                style={styles.shareImage}
+                                                resizeMode="contain"
+                                                source={IMAGES.ic_share} />
+                                        </TouchableOpacity>
+                                        <View style={{ flex: 1.0 }} />
+                                        <TouchableOpacity onPress={() => {
+                                            props.navigation.navigate(SCREENS.HotelDetail.name, {
+                                                item: item
+                                            })
+                                        }}
+                                            style={{ marginBottom: SCALE_SIZE(27) }}>
+                                            <Text style={styles.auraHouseText}
+                                                size={SCALE_SIZE(28)}
+                                                color={COLORS.white}
+                                                family={FONT_NAME.bold}>
+                                                {item?.hotel_trader_name ?? ''}
+                                            </Text>
+                                            <View style={styles.rateContainer}>
+                                                <Text style={styles.franceText}
+                                                    size={SCALE_SIZE(20)}
+                                                    color={COLORS.white}
+                                                    family={FONT_NAME.medium}>
+                                                    {item?.hotel_country ?? ''}
+                                                </Text>
+                                                <Image style={styles.starImage}
+                                                    resizeMode='contain'
+                                                    source={IMAGES.ic_star} />
+                                                <Text style={styles.numberText}
+                                                    size={SCALE_SIZE(20)}
+                                                    color={COLORS.white}
+                                                    family={FONT_NAME.semiBold}>
+                                                    {'4.9'}
+                                                </Text>
+                                            </View>
+                                        </TouchableOpacity>
+                                    </ImageBackground>
                                 </View>
                             )
                         }}>
+
                     </FlatList>
                 </View>
                 <SafeAreaView />
@@ -168,6 +230,7 @@ const DestinationPlace = (props) => {
                     }
                     setSelectedFilterItems(array)
                 }} />
+            {isLoading && <ProgressView />}
         </View>
     )
 }

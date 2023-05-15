@@ -111,7 +111,6 @@ const ContinentToolTip = (props) => {
     const [selectedFilterItems, setSelectedFilterItems] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     const [destinationResult, setDestinationResult] = useState([])
-    const item = props.item
 
     useEffect(() => {
         getDestination()
@@ -141,7 +140,6 @@ const ContinentToolTip = (props) => {
     return (
         <Tooltip
             isVisible={visible}
-            item={item}
             contentStyle={styles.tooltipContainer}
             backgroundColor={'transparent'}
             placement='bottom'
@@ -297,20 +295,22 @@ const RegionToolTip = (props) => {
             arrowSize={{
                 height: 0, width: 0
             }}
-            content={<ToolItem items={[{ name: 'Cape Town' }, { name: 'Biscay' }, { name: 'Occitanie' }, { name: 'Pays de la Loire' }, { name: 'French Brittany' }, { name: 'Ile-de-France' }]}
-                selectedItems={selectedFilterItems}
+            content={<ToolItem items={[{id: 0, name: 'Cape Town' }, {id: 1, name: 'Biscay' }, {id:2,name: 'Occitanie' }, {id:3, name: 'Pays de la Loire' }, { name: 'French Brittany' }, { name: 'Ile-de-France' }]}
+            selectedItems={selectedFilterItems}
                 onPress={(item, index) => {
+                    console.log(selectedFilterItems.includes(item))
                     const array = [...selectedFilterItems]
-                    if (selectedFilterItems.includes(index)) {
-                        const arrayIndex = array.indexOf(index)
+                    if (selectedFilterItems.includes(item)) {
+                        const arrayIndex = array.indexOf(item)
                         array.splice(arrayIndex, 1)
                         setSelectedFilterItems(array)
                     }
                     else {
-                        array.push(index)
+                        array.push(item)
                     }
                     setSelectedFilterItems(array)
-                }} />}>
+                }} />}
+                >
             <TouchableOpacity style={styles.listContainer}
                 onPress={() => setVisible(true)}>
                 <Text
@@ -349,19 +349,23 @@ const ExperienceToolTip = (props) => {
             arrowSize={{
                 height: 0, width: 0
             }}
-            content={<ToolItem items={[{ name: 'Beach' }, { name: 'Tea Route' }, { name: 'Trendy' }, { name: 'Village' }, { name: 'Weddings' }, { name: 'Zen' }]}
+            content={<ToolItem 
+                items={[{ name: 'Beach' }, { name: 'Tea Route' }, { name: 'Trendy' }, {name: 'Village' }, { name: 'Weddings' }, { name: 'Zen' }]}
                 selectedItems={selectedFilterItems}
                 onPress={(item, index) => {
                     const array = [...selectedFilterItems]
-                    if (selectedFilterItems.includes(index)) {
-                        const arrayIndex = array.indexOf(index)
+                    if (selectedFilterItems.includes(item)) {
+                        const arrayIndex = array.indexOf(item)
                         array.splice(arrayIndex, 1)
                         setSelectedFilterItems(array)
                     }
                     else {
-                        array.push(index)
+                        array.push(item)
                     }
                     setSelectedFilterItems(array)
+                    console.log('ARRAY',array)
+                    console.log("SELECTED",selectedFilterItems)
+                    console.log('Item',item)
                 }} />}>
             <TouchableOpacity style={styles.listContainer}
                 onPress={() => setVisible(true)}>
@@ -484,7 +488,7 @@ const EquipmentToolTip = (props) => {
                     source={IMAGES.ic_down}>
                 </Image>
             </TouchableOpacity >
-        </Tooltip >
+        </Tooltip>
     )
 }
 

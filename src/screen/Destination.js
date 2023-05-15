@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { View, StyleSheet, SafeAreaView, FlatList, ImageBackground, Dimensions, TouchableOpacity } from 'react-native'
 
 //SCREENS
@@ -18,7 +18,6 @@ import { destination } from "../api";
 
 const Destination = (props) => {
 
-
     const [isLoading, setIsLoading] = useState(false);
     const [destinationResult, setDestinationResult] = useState([])
 
@@ -31,6 +30,7 @@ const Destination = (props) => {
     }
 
     async function getDestination() {
+    
         setIsLoading(true)
         const result = await destination()
         setIsLoading(false)
@@ -58,13 +58,14 @@ const Destination = (props) => {
                     renderItem={({ item, index }) => {
                         return (
                             <TouchableOpacity onPress={() => {
-                                props.navigation.navigate(SCREENS.DestinationPlace.name)
+                                props.navigation.navigate(SCREENS.DestinationPlace.name,{item:item})
                             }}>
                                 <ImageBackground style={[styles.listImageContainer, {
                                     marginLeft: index % 2 == 1 ? SCALE_SIZE(20) : 0
                                 }]}
                                     resizeMode='cover'
-                                    source={{ uri: item?.cont_img_url ?? '' }}>
+                                    source={{ uri: item?.cont_img_url ?? '' }}
+                                    >
                                     <View style={styles.transparentView}>
                                         <Text
                                             size={SCALE_SIZE(16)}

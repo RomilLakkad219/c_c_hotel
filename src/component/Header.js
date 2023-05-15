@@ -18,7 +18,7 @@ const Header = (props) => {
     if (props.type == 'home') {
         return (
             <View style={styles.headerContainer}>
-                <TouchableOpacity style={{ flexDirection: 'row', alignSelf: 'center', marginLeft: 15 }} onPress={props.onLanguage}>
+                <TouchableOpacity style={styles.title} onPress={props.onLanguage}>
                     <Text
                         size={SCALE_SIZE(22)}
                         family={FONT_NAME.medium}
@@ -111,7 +111,7 @@ const FilterToolTip = (props) => {
             arrowSize={{
                 height: 0, width: 0
             }}
-            content={<ToolItem items={[STRING.beach, STRING.village, STRING.cityShopping, STRING.mountainSky, STRING.nature, STRING.waterFront]}
+            content={<ToolItem items={[{ id: 0, name: STRING.beach }, { id: 1, name: STRING.village }, { id: 2, name: STRING.cityShopping }, { id: 3, name: STRING.mountainSky }, { id: 4, name: STRING.nature }, { id: 5, name: STRING.waterFront }]}
                 selectedItems={selectedFilterItems}
                 onPress={(item, index) => {
                     const array = [...selectedFilterItems]
@@ -195,6 +195,11 @@ const styles = StyleSheet.create({
         width: SCALE_SIZE(29),
         alignSelf: 'center'
     },
+    title: {
+        flexDirection: 'row',
+        alignSelf: 'center',
+        marginLeft: 15
+    }
 })
 
 export default Header;

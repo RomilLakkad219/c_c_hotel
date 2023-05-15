@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { View, StyleSheet, Platform, StatusBar, LogBox } from 'react-native'
 
 //PACKAGES
@@ -73,7 +73,7 @@ const App = (props) => {
         <NavigationContainer>
           <Navigator
             initialRouteName={SCREENS.Prepare.name}
-            screenOptions={{ headerShown: false, gestureEnabled: false, }}>
+            screenOptions={{ headerShown: false, gestureEnabled: false }}>
             {_.toArray(SCREENS).map((item, index) => {
               return item.component ? (
                 <Screen
