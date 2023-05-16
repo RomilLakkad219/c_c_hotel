@@ -1,16 +1,43 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { View, StyleSheet, SafeAreaView, ScrollView } from 'react-native'
 
 //CONSTANT
-import { COLORS, FONT_NAME, SCALE_SIZE, STRING } from "../constant";
+import { COLORS, FONT_NAME, SCALE_SIZE, SHOW_TOAST, STRING } from "../constant";
 
 //COMPONENT
-import { Header, Text } from "../component";
+import { Header, ProgressView, Text } from "../component";
+
+//API
+import { legalNotice } from "../api";
 
 const LegalNotice = (props) => {
 
+    const [isLoading, setIsLoading] = useState(false);
+    const [isResponse, setIsResponse] = useState('')
+
+    useEffect(() => {
+        getLegalNotice()
+    }, [])
+
     function onBack() {
         props.navigation.goBack()
+    }
+
+    async function getLegalNotice() {
+
+        setIsLoading(true)
+        const result = await legalNotice()
+        setIsLoading(false)
+
+        console.log(JSON.stringify(result))
+
+        if (result.status) {
+            const legalNoticeResponse = result?.data?.result
+            setIsResponse(legalNoticeResponse)
+        }
+        else {
+            SHOW_TOAST(result.error)
+        }
     }
     return (
         <View style={styles.container}>
@@ -23,16 +50,10 @@ const LegalNotice = (props) => {
                     size={SCALE_SIZE(18)}
                     color={COLORS.borderGray}
                     family={FONT_NAME.medium}>
-                    {`It is a long established fact that a\nreader will be distracted by the\nreadable content of a page when\nlooking at its layout.The point of using\nLorem Ipsum is that it has a more-or-\nless normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English.Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy.Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).`}
-                </Text>
-                <Text
-                    style={styles.textTwo}
-                    size={SCALE_SIZE(18)}
-                    color={COLORS.borderGray}
-                    family={FONT_NAME.medium}>
-                    {`It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. `}
+                    {isResponse}
                 </Text>
             </ScrollView>
+            {isLoading && <ProgressView />}
         </View>
     )
 }

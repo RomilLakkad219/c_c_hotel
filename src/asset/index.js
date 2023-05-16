@@ -51,7 +51,8 @@ const IMAGES = {
     southamerica_bg: require('../asset/images/southamerica_bg.png'),
     africa_bg: require('../asset/images/africa_bg.png'),
     popularhotel_bg: require('../asset/images/popularhotel_bg.png'),
-    ic_profile: require('../asset/images/ic_profile.png')
+    ic_profile: require('../asset/images/ic_profile.png'),
+    ic_heart_white:require('../asset/images/ic_heart_white.png')
 
 }
 

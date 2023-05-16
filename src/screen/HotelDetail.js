@@ -43,6 +43,7 @@ const HotelDetail = (props) => {
         setIsLoading(true)
         const result = await hotelDetail(params)
         setIsLoading(false)
+        console.log(JSON.stringify(result))
 
         if (result.status) {
             const res = result?.data?.result?.hotel?.[0]
@@ -102,7 +103,7 @@ const HotelDetail = (props) => {
                             <Image
                                 style={styles.heartImage}
                                 resizeMode="contain"
-                                source={IMAGES.ic_heart} />
+                                source={item?.favourite??[0]?.fv_status=='1'?IMAGES.ic_heart:IMAGES.ic_heart_white}/>
                         </TouchableOpacity>
                     </View>
                     <TouchableOpacity>
@@ -113,7 +114,7 @@ const HotelDetail = (props) => {
                     </TouchableOpacity>
                     <View style={{ flex: 1.0 }}></View>
                     <View style={styles.rateContainer}>
-                        <Image style={styles.starImage}
+                        {/* <Image style={styles.starImage}
                             resizeMode='contain'
                             source={IMAGES.ic_star} />
                         <Text style={styles.numberText}
@@ -121,12 +122,13 @@ const HotelDetail = (props) => {
                             color={COLORS.white}
                             family={FONT_NAME.semiBold}>
                             {'4.9'}
-                        </Text>
-                        <Text
+                        </Text> */}
+                        <View style={{flex:1.0}}></View>
+                        <Text 
                             size={SCALE_SIZE(22)}
                             color={COLORS.white}
                             family={FONT_NAME.semiBold}>
-                            {'$' + item?.hotel_avg_price + ' /Person'}
+                            {'$' + item?.hotel_avg_price  + ' /Person'}
                         </Text>
                     </View>
                 </View>
@@ -255,8 +257,8 @@ const styles = StyleSheet.create({
     },
     rateContainer: {
         flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'center',
+        // alignItems: 'center',
+        // justifyContent: 'center',
         marginHorizontal: SCALE_SIZE(41),
         bottom: SCALE_SIZE(18)
     },

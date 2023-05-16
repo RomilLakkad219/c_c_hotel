@@ -12,6 +12,16 @@ async function getHeaders() {
     }
 }
 
+
+async function getFormDataHeaders() {
+    const token = ''
+    return {
+        'Accept': 'application/json',
+        'Content-Type': 'multipart/form-data',
+    }
+}
+
+
 export async function getRequest(url, params) {
     let headers = await getHeaders();
     try {
@@ -31,6 +41,30 @@ export async function getRequest(url, params) {
 
 export async function postRequest(url, params) {
     let headers = await getHeaders();
+
+    console.log("=====================")
+    console.log("URL", url)
+    console.log("params", params)
+    console.log("headers", headers)
+    console.log("=====================")
+
+    try {
+        const config = {
+            method: 'POST',
+            url: url,
+            data: params,
+            headers: headers
+        };
+        const response = await axios(config);
+        return getResponse(response);
+    } catch (err) {
+        console.log(err)
+        return getError(err)
+    }
+}
+
+export async function postMultipartRequest(url, params) {
+    let headers = await getFormDataHeaders();
 
     console.log("=====================")
     console.log("URL", url)

@@ -4,13 +4,22 @@ import {
     forgotPassword,
     userProfile,
     updateProfile,
+    updateUserImage,
     home,
-    destination,
     subscribe,
     languageChange,
     hotelDetail,
     getCountry,
-    getDestinationPlace
+    getDestinationPlace,
+    destination,
+    getRegion,
+    getServices,
+    howItWork,
+    legalNotice,
+    aboutDeveloper,
+    personalData,
+    blog,
+    matchMakinghotels
 } from './user'
 
 export {
@@ -19,11 +28,20 @@ export {
     forgotPassword,
     userProfile,
     updateProfile,
-    home ,
-    destination ,
+    updateUserImage,
+    home,
     subscribe,
     languageChange,
     hotelDetail,
     getCountry,
-    getDestinationPlace
+    getDestinationPlace,
+    destination,
+    getRegion,
+    getServices,
+    howItWork,
+    legalNotice,
+    aboutDeveloper,
+    personalData,
+    blog,
+    matchMakinghotels
 }

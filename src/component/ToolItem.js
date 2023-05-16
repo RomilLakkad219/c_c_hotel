@@ -14,10 +14,12 @@ export default function ToolItem(props) {
 
     const items = props.items
     const selectedItems = props.selectedItems
+    const onItemChange = props.onItemChange
 
     return (
         <FlatList
             data={items}
+            onItemChange={onItemChange}
             showsVerticalScrollIndicator={false}
             extraData={selectedItems}
             renderItem={({ item, index }) => {

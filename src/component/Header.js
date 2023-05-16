@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { View, StyleSheet, Platform, TouchableOpacity, Image } from 'react-native'
 
 //ASSET
@@ -13,9 +13,15 @@ import { COLORS, FONT_NAME, SCALE_SIZE, STRING } from "../constant";
 //PACKAGES
 import Tooltip from "react-native-walkthrough-tooltip";
 
+//CONTEXT
+import { AuthContext } from "../context";
+
 const Header = (props) => {
 
+    const { profile } = useContext(AuthContext)
+
     if (props.type == 'home') {
+
         return (
             <View style={styles.headerContainer}>
                 <TouchableOpacity style={styles.title} onPress={props.onLanguage}>
@@ -35,8 +41,8 @@ const Header = (props) => {
                 }}>
                     <Image
                         style={styles.profileView}
-                        resizeMode="contain"
-                        source={IMAGES.ic_profile} />
+                        resizeMode="cover"
+                        source={{ uri: profile?.user_imgurl }} />
                 </TouchableOpacity>
             </View>
         )
@@ -167,7 +173,9 @@ const styles = StyleSheet.create({
     profileView: {
         height: SCALE_SIZE(40),
         width: SCALE_SIZE(40),
-        marginRight: SCALE_SIZE(15)
+        marginRight: SCALE_SIZE(15),
+        borderRadius: SCALE_SIZE(20),
+        overflow: 'hidden'
     },
     profileHighlight: {
         height: SCALE_SIZE(40),

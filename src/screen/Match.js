@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { View, StyleSheet, SafeAreaView, FlatList, Image, TouchableOpacity } from 'react-native'
+import { View, StyleSheet, SafeAreaView, FlatList, Image, TouchableOpacity, Alert } from 'react-native'
 
 //SCREENS
 import { SCREENS } from ".";
@@ -11,7 +11,7 @@ import { IMAGES } from "../asset";
 import { Button, Header, ProgressView, Text, ToolItem } from "../component";
 
 //CONSTANT
-import { COLORS, SCALE_SIZE, STRING, FONT_NAME, SHOW_TOAST } from "../constant";
+import { COLORS, SCALE_SIZE, STRING, FONT_NAME, SHOW_TOAST, SHOW_SUCCESS_TOAST } from "../constant";
 
 //PACKAGES
 import Tooltip from "react-native-walkthrough-tooltip";
@@ -21,12 +21,116 @@ import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { AuthContext } from "../context";
 
 //API
-import { destination, getCountry } from "../api";
+import { destination, getCountry, getRegion, getServices } from "../api";
 
 const Match = (props) => {
 
+    const { user } = useContext(AuthContext)
+
+    const [isLoading, setIsLoading] = useState(false);
+
+    const [continents, setContinents] = useState([])
+    const [countries, setCountries] = useState([])
+    const [regions, setRegion] = useState([])
+    const [services, setServices] = useState([])
+
+    const [selectedContinent, setSelectedContinent] = useState(null);
+    const [selectedCountries, setSelectedCountries] = useState(null);
+    const [selectedRegion, setSelectedRegion] = useState(null);
+    const [selectedServices, setSelectedServices] = useState(null)
+
+    const [isVisibleContinent, setVisibleContinent] = useState(false)
+    const [isVisibleCountry, setVisibleCountry] = useState(false)
+    const [isVisibleRegion, setVisibleRegion] = useState(false)
+    const [isVisibleService, setVisibleService] = useState(false)
+
     function onBack() {
         props.navigation.goBack()
+    }
+
+    useEffect(() => {
+        getDestination()
+    }, [])
+
+    async function getDestination() {
+        setIsLoading(true)
+        const result = await destination()
+        setIsLoading(false)
+
+        if (result.status) {
+            const res = result?.data?.result ?? []
+            const destinationContinent = res.map((e) => {
+                return {
+                    name: e.cont_english_design,
+                    french_name: e.cont_french_design,
+                    id: e.cont_id
+                }
+            })
+            setContinents(destinationContinent)
+        }
+        else {
+            SHOW_TOAST(result.error)
+        }
+    }
+
+    async function getCountries() {
+        const params = {
+            user_id: user?.[0]?.user_id,
+            continent: selectedContinent.french_name
+        }
+
+        setIsLoading(true)
+        const result = await getCountry(params)
+        setIsLoading(false)
+
+        if (result.status) {
+            const countryArray = result?.data?.result ?? []
+            console.log(countryArray)
+            const response = countryArray.map((e) => {
+                return {
+                    id: e.cnt_id,
+                    name: e.country,
+                }
+            })
+            setCountries(response)
+
+            setTimeout(() => {
+                setVisibleCountry(true)
+            }, 300);
+        }
+        else {
+            SHOW_TOAST(result.error)
+        }
+    }
+
+    async function getRegionList() {
+        const params = {
+            user_id: user?.[0]?.user_id,
+            continent: selectedContinent.french_name,
+            country: selectedCountries?.name
+        }
+
+        setIsLoading(true)
+        const result = await getRegion(params)
+        setIsLoading(false)
+
+        if (result.status) {
+            const regionResponse = result?.data?.result ?? []
+            const regionData = regionResponse.map((e) => {
+                return {
+                    name: e?.reg_english_design,
+                    french_name: e?.reg_french_design
+                }
+            })
+            setRegion(regionData)
+
+            setTimeout(() => {
+                setVisibleRegion(true)
+            }, 300);
+        }
+        else {
+            SHOW_TOAST(result.error)
+        }
     }
 
     return (
@@ -47,7 +151,65 @@ const Match = (props) => {
                 family={FONT_NAME.medium}>
                 {STRING.dataFillUp}
             </Text>
-            <View>
+            <ToolTipView
+                visible={isVisibleContinent}
+                items={continents}
+                selectedItem={selectedContinent}
+                placeholder={'Which continent attracts you ?'}
+                onOpen={() => {
+                    if (continents) {
+                        setVisibleContinent(true)
+                    }
+                    else {
+                        getDestination()
+                    }
+                }}
+                onClose={() => {
+                    setVisibleContinent(false)
+                }}
+                onSelectItem={(item) => {
+                    setSelectedContinent(item)
+                }} />
+            <ToolTipView
+                visible={isVisibleCountry}
+                items={countries}
+                selectedItem={selectedCountries}
+                placeholder={'Which countries would you like to visit ?'}
+                onOpen={() => {
+                    if (selectedContinent) {
+                        getCountries()
+                    }
+                    else {
+                        SHOW_TOAST('Please select continent')
+                    }
+                }}
+                onClose={() => {
+                    setVisibleCountry(false)
+                }}
+                onSelectItem={(item) => {
+                    setSelectedCountries(item)
+                }} />
+            <ToolTipView
+                visible={isVisibleRegion}
+                items={regions}
+                selectedItem={selectedRegion}
+                placeholder={'Which countries would you like to visit ?'}
+                onOpen={() => {
+                    if (selectedContinent) {
+                        getRegionList()
+                    }
+                    else {
+                        SHOW_TOAST('Please select continent')
+                    }
+                }}
+                onClose={() => {
+                    setVisibleRegion(false)
+                }}
+                onSelectItem={(item) => {
+                    setSelectedRegion(item)
+                }} />
+
+            {/* <View>
                 <FlatList data={['', '', '', '', '', '', '']}
                     keyExtractor={(item, index) => index.toString()}
                     ListHeaderComponent={() => {
@@ -58,167 +220,127 @@ const Match = (props) => {
                     renderItem={({ item, index }) => {
                         if (index == 0) {
                             return (
-                                <ContinentToolTip />
+                                <ContinentToolTip item={item}
+                                    onItemChange={(items) => {
+                                        setSelectedContinent(items)
+                                    }} />
                             )
                         }
                         else if (index == 1) {
                             return (
-                                <CountriesToolTip />
+                                <CountriesToolTip item={item}
+                                    onItemChange={(items) => {
+                                        setSelectedCountries(items)
+                                    }} />
                             )
                         }
                         else if (index == 2) {
                             return (
-                                <RegionToolTip />
+                                <RegionToolTip item={item}
+                                    onItemChange={(items) => {
+                                        setSelectedRegion(items)
+                                    }} />
                             )
                         }
                         else if (index == 3) {
                             return (
-                                <ExperienceToolTip />
-                            )
-                        }
-                        else if (index == 4) {
-                            return (
-                                <ServiceToolTip />
-                            )
-                        }
-                        else if (index == 5) {
-                            return (
-                                <EquipmentToolTip />
-                            )
-                        }
-                        else if (index == 6) {
-                            return (
-                                <DatePicker />
+                                <ServiceToolTip item={item}
+                                    onItemChange={(items) => {
+                                        setSelectedServices(items)
+                                    }} />
                             )
                         }
                     }}>
                 </FlatList>
-            </View>
+            </View> */}
             <Button
                 onPress={() => {
-                    props.navigation.navigate(SCREENS.MatchList.name)
+                    props.navigation.navigate(SCREENS.MatchList.name, {
+                        continent: selectedContinent,
+                        countries: selectedCountries,
+                        region: selectedRegion,
+                        services: selectedServices
+                    })
+                    console.log(selectedContinent, selectedCountries, selectedRegion, selectedServices)
                 }}
                 style={styles.searchButton}
                 title={STRING.search} />
             <SafeAreaView />
+            {isLoading && <ProgressView />}
         </View>
     )
 }
 
-const ContinentToolTip = (props) => {
+const ToolTipView = (props) => {
+
+    console.log(props.visible)
+    const items = props.items
+    const placeholder = props.placeholder
+    const selectedItem = props.selectedItem
+    return (
+        <Tooltip
+            isVisible={props.visible}
+            contentStyle={styles.tooltipContainer}
+            backgroundColor={'transparent'}
+            placement='bottom'
+            onClose={props.onClose}
+            arrowStyle={{ height: 0, width: 0 }}
+            arrowSize={{ height: 0, width: 0 }}
+            content={
+                <ToolItem items={items}
+                    selectedItems={[selectedItem]}
+                    onPress={(item, index) => {
+                        props.onSelectItem(item)
+                    }} />
+            }>
+            <TouchableOpacity style={styles.listContainer}
+                onPress={() => props.onOpen()}>
+                <Text
+                    style={styles.title}
+                    size={SCALE_SIZE(12)}
+                    color={COLORS.gray}
+                    family={FONT_NAME.medium}>
+                    {selectedItem ? selectedItem.name : placeholder}
+                </Text>
+                <Image
+                    style={styles.image}
+                    resizeMode="contain"
+                    source={IMAGES.ic_down}>
+                </Image>
+            </TouchableOpacity>
+        </Tooltip>
+    )
+}
+
+
+const RegionToolTip = (props) => {
 
     const [visible, setVisible] = useState(false);
     const [selectedFilterItems, setSelectedFilterItems] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
-    const [destinationResult, setDestinationResult] = useState([])
+    const [regionResult, setRegionResult] = useState([])
 
     useEffect(() => {
-        getDestination()
+        getAllRegions()
     }, [])
 
-    async function getDestination() {
-        setIsLoading(true)
-        const result = await destination()
-        setIsLoading(false)
-
-        if (result.status) {
-            if (destinationResult) {
-                const res = result?.data?.result ?? []
-                const destinationContinent = res.map((e) => {
-                    return {
-                        name: e.cont_english_design
-                    }
-                })
-                setDestinationResult(destinationContinent)
-            }
-        }
-        else {
-            SHOW_TOAST(result.error)
-        }
-    }
-
-    return (
-        <Tooltip
-            isVisible={visible}
-            contentStyle={styles.tooltipContainer}
-            backgroundColor={'transparent'}
-            placement='bottom'
-            onClose={() => {
-                setVisible(false)
-            }}
-            arrowStyle={{
-                height: 0, width: 0
-            }}
-            arrowSize={{
-                height: 0, width: 0
-            }}
-            content={<ToolItem items={destinationResult}
-                selectedItems={selectedFilterItems}
-                onPress={(item, index) => {
-                    const array = [...selectedFilterItems]
-                    if (selectedFilterItems.includes(item)) {
-                        const arrayIndex = array.indexOf(item)
-                        array.splice(arrayIndex, 1)
-                        setSelectedFilterItems(array)
-                    }
-                    else {
-                        array.push(item)
-                    }
-                    setSelectedFilterItems(array)
-                }} />}>
-            <TouchableOpacity style={styles.listContainer}
-                onPress={() => setVisible(true)}>
-                <Text
-                    style={styles.title}
-                    size={SCALE_SIZE(12)}
-                    color={COLORS.gray}
-                    family={FONT_NAME.medium}>
-                    {selectedFilterItems.length ? selectedFilterItems.map((e) => e.name).join(' , ') : 'Which continent attracts you ?'}
-                </Text>
-                <Image
-                    style={styles.image}
-                    resizeMode="contain"
-                    source={IMAGES.ic_down}>
-                </Image>
-            </TouchableOpacity>
-            {isLoading && <ProgressView />}
-        </Tooltip>
-    )
-}
-
-const CountriesToolTip = (props) => {
-
-    const [visible, setVisible] = useState(false)
-    const [selectedFilterItems, setSelectedFilterItems] = useState([]);
-    const [isLoading, setIsLoading] = useState(false);
-    const [countryResult, setCountryResult] = useState([]);
-
-    const { user } = useContext(AuthContext)
-
-    useEffect(() => {
-        getCountries()
-    }, [])
-
-    async function getCountries() {
+    async function getAllRegions() {
         const params = {
-            user_id: user?.[0]?.user_id,
+            country: regionResult
         }
 
         setIsLoading(true)
-        const result = await getCountry(params)
+        const result = await getRegion(params)
         setIsLoading(false)
 
         if (result.status) {
-            if (countryResult) {
-                const countryArray = result?.data?.result ?? []
-                const response = countryArray.map((e) => {
-                    return {
-                        id: e.cnt_id,
-                        name: e.country
-                    }
-                })
-                setCountryResult(response)
-            }
+            const regionResponse = result?.data?.result ?? []
+            const regionData = regionResponse.map((e) => {
+                return {
+                    name: e?.reg_english_design
+                }
+            })
+            setRegionResult(regionData)
         }
         else {
             SHOW_TOAST(result.error)
@@ -229,8 +351,8 @@ const CountriesToolTip = (props) => {
         <Tooltip
             isVisible={visible}
             contentStyle={styles.tooltipContainer}
-            backgroundColor={'transparent'}
             placement='bottom'
+            backgroundColor={'transparent'}
             onClose={() => {
                 setVisible(false)
             }}
@@ -240,21 +362,25 @@ const CountriesToolTip = (props) => {
             arrowSize={{
                 height: 0, width: 0
             }}
-            content={<ToolItem
-                items={countryResult}
-                selectedItems={selectedFilterItems}
-                onPress={(item, index) => {
-                    const array = [...selectedFilterItems]
-                    if (selectedFilterItems.includes(item)) {
-                        const arrayIndex = array.indexOf(item)
-                        array.splice(arrayIndex, 1)
+            content={
+                <ToolItem
+                    items={regionResult}
+                    selectedItems={selectedFilterItems}
+                    onPress={(item, index) => {
+                        console.log(selectedFilterItems.includes(item))
+                        const array = [...selectedFilterItems]
+                        if (selectedFilterItems.includes(item)) {
+                            const arrayIndex = array.indexOf(item)
+                            array.splice(arrayIndex, 1)
+                            setSelectedFilterItems(array)
+                        }
+                        else {
+                            array.push(item)
+                        }
                         setSelectedFilterItems(array)
-                    }
-                    else {
-                        array.push(item)
-                    }
-                    setSelectedFilterItems(array)
-                }} />}>
+                        props.onItemChange(array)
+                    }} />}
+        >
             <TouchableOpacity style={styles.listContainer}
                 onPress={() => setVisible(true)}>
                 <Text
@@ -262,7 +388,7 @@ const CountriesToolTip = (props) => {
                     size={SCALE_SIZE(12)}
                     color={COLORS.gray}
                     family={FONT_NAME.medium}>
-                    {selectedFilterItems.length ? selectedFilterItems.map((e) => e.name).join(' , ') : 'Which countries would you like to visit ?'}
+                    {selectedFilterItems?.length ? selectedFilterItems.map((e) => e.name).join(' , ') : 'In which region do you want to travel ?'}
                 </Text>
                 <Image
                     style={styles.image}
@@ -275,121 +401,100 @@ const CountriesToolTip = (props) => {
     )
 }
 
-const RegionToolTip = (props) => {
+// const ExperienceToolTip = (props) => {
 
-    const [visible, setVisible] = useState(false)
-    const [selectedFilterItems, setSelectedFilterItems] = useState([])
+//     const [visible, setVisible] = useState(false)
+//     const [selectedFilterItems, setSelectedFilterItems] = useState([])
 
-    return (
-        <Tooltip
-            isVisible={visible}
-            contentStyle={styles.tooltipContainer}
-            placement='bottom'
-            backgroundColor={'transparent'}
-            onClose={() => {
-                setVisible(false)
-            }}
-            arrowStyle={{
-                height: SCALE_SIZE(0), width: SCALE_SIZE(0)
-            }}
-            arrowSize={{
-                height: 0, width: 0
-            }}
-            content={<ToolItem items={[{id: 0, name: 'Cape Town' }, {id: 1, name: 'Biscay' }, {id:2,name: 'Occitanie' }, {id:3, name: 'Pays de la Loire' }, { name: 'French Brittany' }, { name: 'Ile-de-France' }]}
-            selectedItems={selectedFilterItems}
-                onPress={(item, index) => {
-                    console.log(selectedFilterItems.includes(item))
-                    const array = [...selectedFilterItems]
-                    if (selectedFilterItems.includes(item)) {
-                        const arrayIndex = array.indexOf(item)
-                        array.splice(arrayIndex, 1)
-                        setSelectedFilterItems(array)
-                    }
-                    else {
-                        array.push(item)
-                    }
-                    setSelectedFilterItems(array)
-                }} />}
-                >
-            <TouchableOpacity style={styles.listContainer}
-                onPress={() => setVisible(true)}>
-                <Text
-                    style={styles.title}
-                    size={SCALE_SIZE(12)}
-                    color={COLORS.gray}
-                    family={FONT_NAME.medium}>
-                    {'In which region do you want to travel ?'}
-                </Text>
-                <Image
-                    style={styles.image}
-                    resizeMode="contain"
-                    source={IMAGES.ic_down}>
-                </Image>
-            </TouchableOpacity>
-        </Tooltip>
-    )
-}
-const ExperienceToolTip = (props) => {
-
-    const [visible, setVisible] = useState(false)
-    const [selectedFilterItems, setSelectedFilterItems] = useState([])
-
-    return (
-        <Tooltip
-            isVisible={visible}
-            contentStyle={[styles.tooltipContainer]}
-            placement='bottom'
-            backgroundColor={'transparent'}
-            onClose={() => {
-                setVisible(false)
-            }}
-            arrowStyle={{
-                height: SCALE_SIZE(0), width: SCALE_SIZE(0)
-            }}
-            arrowSize={{
-                height: 0, width: 0
-            }}
-            content={<ToolItem 
-                items={[{ name: 'Beach' }, { name: 'Tea Route' }, { name: 'Trendy' }, {name: 'Village' }, { name: 'Weddings' }, { name: 'Zen' }]}
-                selectedItems={selectedFilterItems}
-                onPress={(item, index) => {
-                    const array = [...selectedFilterItems]
-                    if (selectedFilterItems.includes(item)) {
-                        const arrayIndex = array.indexOf(item)
-                        array.splice(arrayIndex, 1)
-                        setSelectedFilterItems(array)
-                    }
-                    else {
-                        array.push(item)
-                    }
-                    setSelectedFilterItems(array)
-                    console.log('ARRAY',array)
-                    console.log("SELECTED",selectedFilterItems)
-                    console.log('Item',item)
-                }} />}>
-            <TouchableOpacity style={styles.listContainer}
-                onPress={() => setVisible(true)}>
-                <Text
-                    style={styles.title}
-                    size={SCALE_SIZE(12)}
-                    color={COLORS.gray}
-                    family={FONT_NAME.medium}>
-                    {'Which experiences are you looking for the most ?'}
-                </Text>
-                <Image
-                    style={styles.image}
-                    resizeMode="contain"
-                    source={IMAGES.ic_down}>
-                </Image>
-            </TouchableOpacity>
-        </Tooltip>
-    )
-}
+//     return (
+//         <Tooltip
+//             isVisible={visible}
+//             contentStyle={[styles.tooltipContainer]}
+//             placement='bottom'
+//             backgroundColor={'transparent'}
+//             onClose={() => {
+//                 setVisible(false)
+//             }}
+//             arrowStyle={{
+//                 height: SCALE_SIZE(0), width: SCALE_SIZE(0)
+//             }}
+//             arrowSize={{
+//                 height: 0, width: 0
+//             }}
+//             content={<ToolItem
+//                 items={[{ name: 'Beach' }, { name: 'Tea Route' }, { name: 'Trendy' }, { name: 'Village' }, { name: 'Weddings' }, { name: 'Zen' }]}
+//                 selectedItems={selectedFilterItems}
+//                 onPress={(item, index) => {
+//                     const array = [...selectedFilterItems]
+//                     if (selectedFilterItems.includes(item)) {
+//                         const arrayIndex = array.indexOf(item)
+//                         array.splice(arrayIndex, 1)
+//                         setSelectedFilterItems(array)
+//                     }
+//                     else {
+//                         array.push(item)
+//                     }
+//                     setSelectedFilterItems(array)
+//                     console.log('ARRAY', array)
+//                     console.log("SELECTED", selectedFilterItems)
+//                     console.log('Item', item)
+//                 }} />}>
+//             <TouchableOpacity style={styles.listContainer}
+//                 onPress={() => setVisible(true)}>
+//                 <Text
+//                     style={styles.title}
+//                     size={SCALE_SIZE(12)}
+//                     color={COLORS.gray}
+//                     family={FONT_NAME.medium}>
+//                     {'Which experiences are you looking for the most ?'}
+//                 </Text>
+//                 <Image
+//                     style={styles.image}
+//                     resizeMode="contain"
+//                     source={IMAGES.ic_down}>
+//                 </Image>
+//             </TouchableOpacity>
+//         </Tooltip>
+//     )
+// }
 
 const ServiceToolTip = (props) => {
 
-    const [visible, setVisible] = useState(false)
-    const [selectedFilterItems, setSelectedFilterItems] = useState([])
+    const [visible, setVisible] = useState(false);
+    const [selectedFilterItems, setSelectedFilterItems] = useState([]);
+    const [isLoading, setIsLoading] = useState(false);
+    const [serviceResult, setServiceResult] = useState([])
+
+    useEffect(() => {
+        services()
+    }, [])
+
+    async function services() {
+        const params = {
+            continent: serviceResult,
+            country: '',
+            hotel_region: ''
+        }
+
+        setIsLoading(true)
+        const result = await getServices(params)
+        setIsLoading(false)
+
+        if (result.status) {
+            if (serviceResult) {
+                const response = result?.data?.result?.[0]?.hotel_services ?? []
+                const serviceData = response.map((e) => {
+                    return {
+                        name: e?.services
+                    }
+                })
+                setServiceResult(serviceData)
+            }
+        }
+        else {
+            SHOW_TOAST(result.error)
+        }
+    }
 
     return (
         <Tooltip
@@ -406,19 +511,20 @@ const ServiceToolTip = (props) => {
             arrowSize={{
                 height: 0, width: 0
             }}
-            content={<ToolItem items={[{ name: 'Bicycle Rental' }, { name: 'Concierge' }, { name: 'Daily Press' }, { name: 'Cooking Lessons' }, { name: 'Weddings' }, { name: 'Electric Vehicle' }]}
+            content={<ToolItem items={serviceResult}
                 selectedItems={selectedFilterItems}
                 onPress={(item, index) => {
                     const array = [...selectedFilterItems]
-                    if (selectedFilterItems.includes(index)) {
-                        const arrayIndex = array.indexOf(index)
+                    if (selectedFilterItems.includes(item)) {
+                        const arrayIndex = array.indexOf(item)
                         array.splice(arrayIndex, 1)
                         setSelectedFilterItems(array)
                     }
                     else {
-                        array.push(index)
+                        array.push(item)
                     }
                     setSelectedFilterItems(array)
+                    props.onItemChange(array)
                 }} />}>
             <TouchableOpacity style={styles.listContainer}
                 onPress={() => setVisible(true)}>
@@ -427,7 +533,7 @@ const ServiceToolTip = (props) => {
                     size={SCALE_SIZE(12)}
                     color={COLORS.gray}
                     family={FONT_NAME.medium}>
-                    {'What services or equipment do you expect ?'}
+                    {selectedFilterItems?.length ? selectedFilterItems.map((e) => e.name).join(' , ') : 'What services or equipment do you expect ?'}
                 </Text>
                 <Image
                     style={styles.image}
@@ -435,112 +541,113 @@ const ServiceToolTip = (props) => {
                     source={IMAGES.ic_down}>
                 </Image>
             </TouchableOpacity>
+            {isLoading && <ProgressView />}
         </Tooltip>
     )
 }
 
-const EquipmentToolTip = (props) => {
+// const EquipmentToolTip = (props) => {
 
-    const [visible, setVisible] = useState(false)
-    const [selectedFilterItems, setSelectedFilterItems] = useState([])
+//     const [visible, setVisible] = useState(false)
+//     const [selectedFilterItems, setSelectedFilterItems] = useState([])
 
-    return (
-        <Tooltip
-            isVisible={visible}
-            contentStyle={styles.tooltipContainer}
-            backgroundColor={'transparent'}
-            placement='bottom'
-            onClose={() => {
-                setVisible(false)
-            }}
-            arrowStyle={{
-                height: SCALE_SIZE(0), width: SCALE_SIZE(0)
-            }}
-            arrowSize={{
-                height: 0, width: 0
-            }}
-            content={< ToolItem items={[{ name: 'Swimming Pool' }, { name: 'Restaurant' }, { name: 'Spa' }, { name: 'Library' }, { name: 'Tennis' }, { name: 'Lockers' }]}
-                selectedItems={selectedFilterItems}
-                onPress={(item, index) => {
-                    const array = [...selectedFilterItems]
-                    if (selectedFilterItems.includes(index)) {
-                        const arrayIndex = array.indexOf(index)
-                        array.splice(arrayIndex, 1)
-                        setSelectedFilterItems(array)
-                    }
-                    else {
-                        array.push(index)
-                    }
-                    setSelectedFilterItems(array)
-                }} />}>
-            <TouchableOpacity style={styles.listContainer}
-                onPress={() => setVisible(true)}>
-                <Text
-                    style={styles.title}
-                    size={SCALE_SIZE(12)}
-                    color={COLORS.gray}
-                    family={FONT_NAME.medium}>
-                    {'Equipment'}
-                </Text>
-                <Image
-                    style={styles.image}
-                    resizeMode="contain"
-                    source={IMAGES.ic_down}>
-                </Image>
-            </TouchableOpacity >
-        </Tooltip>
-    )
-}
+//     return (
+//         <Tooltip
+//             isVisible={visible}
+//             contentStyle={styles.tooltipContainer}
+//             backgroundColor={'transparent'}
+//             placement='bottom'
+//             onClose={() => {
+//                 setVisible(false)
+//             }}
+//             arrowStyle={{
+//                 height: SCALE_SIZE(0), width: SCALE_SIZE(0)
+//             }}
+//             arrowSize={{
+//                 height: 0, width: 0
+//             }}
+//             content={< ToolItem items={[{ name: 'Swimming Pool' }, { name: 'Restaurant' }, { name: 'Spa' }, { name: 'Library' }, { name: 'Tennis' }, { name: 'Lockers' }]}
+//                 selectedItems={selectedFilterItems}
+//                 onPress={(item, index) => {
+//                     const array = [...selectedFilterItems]
+//                     if (selectedFilterItems.includes(index)) {
+//                         const arrayIndex = array.indexOf(index)
+//                         array.splice(arrayIndex, 1)
+//                         setSelectedFilterItems(array)
+//                     }
+//                     else {
+//                         array.push(index)
+//                     }
+//                     setSelectedFilterItems(array)
+//                 }} />}>
+//             <TouchableOpacity style={styles.listContainer}
+//                 onPress={() => setVisible(true)}>
+//                 <Text
+//                     style={styles.title}
+//                     size={SCALE_SIZE(12)}
+//                     color={COLORS.gray}
+//                     family={FONT_NAME.medium}>
+//                     {'Equipment'}
+//                 </Text>
+//                 <Image
+//                     style={styles.image}
+//                     resizeMode="contain"
+//                     source={IMAGES.ic_down}>
+//                 </Image>
+//             </TouchableOpacity >
+//         </Tooltip>
+//     )
+// }
 
-const DatePicker = (props) => {
+// const DatePicker = (props) => {
 
-    const [isDatePickerVisible, setIsDatePickerVisible] = useState(false);
-    const [selectedDate, setSelectedDate] = useState('')
+//     const [isDatePickerVisible, setIsDatePickerVisible] = useState(false);
+//     const [selectedDate, setSelectedDate] = useState('')
 
-    const showDatePicker = () => {
-        setIsDatePickerVisible(true)
-    }
+//     const showDatePicker = () => {
+//         setIsDatePickerVisible(true)
+//     }
 
-    const hideDatePicker = () => {
-        setIsDatePickerVisible(false)
-    }
+//     const hideDatePicker = () => {
+//         setIsDatePickerVisible(false)
+//     }
 
-    const handleConfirm = (date) => {
-        console.log('A date has been picked', date);
-        setSelectedDate(x1)
-        hideDatePicker();
-        const dt = new Date(date);
-        const x = dt.toISOString().split('T');
-        const x1 = x[0].split('_');
-        console.log(x1)
-    }
+//     const handleConfirm = (date) => {
+//         console.log('A date has been picked', date);
+//         setSelectedDate(x1)
+//         hideDatePicker();
+//         const dt = new Date(date);
+//         const x = dt.toISOString().split('T');
+//         const x1 = x[0].split('_');
+//         console.log(x1)
+//     }
 
-    return (
-        <>
-            <TouchableOpacity style={styles.listContainer}
-                onPress={() => showDatePicker()}>
-                <Text
-                    style={styles.title}
-                    size={SCALE_SIZE(12)}
-                    color={COLORS.gray}
-                    family={FONT_NAME.medium}>
-                    {'When you want to go ?'}
-                </Text>
-                <Image
-                    style={styles.image}
-                    resizeMode="contain"
-                    source={IMAGES.ic_calender}>
-                </Image>
-            </TouchableOpacity>
-            <DateTimePickerModal
-                isVisible={isDatePickerVisible}
-                mode='date'
-                onConfirm={handleConfirm}
-                onCancel={hideDatePicker}
-            />
-        </>
-    )
-}
+//     return (
+//         <>
+//             <TouchableOpacity style={styles.listContainer}
+//                 onPress={() => showDatePicker()}>
+//                 <Text
+//                     style={styles.title}
+//                     size={SCALE_SIZE(12)}
+//                     color={COLORS.gray}
+//                     family={FONT_NAME.medium}>
+//                     {'When you want to go ?'}
+//                 </Text>
+//                 <Image
+//                     style={styles.image}
+//                     resizeMode="contain"
+//                     source={IMAGES.ic_calender}>
+//                 </Image>
+//             </TouchableOpacity>
+//             <DateTimePickerModal
+//                 isVisible={isDatePickerVisible}
+//                 mode='date'
+//                 onConfirm={handleConfirm}
+//                 onCancel={hideDatePicker}
+//             />
+//         </>
+//     )
+// }
 
 const styles = StyleSheet.create({
     container: {
@@ -579,6 +686,9 @@ const styles = StyleSheet.create({
         marginTop: SCALE_SIZE(36),
         marginHorizontal: SCALE_SIZE(78),
         marginBottom: SCALE_SIZE(35),
+        // position: 'absolute',
+        // bottom:0,
+        // left:0,
     },
     tooltipContainer: {
         height: SCALE_SIZE(173),

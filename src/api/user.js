@@ -1,5 +1,5 @@
 //REQUEST
-import { getRequest, postRequest, putRequest } from "./http";
+import { getRequest, postMultipartRequest, postRequest, putRequest } from "./http";
 
 //CONSTANT
 import { WEB_SERVICE } from "../constant";
@@ -39,6 +39,12 @@ async function updateProfile(params) {
     return result
 }
 
+async function updateUserImage(params) {
+    let url = WEB_SERVICE.updateProfile
+    const result = await postMultipartRequest(url, params)
+    return result
+}
+
 async function updateUserSocialProfile(params) {
     let url = WEB_SERVICE.updateUserSocialProfile
     const result = await postRequest(url, params)
@@ -47,12 +53,6 @@ async function updateUserSocialProfile(params) {
 
 async function home(params) {
     let url = WEB_SERVICE.home
-    const result = await postRequest(url, params)
-    return result
-}
-
-async function destination(params) {
-    let url = WEB_SERVICE.destinations
     const result = await postRequest(url, params)
     return result
 }
@@ -87,18 +87,81 @@ async function getDestinationPlace(params) {
     return result
 }
 
+async function destination(params) {
+    let url = WEB_SERVICE.destination
+    const result = await postRequest(url, params)
+    return result
+}
+
+async function getRegion(params) {
+    let url = WEB_SERVICE.getRegion
+    const result = await postRequest(url, params)
+    return result
+}
+
+async function getServices(params) {
+    let url = WEB_SERVICE.getServices
+    const result = await postRequest(url, params)
+    return result
+}
+
+async function howItWork(params) {
+    let url = WEB_SERVICE.howItWork
+    const result = await postRequest(url, params)
+    return result
+}
+
+async function legalNotice(params) {
+    let url = WEB_SERVICE.legalNotice
+    const result = await postRequest(url, params)
+    return result
+}
+
+async function aboutDeveloper(params) {
+    let url = WEB_SERVICE.aboutDeveloper
+    const result = await postRequest(url, params)
+    return result
+}
+
+async function personalData(params) {
+    let url = WEB_SERVICE.personalData
+    const result = await postRequest(url, params)
+    return result
+}
+
+async function blog(params) {
+    let url = WEB_SERVICE.blog
+    const result = await postRequest(url, params)
+    return result
+}
+
+async function matchMakinghotels(params) {
+    let url = WEB_SERVICE.matchMakingHotels
+    const result = await postRequest(url, params)
+    return result
+}
+
 export {
     signUp,
     login,
     forgotPassword,
     userProfile,
     updateProfile,
+    updateUserImage,
     updateUserSocialProfile,
     home,
-    destination,
     subscribe,
     languageChange,
     hotelDetail,
     getCountry,
-    getDestinationPlace
+    getDestinationPlace,
+    destination,
+    getRegion,
+    getServices,
+    howItWork,
+    legalNotice,
+    aboutDeveloper,
+    personalData,
+    blog,
+    matchMakinghotels
 }

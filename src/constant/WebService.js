@@ -10,10 +10,18 @@ export const WEB_SERVICE = {
     updateProfile: BASE_URL + 'mAdd/profile',
     updateUserSocialProfile: BASE_URL + 'mAdd/profile',
     home: BASE_URL + 'fields/hotel',
-    destinations: BASE_URL + 'fields/destinations',
     subscribe: BASE_URL + 'subscribe',
     languageChange: BASE_URL + 'mAdd/lang_change',
     hotelDetail: BASE_URL + 'fields/hotel_detail',
     getCountry: BASE_URL + 'fields/country_list',
-    destinationPlaces:BASE_URL+'fields/hotel'
+    destinationPlaces: BASE_URL + 'fields/hotel',
+    destination: BASE_URL + 'fields/destinations',
+    getRegion: BASE_URL + 'fields/get_region',
+    getServices: BASE_URL + 'fields/filter_services_experiences',
+    howItWork: BASE_URL + 'fields/how_it_work',
+    legalNotice: BASE_URL + 'fields/legal_notice',
+    aboutDeveloper: BASE_URL + 'fields/about_developer',
+    personalData: BASE_URL + 'fields/personal_data',
+    blog: BASE_URL + 'fields/blog',
+    matchMakingHotels: BASE_URL + 'fields/match_making_hotels'
 }

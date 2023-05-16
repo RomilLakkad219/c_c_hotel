@@ -34,8 +34,8 @@ const Profile = (props) => {
             <View style={{ flexDirection: 'row' }}>
                 <Image
                     style={styles.profile}
-                    resizeMode="contain"
-                    source={IMAGES.ic_profile} />
+                    resizeMode="cover"
+                    source={{ uri: profile?.user_imgurl }} />
                 <View style={{ flexDirection: 'column' }}>
                     <Text
                         style={styles.nameText}
@@ -110,7 +110,9 @@ const styles = StyleSheet.create({
         height: SCALE_SIZE(100),
         width: SCALE_SIZE(100),
         marginTop: SCALE_SIZE(39),
-        marginHorizontal: SCALE_SIZE(35)
+        marginHorizontal: SCALE_SIZE(35),
+        overflow: 'hidden',
+        borderRadius: SCALE_SIZE(50),
     },
     nameText: {
         marginTop: SCALE_SIZE(59)

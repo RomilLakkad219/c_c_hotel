@@ -1,11 +1,11 @@
-import React from "react";
-import { View, StyleSheet, Platform, SafeAreaView, Image, TouchableOpacity, FlatList } from 'react-native'
+import React, { useEffect, useState } from "react";
+import { View, StyleSheet, SafeAreaView, Image, TouchableOpacity, FlatList } from 'react-native'
 
 //ASSET
 import { IMAGES } from "../asset";
 
 //COMPONENT
-import { Header, Text } from "../component";
+import { Header, ProgressView, Text } from "../component";
 
 //CONSTANT
 import { COLORS, FONT_NAME, SCALE_SIZE, STRING } from "../constant";
@@ -17,7 +17,43 @@ import MapView, { Marker } from "react-native-maps";
 //SCREENS
 import { SCREENS } from ".";
 
+//API
+import { matchMakinghotels } from "../api";
+
 const MatchList = (props) => {
+
+    const [isLoading, setIsLoading] = useState(false)
+
+    const { continent, countries, region, services } = props.route.params
+
+    useEffect(() => {
+        getMatchMakingList()
+    }, [])
+
+    async function getMatchMakingList() {
+        const params = {
+            seacrh_string: '',
+            avg_price_from: '',
+            avg_price_to: '',
+            hotel_continent: continent?.map((e) => e.name).join(','),
+            hotel_country: countries?.map((e) => e.name).join(','),
+            hotel_themes: '',
+            hotel_services: services?.map((e) => e.name).join(','),
+            hotel_region: region?.map((e) => e.name).join(','),
+            hotel_equipment: '',
+            user_session: '',
+            user_session_id: ''
+        }
+
+        console.log('MatchList Params', params)
+
+        setIsLoading(true)
+        const result = await matchMakinghotels(params)
+        setIsLoading(false)
+
+        console.log(JSON.stringify(result))
+
+    }
 
     return (
         <View style={styles.container}>
@@ -57,8 +93,8 @@ const MatchList = (props) => {
                         return (
                             <TouchableOpacity style={styles.itemContainer}
                                 onPress={() => {
-                                    props.navigation.navigate(SCREENS.HotelDetail.name,{
-                                        item:item
+                                    props.navigation.navigate(SCREENS.HotelDetail.name, {
+                                        item: item
                                     })
                                 }}>
                                 <View style={{ flexDirection: 'row' }}>
@@ -102,9 +138,9 @@ const MatchList = (props) => {
                             </TouchableOpacity>
                         )
                     }}>
-
                 </FlatList>
             </View>
+            {isLoading && <ProgressView />}
         </View>
     )
 }

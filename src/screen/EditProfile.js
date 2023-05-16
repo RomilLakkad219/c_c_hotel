@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
-import { View, StyleSheet, SafeAreaView, TouchableOpacity, Image, TextInput, ScrollView } from 'react-native'
+import { View, StyleSheet, SafeAreaView, TouchableOpacity, Image, TextInput, ScrollView, Alert } from 'react-native'
 
 //PACKAGES
 import DateTimePickerModal from "react-native-modal-datetime-picker";
@@ -16,7 +16,7 @@ import { BottomSheet, Header, ProgressView, Text } from "../component";
 import { COLORS, FONT_NAME, SCALE_SIZE, SHOW_TOAST, STRING } from "../constant";
 
 //API
-import { getCountry, updateProfile } from "../api";
+import { getCountry, updateProfile, updateUserImage } from "../api";
 
 //CONTEXT
 import { AuthContext } from "../context";
@@ -39,11 +39,12 @@ const EditProfile = (props) => {
     const [postalCode, setPostalCode] = useState(profile?.user_postcode);
     const [isDatePickerVisible, setIsDatePickerVisible] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
-    const [image, setImage] = useState('');
+    const [image, setImage] = useState(profile?.user_imgurl);
     const [countryResult, setCountryResult] = useState([]);
     const [selectedMedia, setSelectedMedia] = useState(false)
 
     useEffect(() => {
+        console.log(JSON.stringify(profile))
         getUserProfile()
         getCountries()
     }, [])
@@ -108,6 +109,7 @@ const EditProfile = (props) => {
 
         const params = {
             user_id: user?.[0]?.user_id,
+            user_cover_img: image,
             user_name: name,
             user_mb_no: mobileNumber,
             user_dob: dateOfBirth,
@@ -123,6 +125,8 @@ const EditProfile = (props) => {
             user_session: '',
             user_session_id: ''
         }
+
+        console.log(params)
 
         setIsLoading(true)
         const result = await updateProfile(params)
@@ -147,6 +151,31 @@ const EditProfile = (props) => {
             videoQuality: 'high'
         })
         setImage(result?.assets?.[0]?.uri)
+        uploadImage(result?.assets?.[0]?.uri)
+    }
+
+    async function uploadImage(uri) {
+        const body = new FormData()
+        body.append('user_id', user?.[0]?.user_id,)
+        body.append('user_imgurl', {
+            uri: uri,
+            name: 'image.png',
+            fileName: 'image',
+            type: 'image/png'
+        })
+
+        setIsLoading(true)
+        const result = await updateUserImage(body)
+        setIsLoading(false)
+
+        if (result.status) {
+            if (result?.data?.status == '1') {
+                fetchProfile()
+            }
+        }
+        else {
+            SHOW_TOAST(result.error)
+        }
     }
 
     async function openCamera() {
@@ -438,7 +467,8 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         marginTop: SCALE_SIZE(39),
         marginLeft: SCALE_SIZE(35),
-        borderRadius: SCALE_SIZE(50)
+        borderRadius: SCALE_SIZE(50),
+        backgroundColor: 'rgba(0,0,0,0.1)'
     },
     uploadImageText: {
         marginTop: SCALE_SIZE(74),

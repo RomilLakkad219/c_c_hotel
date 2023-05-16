@@ -1,11 +1,8 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { View, StyleSheet, SafeAreaView, FlatList, ImageBackground, Dimensions, TouchableOpacity } from 'react-native'
 
 //SCREENS
 import { SCREENS } from ".";
-
-//ASSET
-import { IMAGES } from "../asset";
 
 //COMPONENT
 import { Header, ProgressView, Text } from "../component";
@@ -23,6 +20,7 @@ const Destination = (props) => {
 
     useEffect(() => {
         getDestination()
+
     }, [])
 
     function onBack() {
@@ -30,9 +28,12 @@ const Destination = (props) => {
     }
 
     async function getDestination() {
-    
+        const params = {
+            continent: ''
+        }
+
         setIsLoading(true)
-        const result = await destination()
+        const result = await destination(params)
         setIsLoading(false)
 
         if (result.status) {
@@ -58,14 +59,14 @@ const Destination = (props) => {
                     renderItem={({ item, index }) => {
                         return (
                             <TouchableOpacity onPress={() => {
-                                props.navigation.navigate(SCREENS.DestinationPlace.name,{item:item})
+                                props.navigation.navigate(SCREENS.DestinationPlace.name, { item: item })
                             }}>
                                 <ImageBackground style={[styles.listImageContainer, {
                                     marginLeft: index % 2 == 1 ? SCALE_SIZE(20) : 0
                                 }]}
                                     resizeMode='cover'
                                     source={{ uri: item?.cont_img_url ?? '' }}
-                                    >
+                                >
                                     <View style={styles.transparentView}>
                                         <Text
                                             size={SCALE_SIZE(16)}
