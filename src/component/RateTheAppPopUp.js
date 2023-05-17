@@ -29,7 +29,6 @@ const RateTheAppPopUp = (props) => {
                             <Rating
                                 type='star'
                                 tintColor={COLORS.blue_light}
-                                unSelectedColor='gray'
                                 ratingCount={5}
                                 imageSize={43}
                             >

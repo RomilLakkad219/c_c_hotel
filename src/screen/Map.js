@@ -103,7 +103,6 @@ const Map = (props) => {
                                                 align='left'
                                                 family={FONT_NAME.medium}
                                                 color={COLORS.black}>
-                                                {/* {e?.hotel_continent} */}
                                                 {e?.hotel_trader_name}
                                             </Text>
                                             <Text

@@ -103,7 +103,7 @@ const HotelDetail = (props) => {
                             <Image
                                 style={styles.heartImage}
                                 resizeMode="contain"
-                                source={item?.favourite??[0]?.fv_status=='1'?IMAGES.ic_heart:IMAGES.ic_heart_white}/>
+                                source={item?.favourite ?? [0]?.fv_status == '1' ? IMAGES.ic_heart : IMAGES.ic_heart_white} />
                         </TouchableOpacity>
                     </View>
                     <TouchableOpacity>
@@ -123,12 +123,12 @@ const HotelDetail = (props) => {
                             family={FONT_NAME.semiBold}>
                             {'4.9'}
                         </Text> */}
-                        <View style={{flex:1.0}}></View>
-                        <Text 
+                        <View style={{ flex: 1.0 }}></View>
+                        <Text
                             size={SCALE_SIZE(22)}
                             color={COLORS.white}
                             family={FONT_NAME.semiBold}>
-                            {'$' + item?.hotel_avg_price  + ' /Person'}
+                            {'$' + (item?.hotel_avg_price ?? '') + ' /Person'}
                         </Text>
                     </View>
                 </View>

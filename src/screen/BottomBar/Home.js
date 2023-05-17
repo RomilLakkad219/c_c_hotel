@@ -153,7 +153,7 @@ const Home = (props) => {
                             return (
                                 <TouchableOpacity style={styles.listDirectionView} onPress={() => {
                                     if (item.key == 'map') {
-                                        props.navigation.navigate(SCREENS.Map.name)
+                                        props.navigation.navigate(SCREENS.Booking.name)
                                     }
                                     else if (item.key == 'experience') {
                                         props.navigation.navigate(SCREENS.Experience.name)

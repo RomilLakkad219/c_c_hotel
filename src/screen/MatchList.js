@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { View, StyleSheet, SafeAreaView, Image, TouchableOpacity, FlatList } from 'react-native'
 
 //ASSET
@@ -8,11 +8,11 @@ import { IMAGES } from "../asset";
 import { Header, ProgressView, Text } from "../component";
 
 //CONSTANT
-import { COLORS, FONT_NAME, SCALE_SIZE, STRING } from "../constant";
+import { COLORS, FONT_NAME, SCALE_SIZE, SHOW_TOAST, STRING } from "../constant";
 
 //PACKAGES
 import { Rating } from 'react-native-ratings'
-import MapView, { Marker } from "react-native-maps";
+import MapView, { Callout, Marker } from "react-native-maps";
 
 //SCREENS
 import { SCREENS } from ".";
@@ -20,9 +20,16 @@ import { SCREENS } from ".";
 //API
 import { matchMakinghotels } from "../api";
 
+//PACKAGES
+import WebView from "react-native-webview";
+
 const MatchList = (props) => {
 
-    const [isLoading, setIsLoading] = useState(false)
+    const calloutRef = useRef(null)
+
+    const [isLoading, setIsLoading] = useState(false);
+    const [hotelResponse, setHotelResponse] = useState([])
+    const [mapRegion, setMapRegion] = useState(null)
 
     const { continent, countries, region, services } = props.route.params
 
@@ -31,28 +38,49 @@ const MatchList = (props) => {
     }, [])
 
     async function getMatchMakingList() {
+        console.log(continent)
         const params = {
             seacrh_string: '',
             avg_price_from: '',
             avg_price_to: '',
-            hotel_continent: continent?.map((e) => e.name).join(','),
-            hotel_country: countries?.map((e) => e.name).join(','),
+            hotel_continent: continent?.name ?? '',
+            hotel_country: countries?.name ?? '',
             hotel_themes: '',
-            hotel_services: services?.map((e) => e.name).join(','),
-            hotel_region: region?.map((e) => e.name).join(','),
+            hotel_services: services?.id ?? '',
+            hotel_region: region?.id ?? '',
             hotel_equipment: '',
             user_session: '',
             user_session_id: ''
         }
 
-        console.log('MatchList Params', params)
-
         setIsLoading(true)
         const result = await matchMakinghotels(params)
         setIsLoading(false)
 
-        console.log(JSON.stringify(result))
+        if (result.status) {
+            const hotelList = result?.data?.result ?? []
+            setHotelResponse(hotelList)
 
+            if (hotelList?.length > 0) {
+                const lat = hotelList[0].hotel_lat
+                const lng = hotelList[0].hotel_long
+
+                setMapRegion({
+                    latitude: lat,
+                    longitude: lng,
+                    latitudeDelta: 0.1,
+                    longitudeDelta: 0.1,
+                    selectedItemIndex: 0
+                })
+
+                setTimeout(() => {
+                    calloutRef.current.showCallout()
+                }, 1000);
+            }
+        }
+        else {
+            SHOW_TOAST(result?.error)
+        }
     }
 
     return (
@@ -60,29 +88,57 @@ const MatchList = (props) => {
             <SafeAreaView style={{ backgroundColor: 'rgba(255, 255, 255, 0.28)' }} />
             <View style={styles.headerContainer}>
                 <Header
-                    title={"Match List(10)"}
+                    title={`Match List(${hotelResponse?.length ?? 0})`}
                     onBack={() => {
                         props.navigation.goBack()
                     }} />
             </View>
             <View style={{ flex: 1.0 }}>
-                <MapView style={styles.map}
-                    initialRegion={{
-                        latitude: 37.78825,
-                        longitude: -122.4324,
-                        latitudeDelta: 0.0922,
-                        longitudeDelta: 0.0421,
-                    }}>
-                    <Marker coordinate={{
-                        latitude: 37.78825,
-                        longitude: -122.4324,
-                    }}
-                        image={IMAGES.map_bg}>
-                    </Marker>
+                <MapView style={styles.map} region={mapRegion}>
+                    {mapRegion &&
+                        <Marker coordinate={{
+                            latitude: mapRegion.latitude,
+                            longitude: mapRegion.longitude,
+                        }}
+                            image={IMAGES.map_bg}
+                            ref={calloutRef}>
+                            <Callout
+                                onPress={() => {
+                                    props.navigation.navigate(SCREENS.HotelDetail.name, { item: hotelResponse[mapRegion.selectedItemIndex] })
+                                }}
+                                key={mapRegion?.selectedItemIndex}
+                                tooltip={true}
+                                style={{ backgroundColor: "#ffffff" }}>
+                                <View style={styles.hotelView}>
+                                    <View>
+                                        <WebView style={styles.webview}
+                                            source={{ uri: hotelResponse[mapRegion.selectedItemIndex]?.hotel_galary_photos?.trim() }}></WebView>
+                                    </View>
+                                    <View style={styles.textView}>
+                                        <Text
+                                            size={SCALE_SIZE(14)}
+                                            align='left'
+                                            family={FONT_NAME.medium}
+                                            color={COLORS.black}>
+                                            {hotelResponse[mapRegion.selectedItemIndex]?.hotel_trader_name}
+                                        </Text>
+                                        <Text
+                                            size={SCALE_SIZE(9)}
+                                            align='left'
+                                            family={FONT_NAME.medium}
+                                            color={COLORS.borderGray}>
+                                            {hotelResponse[mapRegion.selectedItemIndex]?.hotel_city + ', ' + hotelResponse[mapRegion.selectedItemIndex]?.hotel_country}
+                                        </Text>
+                                    </View>
+                                </View>
+                            </Callout>
+                        </Marker>
+                    }
                 </MapView>
             </View>
             <View style={styles.hotelContainer}>
-                <FlatList data={['', '']}
+                <FlatList data={hotelResponse}
+                    showsVerticalScrollIndicator={false}
                     keyExtractor={(item, index) => index.toString()}
                     ListHeaderComponent={() => {
                         return (
@@ -91,37 +147,60 @@ const MatchList = (props) => {
                     }}
                     renderItem={({ item, index }) => {
                         return (
-                            <TouchableOpacity style={styles.itemContainer}
+                            <TouchableOpacity style={[styles.itemContainer, {
+                                backgroundColor: mapRegion?.selectedItemIndex == index ? COLORS.blue_light : COLORS.white
+                            }]}
                                 onPress={() => {
-                                    props.navigation.navigate(SCREENS.HotelDetail.name, {
-                                        item: item
-                                    })
+                                    const lat = item.hotel_lat
+                                    const lng = item.hotel_long
+
+                                    calloutRef.current.hideCallout()
+
+                                    setTimeout(() => {
+                                        setMapRegion({
+                                            latitude: lat,
+                                            longitude: lng,
+                                            latitudeDelta: 0.1,
+                                            longitudeDelta: 0.1,
+                                            selectedItemIndex: index
+                                        })
+
+                                        setTimeout(() => {
+                                            calloutRef.current.showCallout()
+                                        }, 300);
+                                    }, 300);
+
                                 }}>
                                 <View style={{ flexDirection: 'row' }}>
-                                    <Image style={styles.imageView}
-                                        resizeMode="contain"
-                                        source={IMAGES.popularhotel_bg} />
+                                    {item?.hotel_galary_photos?.trim() ?
+                                        <Image style={styles.imageView}
+                                            resizeMode="cover"
+                                            source={{ uri: item?.hotel_galary_photos?.trim() }} />
+                                        :
+                                        <View style={styles.imageView} />
+                                    }
                                     <View style={styles.directionView}>
                                         <Text
                                             style={styles.itemText}
+                                            numberOfLines={1}
                                             size={SCALE_SIZE(18)}
                                             color={COLORS.headerTitleGray}
                                             family={FONT_NAME.medium}>
-                                            {"Oberio Hotel"}
+                                            {item?.hotel_trader_name ?? ''}
                                         </Text>
                                         <Text
                                             style={styles.southAmerica}
                                             size={SCALE_SIZE(16)}
                                             color={COLORS.gray}
                                             family={FONT_NAME.medium}>
-                                            {"South America"}
+                                            {item?.hotel_country ?? ''}
                                         </Text>
                                         <Rating
                                             style={styles.starContainer}
                                             type='star'
+                                            ratingBackgroundColor="#004666"
                                             ratingImage={IMAGES.ic_star}
-                                            startingValue={2}
-                                            ratingCount={4}
+                                            ratingCount={5}
                                             imageSize={12}>
                                         </Rating>
                                         <TouchableOpacity style={styles.discoverButton}>
@@ -168,6 +247,7 @@ const styles = StyleSheet.create({
         marginTop: -30
     },
     directionView: {
+        flex: 1.0,
         flexDirection: 'column',
         justifyContent: 'center'
     },
@@ -186,11 +266,15 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         marginTop: SCALE_SIZE(16),
         marginLeft: SCALE_SIZE(16),
-        paddingBottom: SCALE_SIZE(15)
+        paddingBottom: SCALE_SIZE(15),
+        borderRadius: SCALE_SIZE(20),
+        overflow: 'hidden',
+        backgroundColor: 'rgba(0,0,0,0.1)'
     },
     itemText: {
         marginTop: SCALE_SIZE(16),
-        marginHorizontal: SCALE_SIZE(16)
+        marginHorizontal: SCALE_SIZE(16),
+        flex: 1.0
     },
     southAmerica: {
         marginHorizontal: SCALE_SIZE(16),
@@ -212,6 +296,22 @@ const styles = StyleSheet.create({
         alignItems: 'flex-start',
         marginHorizontal: SCALE_SIZE(17),
         marginTop: SCALE_SIZE(9)
+    },
+    hotelView: {
+        backgroundColor: COLORS.white,
+        flexDirection: 'row',
+        alignItems: 'center',
+        paddingHorizontal: SCALE_SIZE(12),
+        paddingVertical: SCALE_SIZE(14),
+        borderRadius: SCALE_SIZE(13)
+    },
+    textView: {
+        flexDirection: 'column',
+        marginHorizontal: SCALE_SIZE(9)
+    },
+    webview: {
+        height: SCALE_SIZE(50),
+        width: SCALE_SIZE(50)
     }
 })
 

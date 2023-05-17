@@ -83,8 +83,9 @@ const Search = (props) => {
                                         </Text>
                                         <Rating
                                             style={styles.starContainer}
+                                            ratingBackgroundColor="transparent"
                                             type='star'
-                                            ratingCount={4}
+                                            ratingCount={5}
                                             imageSize={12}>
                                         </Rating>
                                         <TouchableOpacity style={styles.discoverButton}>

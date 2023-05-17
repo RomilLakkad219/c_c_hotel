@@ -58,8 +58,9 @@ const FavouriteList = (props) => {
                 <Rating
                     style={styles.starContainer}
                     type='star'
+                    ratingBackgroundColor="transparent"
                     startingValue={2}
-                    ratingCount={4}
+                    ratingCount={5}
                     imageSize={12}>
                 </Rating>
                 <View style={{ flexDirection: 'row' }}>
