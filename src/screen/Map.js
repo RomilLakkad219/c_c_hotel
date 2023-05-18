@@ -87,7 +87,7 @@ const Map = (props) => {
                                 }}>
                                 <Callout
                                     onPress={() => {
-                                        props.navigation.navigate(SCREENS.HotelDetail.name, {item:e })
+                                        props.navigation.navigate(SCREENS.HotelDetail.name, { item: e })
                                     }}
                                     key={index}
                                     tooltip={true}
@@ -113,12 +113,13 @@ const Map = (props) => {
                                                 {e?.hotel_city + ', ' + e?.hotel_country}
                                             </Text>
                                             {/* <Rating
-                                                style={styles.starContainer}
-                                                type='star'
-                                                startingValue={2}
-                                                ratingCount={4}
-                                                imageSize={12}>
-                                            </Rating> */}
+                                            style={styles.starContainer}
+                                            type='custom'
+                                            readonly={true}
+                                            startingValue={0}
+                                            ratingCount={5}
+                                            imageSize={12}>
+                                        </Rating> */}
                                         </View>
                                     </View>
                                 </Callout>
@@ -163,7 +164,7 @@ const styles = StyleSheet.create({
         right: 0,
         zIndex: 5000
     },
-    webview:{
+    webview: {
         height: SCALE_SIZE(50),
         width: SCALE_SIZE(50)
     }

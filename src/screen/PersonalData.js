@@ -29,8 +29,6 @@ const PersonalData = (props) => {
         const result = await personalData()
         setIsLoading(false)
 
-        console.log(JSON.stringify(result))
-
         if (result.status) {
             const response = result?.data?.result
             setIsPersonalDataResponse(response)

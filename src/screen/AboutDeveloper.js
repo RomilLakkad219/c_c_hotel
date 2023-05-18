@@ -29,8 +29,6 @@ const AboutDeveloper = (props) => {
         const result = await aboutDeveloper()
         setIsLoading(false)
 
-        console.log(JSON.stringify(result))
-
         if (result.status) {
             const ResponseData = result?.data?.result
             setIsDeveloperResponse(ResponseData)

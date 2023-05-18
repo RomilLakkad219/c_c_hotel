@@ -29,8 +29,6 @@ const Blog = (props) => {
         const result = await blog()
         setIsLoading(false)
 
-        console.log(JSON.stringify(result))
-
         if (result.status) {
             // const response = result?.data?.result
             // setIsBlogResponse(response)

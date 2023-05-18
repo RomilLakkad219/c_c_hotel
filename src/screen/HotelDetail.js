@@ -43,7 +43,6 @@ const HotelDetail = (props) => {
         setIsLoading(true)
         const result = await hotelDetail(params)
         setIsLoading(false)
-        console.log(JSON.stringify(result))
 
         if (result.status) {
             const res = result?.data?.result?.hotel?.[0]

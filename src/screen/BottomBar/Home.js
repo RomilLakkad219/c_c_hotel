@@ -89,6 +89,8 @@ const Home = (props) => {
         const result = await home(params)
         setIsLoading(false)
 
+        // console.log(JSON.stringify(result))
+
         if (result.status) {
             const imgres = result?.data?.result ?? []
             const response = imgres.slice(0, 10)

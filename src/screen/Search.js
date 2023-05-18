@@ -9,7 +9,7 @@ import { Header, Text } from "../component";
 
 //PACKAGES
 import MapView, { Marker } from 'react-native-maps';
-import { Rating } from 'react-native-ratings'
+import { AirbnbRating } from 'react-native-ratings'
 
 //ASSET
 import { IMAGES } from "../asset";
@@ -81,13 +81,12 @@ const Search = (props) => {
                                             family={FONT_NAME.medium}>
                                             {"South America"}
                                         </Text>
-                                        <Rating
-                                            style={styles.starContainer}
-                                            ratingBackgroundColor="transparent"
-                                            type='star'
-                                            ratingCount={5}
-                                            imageSize={12}>
-                                        </Rating>
+                                        <AirbnbRating starContainerStyle={styles.starContainer}
+                                            defaultRating={0}
+                                            size={12}
+                                            isDisabled={true}
+                                            showRating={false}
+                                        />
                                         <TouchableOpacity style={styles.discoverButton}>
                                             <Text
                                                 align='center'

@@ -11,7 +11,7 @@ import { Header, ProgressView, Text } from "../component";
 import { COLORS, FONT_NAME, SCALE_SIZE, SHOW_TOAST, STRING } from "../constant";
 
 //PACKAGES
-import { Rating } from 'react-native-ratings'
+import { AirbnbRating } from 'react-native-ratings'
 import MapView, { Callout, Marker } from "react-native-maps";
 
 //SCREENS
@@ -195,14 +195,12 @@ const MatchList = (props) => {
                                             family={FONT_NAME.medium}>
                                             {item?.hotel_country ?? ''}
                                         </Text>
-                                        <Rating
-                                            style={styles.starContainer}
-                                            type='star'
-                                            ratingBackgroundColor="#004666"
-                                            ratingImage={IMAGES.ic_star}
-                                            ratingCount={5}
-                                            imageSize={12}>
-                                        </Rating>
+                                        <AirbnbRating starContainerStyle={styles.starContainer}
+                                            defaultRating={0}
+                                            size={12}
+                                            isDisabled={true}
+                                            showRating={false}
+                                        />
                                         <TouchableOpacity style={styles.discoverButton}>
                                             <Text
                                                 align='center'
@@ -293,8 +291,8 @@ const styles = StyleSheet.create({
         ...StyleSheet.absoluteFillObject,
     },
     starContainer: {
-        alignItems: 'flex-start',
-        marginHorizontal: SCALE_SIZE(17),
+        alignSelf: 'flex-start',
+        marginLeft: SCALE_SIZE(17),
         marginTop: SCALE_SIZE(9)
     },
     hotelView: {

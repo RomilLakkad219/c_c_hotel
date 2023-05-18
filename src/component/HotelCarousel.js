@@ -78,7 +78,7 @@ const styles = StyleSheet.create({
     carouselContainer: {
         borderRadius: SCALE_SIZE(35),
         backgroundColor: '#000000',
-        marginTop: SCALE_SIZE(28),
+        marginTop: SCALE_SIZE(28),   
         alignSelf: 'center',
         width: Dimensions.get('window').width - SCALE_SIZE(70),
         height: Dimensions.get('window').width - SCALE_SIZE(80),

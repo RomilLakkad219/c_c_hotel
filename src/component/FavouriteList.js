@@ -2,7 +2,7 @@ import React from "react";
 import { View, StyleSheet, Image, TouchableOpacity } from 'react-native'
 
 //PACKAGES
-import { Rating } from 'react-native-ratings'
+import { AirbnbRating } from 'react-native-ratings'
 import LinearGradient from "react-native-linear-gradient";
 
 //SCREENS
@@ -26,13 +26,13 @@ const FavouriteList = (props) => {
     return (
         <TouchableOpacity style={styles.itemContainer}
             onPress={() => {
-                navigation.navigate(SCREENS.HotelDetail.name,{
-                    item:item
+                navigation.navigate(SCREENS.HotelDetail.name, {
+                    item: item
                 })
             }}>
             <Image style={styles.imageView}
                 resizeMode="cover"
-                source={{uri:BASE_IMAGE_URL+item?.hotel_galary_photos??''}} />
+                source={{ uri: BASE_IMAGE_URL + item?.hotel_galary_photos ?? '' }} />
             <View style={{ flex: 1.0 }}>
                 <View style={{ flexDirection: 'row' }}>
                     <Text
@@ -41,28 +41,28 @@ const FavouriteList = (props) => {
                         numberOfLines={1}
                         color={COLORS.headerTitleGray}
                         family={FONT_NAME.medium}>
-                        {item?.hotel_trader_name??''}
+                        {item?.hotel_trader_name ?? ''}
                     </Text>
-                    <Image
-                        style={styles.heartImage}
-                        resizeMode="contain"
-                        source={IMAGES.ic_heart_white} />
+                    <TouchableOpacity style={styles.heartImage}>
+                        <Image
+                            style={styles.heartImage}
+                            resizeMode="contain"
+                            source={IMAGES.ic_heart_white} />
+                    </TouchableOpacity>
                 </View>
                 <Text
                     style={styles.southAmerica}
                     size={SCALE_SIZE(16)}
                     color={COLORS.gray}
                     family={FONT_NAME.medium}>
-                    {item?.hotel_country??''}
+                    {item?.hotel_country ?? ''}
                 </Text>
-                <Rating
-                    style={styles.starContainer}
-                    type='star'
-                    ratingBackgroundColor="transparent"
-                    startingValue={2}
-                    ratingCount={5}
-                    imageSize={12}>
-                </Rating>
+                <AirbnbRating starContainerStyle={styles.starContainer}
+                    defaultRating={0}
+                    size={12}
+                    isDisabled={true}
+                    showRating={false}
+                />
                 <View style={{ flexDirection: 'row' }}>
                     <TouchableOpacity style={styles.discoverButton}>
                         <Text
@@ -99,14 +99,14 @@ const styles = StyleSheet.create({
         marginTop: SCALE_SIZE(35),
         marginHorizontal: SCALE_SIZE(35),
         padding: SCALE_SIZE(16),
-        flexDirection: 'row'
+        flexDirection: 'row',
     },
     imageView: {
         height: SCALE_SIZE(117),
         width: SCALE_SIZE(124),
         alignSelf: 'center',
-        borderRadius:SCALE_SIZE(20),
-        overflow:'hidden'
+        borderRadius: SCALE_SIZE(20),
+        overflow: 'hidden'
     },
     itemText: {
         flex: 1.0,
@@ -139,8 +139,8 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
     },
     starContainer: {
-        alignItems: 'flex-start',
-        marginHorizontal: SCALE_SIZE(17),
+        alignSelf: 'flex-start',
+        marginLeft: SCALE_SIZE(17),
         marginTop: SCALE_SIZE(5)
     }
 })

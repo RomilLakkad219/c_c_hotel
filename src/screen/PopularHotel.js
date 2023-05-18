@@ -44,7 +44,6 @@ const PopularHotel = (props) => {
         else {
             SHOW_TOAST(result.error)
         }
-
     }
 
     return (

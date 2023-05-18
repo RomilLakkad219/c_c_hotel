@@ -29,8 +29,6 @@ const LegalNotice = (props) => {
         const result = await legalNotice()
         setIsLoading(false)
 
-        console.log(JSON.stringify(result))
-
         if (result.status) {
             const legalNoticeResponse = result?.data?.result
             setIsResponse(legalNoticeResponse)

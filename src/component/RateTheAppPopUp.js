@@ -8,7 +8,7 @@ import { COLORS, FONT_NAME, SCALE_SIZE, STRING } from "../constant";
 import { Text } from "../component"
 
 //PACKAGES
-import { Rating } from 'react-native-ratings'
+import { AirbnbRating } from 'react-native-ratings'
 
 const RateTheAppPopUp = (props) => {
     return (
@@ -26,13 +26,12 @@ const RateTheAppPopUp = (props) => {
                             {STRING.rateTheApp}
                         </Text>
                         <View style={styles.blueView}>
-                            <Rating
-                                type='star'
-                                tintColor={COLORS.blue_light}
-                                ratingCount={5}
-                                imageSize={43}
-                            >
-                            </Rating>
+                            <AirbnbRating
+                                defaultRating={0}
+                                size={43}
+                                isDisabled={true}
+                                showRating={false}
+                            />
                         </View>
                         <TouchableOpacity style={styles.submitButton}>
                             <Text
