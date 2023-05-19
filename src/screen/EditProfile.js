@@ -109,6 +109,7 @@ const EditProfile = (props) => {
 
         const params = {
             user_id: user?.[0]?.user_id,
+            user_session: user?.[0]?.user_session,
             user_cover_img: image,
             user_name: name,
             user_mb_no: mobileNumber,
@@ -122,7 +123,6 @@ const EditProfile = (props) => {
             user_twitter_url: '',
             user_instagram_url: '',
             user_linkedin_url: '',
-            user_session: '',
             user_session_id: ''
         }
 
@@ -189,6 +189,7 @@ const EditProfile = (props) => {
     async function getCountries() {
         const params = {
             user_id: user?.[0]?.user_id,
+            user_session:user?.[0]?.user_session
         }
 
         setIsLoading(true)

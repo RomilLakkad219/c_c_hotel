@@ -45,7 +45,8 @@ const Booking = (props) => {
 
     async function getHome() {
         const params = {
-            user_id: user?.[0]?.user_id
+            user_id: user?.[0]?.user_id,
+            user_session:user?.[0]?.user_session,
         }
 
         setIsLoading(true)

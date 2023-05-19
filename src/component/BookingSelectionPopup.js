@@ -70,7 +70,8 @@ const BookingSelectionPopup = (props) => {
     async function getCountries() {
         const params = {
             user_id: user?.[0]?.user_id,
-            continent: selectedContinent.french_name
+            user_session:user?.[0]?.user_session,
+            continent: selectedContinent.french_name,
         }
 
         setIsLoading(true)
@@ -100,6 +101,7 @@ const BookingSelectionPopup = (props) => {
     async function getRegionList() {
         const params = {
             user_id: user?.[0]?.user_id,
+            user_session:user?.[0]?.user_session,
             continent: selectedContinent?.french_name,
             country: selectedCountries?.french_name
         }

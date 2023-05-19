@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { View, StyleSheet, Image, ImageBackground, TouchableOpacity, Dimensions } from 'react-native'
 
 //ASSET
@@ -12,29 +12,72 @@ import { BASE_IMAGE_URL } from "../constant/WebService";
 import { SCREENS } from "../screen";
 
 //COMPONENT
-import { Text } from '../component'
+import { ProgressView, Text } from '../component'
+
+//API
+import { likeUnlikeHotel } from "../api";
+
+//CONTEXT
+import { AuthContext } from "../context";
+
+//PACKAGES
+import { EventRegister } from "react-native-event-listeners";
 
 const HotelCarousel = (props) => {
 
+    const { user } = useContext(AuthContext)
+
     const item = props.item
-    
+
+    const [isLiked, setIsLiked] = useState(item.fv_status)
+    const [isLoading, setIsLoading] = useState(false)
+
+    useEffect(() => {
+        EventRegister.addEventListener('onLiked', (latestItems) => {
+            if (latestItems.hotel_id == item.hotel_id) {
+                setIsLiked(item.fv_status)
+            }
+        });
+        return () => {
+            EventRegister.removeEventListener('onLiked')
+        }
+    }, [item])
+
+    async function getLikeUnLikeHotel() {
+        const params = {
+            fv_user_id: user?.[0]?.user_id,
+            user_session: user?.[0]?.user_session,
+            fv_hotel_id: item?.hotel_id,
+            user_session_id: ''
+        }
+
+        setIsLoading(true)
+        const result = await likeUnlikeHotel(params)
+        setIsLoading(false)
+    }
+
     return (
         <TouchableOpacity
             activeOpacity={0.9}
             onPress={() => {
                 props.navigation.navigate(SCREENS.HotelDetail.name, {
-                    item: item
+                    item: item,
                 })
             }}>
             <ImageBackground style={styles.carouselContainer}
                 resizeMode='cover'
                 source={{ uri: BASE_IMAGE_URL + item?.hotel_galary_photos ?? '' }}
             >
-                <TouchableOpacity style={styles.heartImageContainer}>
+                <TouchableOpacity style={styles.heartImageContainer}
+                    onPress={() => {
+                        item.fv_status = item.fv_status == '1' ? "0" : '1'
+                        setIsLiked(isLiked == '1' ? '0' : '1')
+                        getLikeUnLikeHotel()
+                    }}>
                     <Image
                         style={styles.heartImage}
                         resizeMode="contain"
-                        source={item?.fv_status == '1' ? IMAGES.ic_heart : IMAGES.ic_heart_white} />
+                        source={isLiked == '1' ? IMAGES.ic_heart : IMAGES.ic_heart_white} />
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.heartImageContainer}>
                     <Image
@@ -70,6 +113,7 @@ const HotelCarousel = (props) => {
                     </View>
                 </View>
             </ImageBackground>
+            {isLoading && <ProgressView />}
         </TouchableOpacity>
     )
 }
@@ -78,7 +122,7 @@ const styles = StyleSheet.create({
     carouselContainer: {
         borderRadius: SCALE_SIZE(35),
         backgroundColor: '#000000',
-        marginTop: SCALE_SIZE(28),   
+        marginTop: SCALE_SIZE(28),
         alignSelf: 'center',
         width: Dimensions.get('window').width - SCALE_SIZE(70),
         height: Dimensions.get('window').width - SCALE_SIZE(80),

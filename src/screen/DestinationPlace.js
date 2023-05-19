@@ -32,8 +32,9 @@ const DestinationPlace = (props) => {
 
     async function getDestinationPlaces() {
         const params = {
+            user_id: user?.[0]?.user_id,
+            user_session:user?.[0]?.user_session,
             hotel_continent: item?.cont_french_design,
-            user_id: user?.[0]?.user_id
         }
 
         setIsLoading(true)
@@ -48,7 +49,6 @@ const DestinationPlace = (props) => {
             SHOW_TOAST(result.error)
         }
     }
-
 
     return (
         <View style={styles.container}>

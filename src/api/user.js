@@ -141,6 +141,18 @@ async function matchMakinghotels(params) {
     return result
 }
 
+async function favouriteHotelList(params) {
+    let url = WEB_SERVICE.favouriteHotelList
+    const result = await postRequest(url, params)
+    return result
+}
+
+async function likeUnlikeHotel(params) {
+    let url = WEB_SERVICE.likeUnlikeHotel
+    const result = await postRequest(url, params)
+    return result
+}
+
 export {
     signUp,
     login,
@@ -163,5 +175,7 @@ export {
     aboutDeveloper,
     personalData,
     blog,
-    matchMakinghotels
+    matchMakinghotels,
+    favouriteHotelList,
+    likeUnlikeHotel
 }

@@ -23,5 +23,7 @@ export const WEB_SERVICE = {
     aboutDeveloper: BASE_URL + 'fields/about_developer',
     personalData: BASE_URL + 'fields/personal_data',
     blog: BASE_URL + 'fields/blog',
-    matchMakingHotels: BASE_URL + 'fields/match_making_hotels'
+    matchMakingHotels: BASE_URL + 'fields/match_making_hotels',
+    favouriteHotelList:BASE_URL+'fields/home',
+    likeUnlikeHotel:BASE_URL+'mAdd/favouritelist_hotel'
 }

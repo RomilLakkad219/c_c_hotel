@@ -7,11 +7,12 @@ import ToolItem from './ToolItem'
 import LogoutPopup from './LogoutPopup'
 import HotelCarousel from './HotelCarousel'
 import BookingSelectionPopup from './BookingSelectionPopup'
-import FavouriteList from './FavouriteList'
+import PopularItem from './PopularItem'
 import RateTheAppPopUp from './RateTheAppPopUp'
 import BottomSheet from './BottomSheet'
 import BottomMultiSelectionSheet from './BottomMultiSelectionSheet'
 import ProgressView from './ProgressView'
+import FavouriteItem from './FavouriteItem'
 
 export {
     Text,
@@ -23,9 +24,10 @@ export {
     LogoutPopup,
     HotelCarousel,
     BookingSelectionPopup,
-    FavouriteList,
+    PopularItem,
     RateTheAppPopUp,
     BottomSheet,
     BottomMultiSelectionSheet,
-    ProgressView
+    ProgressView,
+    FavouriteItem
 }

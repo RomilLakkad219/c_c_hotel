@@ -19,7 +19,9 @@ import {
     aboutDeveloper,
     personalData,
     blog,
-    matchMakinghotels
+    matchMakinghotels,
+    favouriteHotelList,
+    likeUnlikeHotel
 } from './user'
 
 export {
@@ -43,5 +45,7 @@ export {
     aboutDeveloper,
     personalData,
     blog,
-    matchMakinghotels
+    matchMakinghotels,
+    favouriteHotelList,
+    likeUnlikeHotel
 }

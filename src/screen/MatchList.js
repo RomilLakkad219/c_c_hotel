@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { View, StyleSheet, SafeAreaView, Image, TouchableOpacity, FlatList } from 'react-native'
 
 //ASSET
@@ -23,7 +23,12 @@ import { matchMakinghotels } from "../api";
 //PACKAGES
 import WebView from "react-native-webview";
 
+//CONTEXT
+import { AuthContext } from "../context";
+
 const MatchList = (props) => {
+
+    const { user } = useContext(AuthContext)
 
     const calloutRef = useRef(null)
 
@@ -40,6 +45,7 @@ const MatchList = (props) => {
     async function getMatchMakingList() {
         console.log(continent)
         const params = {
+            user_session: user?.[0]?.user_session,
             seacrh_string: '',
             avg_price_from: '',
             avg_price_to: '',
@@ -49,7 +55,6 @@ const MatchList = (props) => {
             hotel_services: services?.id ?? '',
             hotel_region: region?.id ?? '',
             hotel_equipment: '',
-            user_session: '',
             user_session_id: ''
         }
 

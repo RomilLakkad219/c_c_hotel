@@ -40,8 +40,6 @@ const styles = StyleSheet.create({
             width: 0
         },
         shadowOpacity: 0.2
-
-
     }
 })
 

@@ -26,8 +26,6 @@ const Home = (props) => {
 
     const { user, fetchProfile, profile } = useContext(AuthContext)
 
-    const item = props.route.params
-
     const languageRef = useRef()
 
     const [search, setSearch] = useState('');
@@ -80,16 +78,16 @@ const Home = (props) => {
         }
     ]
 
+
     async function getHome() {
         const params = {
-            user_id: user?.[0]?.user_id
+            user_id: user?.[0]?.user_id,
+            user_session: user?.[0]?.user_session,
         }
 
         setIsLoading(true)
         const result = await home(params)
         setIsLoading(false)
-
-        // console.log(JSON.stringify(result))
 
         if (result.status) {
             const imgres = result?.data?.result ?? []
@@ -104,6 +102,7 @@ const Home = (props) => {
     async function setLanguage(languageName) {
         const params = {
             user_id: user?.[0]?.user_id,
+            user_session: user?.[0]?.user_session,
             user_lang: languageName,
         }
 
@@ -204,7 +203,9 @@ const Home = (props) => {
                     layoutCardOffset={9}
                     ref={isCarousel}
                     data={hotel}
-                    renderItem={({ item, index }) => <HotelCarousel navigation={props.navigation} item={item} />}
+                    renderItem={({ item, index }) =>
+                        <HotelCarousel navigation={props.navigation} item={item} />
+                    }
                     sliderWidth={Dimensions.get('window').width}
                     itemWidth={Dimensions.get('window').width - SCALE_SIZE(70)}
                     useScrollView={true}

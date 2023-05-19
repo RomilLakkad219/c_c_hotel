@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext, useState } from "react";
 import { View, StyleSheet, Image, TouchableOpacity } from 'react-native'
 
 //PACKAGES
@@ -9,19 +9,43 @@ import LinearGradient from "react-native-linear-gradient";
 import { SCREENS } from "../screen";
 
 //CONSTANT
-import { COLORS, FONT_NAME, SCALE_SIZE, SHOW_TOAST, STRING } from "../constant";
+import { COLORS, FONT_NAME, SCALE_SIZE, STRING } from "../constant";
 import { BASE_IMAGE_URL } from "../constant/WebService";
 
 //COMPONENT
-import { Text } from "../component"
+import { ProgressView, Text } from "."
 
 //ASSET
 import { IMAGES } from "../asset";
 
-const FavouriteList = (props) => {
+//API
+import { likeUnlikeHotel } from "../api";
+
+//CONTEXT
+import { AuthContext } from "../context";
+
+const PopularItem = (props) => {
+
+    const { user } = useContext(AuthContext)
+
+    const [isLoading, setIsLoading] = useState(false);
+    const [isLiked, setIsLiked] = useState(item?.fv_status)
 
     const item = props.item
     const navigation = props.navigation
+
+    async function getLikeUnLikeHotel() {
+        const params = {
+            fv_user_id: user?.[0]?.user_id,
+            user_session: user?.[0]?.user_session,
+            fv_hotel_id: item?.hotel_id,
+            user_session_id: ''
+        }
+
+        setIsLoading(true)
+        const result = await likeUnlikeHotel(params)
+        setIsLoading(false)
+    }
 
     return (
         <TouchableOpacity style={styles.itemContainer}
@@ -43,11 +67,15 @@ const FavouriteList = (props) => {
                         family={FONT_NAME.medium}>
                         {item?.hotel_trader_name ?? ''}
                     </Text>
-                    <TouchableOpacity style={styles.heartImage}>
+                    <TouchableOpacity style={styles.heartImage} onPress={() => {
+                        item.fv_status = item.fv_status == '1' ? '0' : '1'
+                        setIsLiked(isLiked == '1' ? '0' : '1')
+                        getLikeUnLikeHotel()
+                    }}>
                         <Image
                             style={styles.heartImage}
                             resizeMode="contain"
-                            source={IMAGES.ic_heart_white} />
+                            source={isLiked == '1' ? IMAGES.ic_heart : IMAGES.ic_heart_white} />
                     </TouchableOpacity>
                 </View>
                 <Text
@@ -86,6 +114,7 @@ const FavouriteList = (props) => {
                     </LinearGradient>
                 </View>
             </View>
+            {isLoading && <ProgressView />}
         </TouchableOpacity>
     )
 }
@@ -145,4 +174,4 @@ const styles = StyleSheet.create({
     }
 })
 
-export default FavouriteList;
+export default PopularItem;

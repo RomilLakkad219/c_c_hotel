@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { View, StyleSheet, SafeAreaView, FlatList } from 'react-native'
 
 //COMPONENT
-import { FavouriteList, Header, ProgressView } from '../component';
+import { PopularItem, Header, ProgressView } from '../component';
 
 //CONSTANT
 import { COLORS, STRING } from '../constant';
@@ -30,7 +30,8 @@ const PopularHotel = (props) => {
 
     async function getAllHotel() {
         const params = {
-            user_id: user?.[0]?.user_id
+            user_id: user?.[0]?.user_id,
+            user_session:user?.[0]?.user_session,
         }
 
         setIsLoading(true)
@@ -56,7 +57,7 @@ const PopularHotel = (props) => {
                 keyExtractor={(item, index) => index.toString()}
                 renderItem={({ item, index }) => {
                     return (
-                        <FavouriteList item={item}
+                        <PopularItem item={item}
                             navigation={props.navigation} />
                     )
                 }}>

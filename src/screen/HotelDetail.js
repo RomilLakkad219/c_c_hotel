@@ -15,10 +15,13 @@ import { BASE_IMAGE_URL } from "../constant/WebService";
 import { AuthContext } from "../context";
 
 //API
-import { hotelDetail } from "../api";
+import { hotelDetail, likeUnlikeHotel } from "../api";
 
 //PACKAGES
 import ImageViewer from 'react-native-image-zoom-viewer';
+
+//PACKAGES
+import { EventRegister } from "react-native-event-listeners";
 
 const HotelDetail = (props) => {
 
@@ -29,15 +32,17 @@ const HotelDetail = (props) => {
     const [isLoading, setIsLoading] = useState(false);
     const [hotelDetailResult, sethotelDetailResult] = useState(null);
     const [imageViewerVisible, setImageViewerVisible] = useState(false)
+    const [isLiked, setIsLiked] = useState(item.fv_status)
 
     useEffect(() => {
-        getHotelDetails()
+        getHotelDetails()       
     }, [])
 
     async function getHotelDetails() {
         const params = {
-            hotel_id: item?.hotel_id,
-            user_id: user?.[0]?.user_id
+            user_id: user?.[0]?.user_id,
+            user_session: user?.[0]?.user_session,
+            hotel_id: item?.hotel_id
         }
 
         setIsLoading(true)
@@ -51,6 +56,19 @@ const HotelDetail = (props) => {
         else {
             SHOW_TOAST(result.error)
         }
+    }
+
+    async function getLikeUnLikeHotel() {
+        const params = {
+            fv_user_id: user?.[0]?.user_id,
+            user_session: user?.[0]?.user_session,
+            fv_hotel_id: item?.hotel_id,
+            user_session_id: ''
+        }
+
+        setIsLoading(true)
+        const result = await likeUnlikeHotel(params)
+        setIsLoading(false)
     }
 
     const galleryThumbImage = () => {
@@ -80,6 +98,11 @@ const HotelDetail = (props) => {
 
     const images = galleryViewerImage()
 
+    async function goBack() {
+        EventRegister.emit('onLiked', item)
+        props.navigation.goBack()
+    }
+
     return (
         <View style={styles.container}>
             <ImageBackground style={styles.headerContainer}
@@ -90,7 +113,7 @@ const HotelDetail = (props) => {
                     <View style={styles.imageContainer}>
                         <TouchableOpacity
                             onPress={() => {
-                                props.navigation.goBack()
+                                goBack()
                             }}>
                             <Image
                                 style={styles.backArrow}
@@ -98,11 +121,15 @@ const HotelDetail = (props) => {
                                 source={IMAGES.back_arrow} />
                         </TouchableOpacity>
                         <View style={{ flex: 1.0 }}></View>
-                        <TouchableOpacity>
+                        <TouchableOpacity onPress={() => {
+                            item.fv_status = item.fv_status == '1' ? "0" : '1'
+                            setIsLiked(isLiked == '1' ? '0' : '1')
+                            getLikeUnLikeHotel()
+                        }}>
                             <Image
                                 style={styles.heartImage}
                                 resizeMode="contain"
-                                source={item?.favourite ?? [0]?.fv_status == '1' ? IMAGES.ic_heart : IMAGES.ic_heart_white} />
+                                source={isLiked == '1' ? IMAGES.ic_heart : IMAGES.ic_heart_white} />
                         </TouchableOpacity>
                     </View>
                     <TouchableOpacity>
@@ -127,7 +154,7 @@ const HotelDetail = (props) => {
                             size={SCALE_SIZE(22)}
                             color={COLORS.white}
                             family={FONT_NAME.semiBold}>
-                            {'$' + (item?.hotel_avg_price ?? '') + ' /Person'}
+                            {'$' + (item?.hotel_avg_price ?? '0') + ' /Person'}
                         </Text>
                     </View>
                 </View>

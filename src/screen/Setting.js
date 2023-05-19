@@ -94,6 +94,7 @@ const Setting = (props) => {
     async function getSubscribe() {
         const params = {
             user_id: user?.[0]?.user_id,
+            user_session:user?.[0]?.user_session,
         }
 
         setIsLoading(true)
@@ -117,6 +118,7 @@ const Setting = (props) => {
     async function setLanguage(languageName) {
         const params = {
             user_id: user?.[0]?.user_id,
+            user_session:user?.[0]?.user_session,
             user_lang: languageName,
         }
 

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { View, StyleSheet, Image, ImageBackground, TouchableOpacity, ScrollView } from 'react-native'
 
 //SCREENS
@@ -66,7 +66,7 @@ const Login = (props) => {
             user_email: email,
             user_password: password,
             user_fcm_key: '',
-            user_device_type: ''
+            user_device_type: '',
         }
 
         setIsLoading(true)
@@ -86,7 +86,7 @@ const Login = (props) => {
                         }]
                     }))
                 }, 1000);
-             
+
             }
             else {
                 SHOW_TOAST(result?.data?.msg ?? "Something went wrong!")

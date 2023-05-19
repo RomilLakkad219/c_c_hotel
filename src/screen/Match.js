@@ -76,6 +76,7 @@ const Match = (props) => {
     async function getCountries() {
         const params = {
             user_id: user?.[0]?.user_id,
+            user_session:user?.[0]?.user_session,
             continent: selectedContinent.french_name
         }
 
@@ -106,6 +107,7 @@ const Match = (props) => {
     async function getRegionList() {
         const params = {
             user_id: user?.[0]?.user_id,
+            user_session:user?.[0]?.user_session,
             continent: selectedContinent?.french_name,
             country: selectedCountries?.french_name
         }
@@ -137,6 +139,7 @@ const Match = (props) => {
     async function getServicesList() {
         const params = {
             user_id: user?.[0]?.user_id,
+            user_session:user?.[0]?.user_session,
             continent: selectedContinent?.french_name,
             country: selectedCountries?.name,
             hotel_region: selectedRegion?.id
