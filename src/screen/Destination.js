@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { View, StyleSheet, SafeAreaView, FlatList, ImageBackground, Dimensions, TouchableOpacity } from 'react-native'
+import React, { useContext, useEffect, useState } from "react";
+import { View, StyleSheet, SafeAreaView, FlatList, ImageBackground, Dimensions, TouchableOpacity, Alert } from 'react-native'
 
 //SCREENS
 import { SCREENS } from ".";
@@ -13,13 +13,19 @@ import { COLORS, FONT_NAME, SCALE_SIZE, SHOW_TOAST, STRING } from "../constant";
 //API
 import { destination } from "../api";
 
+//CONTEXT
+import { TranslationContext } from "../context";
+
 const Destination = (props) => {
+
+    const translations = useContext(TranslationContext)
 
     const [isLoading, setIsLoading] = useState(false);
     const [destinationResult, setDestinationResult] = useState([])
 
     useEffect(() => {
         getDestination()
+
 
     }, [])
 
@@ -45,11 +51,24 @@ const Destination = (props) => {
         }
     }
 
+    function getContinentalName(item) {
+        if (translations.getLanguage() == 'french') {
+            return item.cont_french_design
+        }
+        else if (translations.getLanguage() == 'en') {
+            return item.cont_english_design
+        }
+        else {
+            return item.cont_english_design
+        }
+    }
+
+
     return (
         <View style={styles.container}>
             <SafeAreaView />
             <Header onBack={() => { onBack() }}
-                title={STRING.destinations} />
+                title={translations.destinations} />
             <View>
                 <FlatList
                     style={{ marginHorizontal: SCALE_SIZE(35) }}
@@ -73,7 +92,7 @@ const Destination = (props) => {
                                             align='center'
                                             color={COLORS.white}
                                             family={FONT_NAME.semiBold}>
-                                            {item?.cont_english_design ?? ''}
+                                            {getContinentalName(item)}
                                         </Text>
                                     </View>
                                 </ImageBackground>

@@ -18,7 +18,7 @@ import Tooltip from "react-native-walkthrough-tooltip";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 
 //CONTEXT
-import { AuthContext } from "../context";
+import { AuthContext, TranslationContext, translations } from "../context";
 
 //API
 import { destination, getCountry, getRegion, getServices } from "../api";
@@ -26,6 +26,8 @@ import { destination, getCountry, getRegion, getServices } from "../api";
 const Match = (props) => {
 
     const { user } = useContext(AuthContext)
+
+    const translations = useContext(TranslationContext)
 
     const [isLoading, setIsLoading] = useState(false);
 
@@ -76,7 +78,7 @@ const Match = (props) => {
     async function getCountries() {
         const params = {
             user_id: user?.[0]?.user_id,
-            user_session:user?.[0]?.user_session,
+            user_session: user?.[0]?.user_session,
             continent: selectedContinent.french_name
         }
 
@@ -91,6 +93,7 @@ const Match = (props) => {
                     id: e.cnt_id,
                     name: e.cont_english_design,
                     french_name: e.cont_french_design,
+                    spanish_name:e.cont_spanish_design
                 }
             })
             setCountries(response)
@@ -107,7 +110,7 @@ const Match = (props) => {
     async function getRegionList() {
         const params = {
             user_id: user?.[0]?.user_id,
-            user_session:user?.[0]?.user_session,
+            user_session: user?.[0]?.user_session,
             continent: selectedContinent?.french_name,
             country: selectedCountries?.french_name
         }
@@ -122,7 +125,8 @@ const Match = (props) => {
                 return {
                     id: e?.reg_id,
                     name: e?.reg_english_design,
-                    french_name: e?.reg_french_design
+                    french_name: e?.reg_french_design,
+                    spanish_name:e?.reg_spanish_desgin
                 }
             })
             setRegion(regionData)
@@ -139,7 +143,7 @@ const Match = (props) => {
     async function getServicesList() {
         const params = {
             user_id: user?.[0]?.user_id,
-            user_session:user?.[0]?.user_session,
+            user_session: user?.[0]?.user_session,
             continent: selectedContinent?.french_name,
             country: selectedCountries?.name,
             hotel_region: selectedRegion?.id
@@ -148,6 +152,8 @@ const Match = (props) => {
         setIsLoading(true)
         const result = await getServices(params)
         setIsLoading(false)
+
+        console.log('Service',JSON.stringify(result))
 
         if (result.status) {
             const response = result?.data?.result?.[0]?.hotel_services ?? []
@@ -176,21 +182,21 @@ const Match = (props) => {
                 size={SCALE_SIZE(30)}
                 color={COLORS.black}
                 family={FONT_NAME.medium}>
-                {STRING.letFindYourMatchingHotel}
+                {translations.letsfindyourmatchinghotels}
             </Text>
             <Text
                 style={styles.dataFillUpText}
                 size={SCALE_SIZE(16)}
                 color={COLORS.gray}
                 family={FONT_NAME.medium}>
-                {STRING.dataFillUp}
+                {translations.datafillup}
             </Text>
             <View style={{ marginTop: SCALE_SIZE(25) }}></View>
             <ToolTipView
                 visible={isVisibleContinent}
                 items={continents}
                 selectedItem={selectedContinent}
-                placeholder={'Which continent attracts you ?'}
+                placeholder={translations.whichcontinentattractyou}
                 onOpen={() => {
                     if (continents) {
                         setVisibleContinent(true)
@@ -212,7 +218,7 @@ const Match = (props) => {
                 visible={isVisibleCountry}
                 items={countries}
                 selectedItem={selectedCountries}
-                placeholder={'Which countries would you like to visit ?'}
+                placeholder={translations.whichcountrywouldyouliketovisit}
                 onOpen={() => {
                     if (selectedContinent) {
                         getCountries()
@@ -233,7 +239,7 @@ const Match = (props) => {
                 visible={isVisibleRegion}
                 items={regions}
                 selectedItem={selectedRegion}
-                placeholder={'In which region do you want to travel ?'}
+                placeholder={translations.inwhichregiondoyouwanttotravel}
                 onOpen={() => {
                     if (selectedContinent && selectedCountries) {
                         getRegionList()
@@ -252,7 +258,7 @@ const Match = (props) => {
             <ToolTipView visible={isVisibleService}
                 items={services}
                 selectedItem={selectedServices}
-                placeholder={'What services or equipment do you expect ?'}
+                placeholder={translations.whatservicesorequipmentdoyouexpect}
                 onOpen={() => {
                     if (selectedContinent && selectedCountries && selectedRegion) {
                         getServicesList()
@@ -278,7 +284,7 @@ const Match = (props) => {
                     })
                 }}
                 style={styles.searchButton}
-                title={STRING.search} />
+                title={translations.search} />
             <SafeAreaView />
             {isLoading && <ProgressView />}
         </View>
@@ -301,7 +307,8 @@ const ToolTipView = (props) => {
             arrowStyle={{ height: 0, width: 0 }}
             arrowSize={{ height: 0, width: 0 }}
             content={
-                <ToolItem items={items}
+                <ToolItem
+                    items={items}
                     selectedItems={[selectedItem]}
                     onPress={(item, index) => {
                         props.onSelectItem(item)

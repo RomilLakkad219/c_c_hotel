@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { View, StyleSheet, SafeAreaView, Image, TextInput } from 'react-native'
+import { View, StyleSheet, SafeAreaView, Image, TextInput, Alert } from 'react-native'
 
 //PACKAGES
 import MapView, { Callout, Marker } from 'react-native-maps';
@@ -8,20 +8,21 @@ import MapView, { Callout, Marker } from 'react-native-maps';
 import { IMAGES } from "../../asset";
 
 //COMPONENT
-import { BookingSelectionPopup, Header, ProgressView,Text } from "../../component";
+import { BookingSelectionPopup, Header, ProgressView, Text } from "../../component";
 
 //CONSTANT
 import { COLORS, FONT_NAME, SCALE_SIZE, STRING } from "../../constant";
 import { BASE_IMAGE_URL } from "../../constant/WebService";
 
 //CONTEXT
-import { AuthContext } from "../../context";
+import { AuthContext, TranslationContext } from "../../context";
 
 //API
 import { home } from "../../api";
 
 //PACKAGES
 import WebView from "react-native-webview";
+import Geolocation from "@react-native-community/geolocation";
 
 //SCREENS
 import { SCREENS } from "..";
@@ -30,14 +31,39 @@ const Booking = (props) => {
 
     const { user } = useContext(AuthContext);
 
+    const translations = useContext(TranslationContext)
+
     const [isLoading, setIsLoading] = useState(false);
     const [search, setSearch] = useState('');
     const [visible, setVisible] = useState(false);
     const [hotelResult, setHotelResult] = useState([]);
+    const [mapRegion, setMapRegion] = useState(null)
 
     useEffect(() => {
         getHome()
     }, [])
+
+    useEffect(() => {
+        getLocation()
+    }, [])
+
+
+    const getLocation = () => {
+        Geolocation.requestAuthorization(() => {
+            Geolocation.getCurrentPosition((position) => {
+                setMapRegion({
+                    latitude: position?.coords?.latitude,
+                    longitude: position?.coords?.longitude,
+                    latitudeDelta: 0.1,
+                    longitudeDelta: 0.1,
+                    selectedItemIndex: 0
+                })
+
+            })
+        }, (error) => {
+            Alert.alert('', error.message)
+        })
+    }
 
     function onBack() {
         props.navigation.goBack()
@@ -46,7 +72,7 @@ const Booking = (props) => {
     async function getHome() {
         const params = {
             user_id: user?.[0]?.user_id,
-            user_session:user?.[0]?.user_session,
+            user_session: user?.[0]?.user_session,
         }
 
         setIsLoading(true)
@@ -77,7 +103,7 @@ const Booking = (props) => {
                     <TextInput
                         style={styles.searchInput}
                         value={search}
-                        placeholder={STRING.searchHere}
+                        placeholder={translations.searchhere}
                         placeholderTextColor={COLORS.gray}
                         onChangeText={(text) => {
                             setSearch(text)
@@ -91,18 +117,18 @@ const Booking = (props) => {
             </View>
             <View style={styles.container}>
                 <MapView style={styles.map}
-                    initialRegion={{
-                        latitude: 37.78825,
-                        longitude: -122.4324,
-                        latitudeDelta: 0.0922,
-                        longitudeDelta: 0.0421,
-                    }}>
+                    showsUserLocation={true}
+                    region={mapRegion}>
                     {hotelResult.map((e, index) => {
+                        const lat = Number(e?.hotel_lat ?? 0)
+                        const lng = Number(e?.hotel_long ?? 0)
+
                         return (
                             <Marker
+                                key={index}
                                 coordinate={{
-                                    latitude: e?.hotel_lat,
-                                    longitude: e?.hotel_long,
+                                    latitude: isNaN(lat) ? 0 : lat,
+                                    longitude: isNaN(lng) ? 0 : lng,
                                 }}>
                                 <Callout
                                     onPress={() => {
@@ -224,7 +250,7 @@ const styles = StyleSheet.create({
         right: 0,
         zIndex: 5000
     },
-    webview:{
+    webview: {
         height: SCALE_SIZE(50),
         width: SCALE_SIZE(50)
     }

@@ -29,8 +29,6 @@ const Map = (props) => {
 
     const item = props.route.params
 
-    console.log(item)
-
     const [hotelResult, setHotelResult] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
 
@@ -83,8 +81,8 @@ const Map = (props) => {
                         return (
                             <Marker
                                 coordinate={{
-                                    latitude: e?.hotel_lat,
-                                    longitude: e?.hotel_long,
+                                    latitude: Number(e?.hotel_lat ?? 0),
+                                    longitude: Number(e?.hotel_long ?? 0),
                                 }}>
                                 <Callout
                                     onPress={() => {

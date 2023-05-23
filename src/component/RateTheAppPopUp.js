@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { View, StyleSheet, Modal, TouchableOpacity } from 'react-native'
 
 //CONSTANT
@@ -10,7 +10,13 @@ import { Text } from "../component"
 //PACKAGES
 import { AirbnbRating } from 'react-native-ratings'
 
+//CONTEXT
+import { TranslationContext } from "../context";
+
 const RateTheAppPopUp = (props) => {
+
+    const translations = useContext(TranslationContext)
+
     return (
         <Modal animationType="fade"
             transparent={true}
@@ -23,7 +29,7 @@ const RateTheAppPopUp = (props) => {
                             size={20}
                             family={FONT_NAME.medium}
                             color={COLORS.headerTitleGray}>
-                            {STRING.rateTheApp}
+                            {translations.ratetheapp}
                         </Text>
                         <View style={styles.blueView}>
                             <AirbnbRating
@@ -39,7 +45,7 @@ const RateTheAppPopUp = (props) => {
                                 align='center'
                                 family={FONT_NAME.semiBold}
                                 color={COLORS.white}>
-                                {STRING.submit}
+                                {translations.submit}
                             </Text>
                         </TouchableOpacity>
                     </View>

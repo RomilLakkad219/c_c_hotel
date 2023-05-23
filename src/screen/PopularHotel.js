@@ -8,12 +8,14 @@ import { PopularItem, Header, ProgressView } from '../component';
 import { COLORS, STRING } from '../constant';
 
 //CONTEXT
-import { AuthContext } from "../context";
+import { AuthContext, TranslationContext } from "../context";
 
 //API
 import { home } from "../api";
 
 const PopularHotel = (props) => {
+
+    const translations = useContext(TranslationContext)
 
     function onBack() {
         props.navigation.goBack()
@@ -31,7 +33,7 @@ const PopularHotel = (props) => {
     async function getAllHotel() {
         const params = {
             user_id: user?.[0]?.user_id,
-            user_session:user?.[0]?.user_session,
+            user_session: user?.[0]?.user_session,
         }
 
         setIsLoading(true)
@@ -51,7 +53,7 @@ const PopularHotel = (props) => {
         <View style={styles.container}>
             <SafeAreaView />
             <Header onBack={() => onBack()}
-                title={STRING.popularHotel} />
+                title={translations.popularhotel} />
             <FlatList data={hotelData}
                 showsVerticalScrollIndicator={false}
                 keyExtractor={(item, index) => index.toString()}

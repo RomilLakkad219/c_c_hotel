@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { View, StyleSheet, SafeAreaView, ScrollView } from 'react-native'
 
 //CONSTANT
@@ -10,7 +10,12 @@ import { Header, ProgressView, Text } from "../component";
 //API
 import { personalData } from "../api";
 
+//CONTEXT
+import { TranslationContext } from "../context";
+
 const PersonalData = (props) => {
+
+    const translations = useContext(TranslationContext)
 
     const [isLoading, setIsLoading] = useState(false);
     const [isPersonalDataResponse, setIsPersonalDataResponse] = useState('')
@@ -42,7 +47,7 @@ const PersonalData = (props) => {
         <View style={styles.container}>
             <SafeAreaView />
             <Header onBack={() => { onBack() }}
-                title={STRING.personalData} />
+                title={translations.personaldata} />
             <ScrollView showsVerticalScrollIndicator={false}>
                 <Text
                     style={styles.text}

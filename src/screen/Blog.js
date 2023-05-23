@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { View, StyleSheet, SafeAreaView, ScrollView } from 'react-native'
 
 //CONSTANT
@@ -10,7 +10,12 @@ import { Header, ProgressView, Text } from "../component";
 //API
 import { blog } from "../api";
 
+//CONTEXT
+import { TranslationContext } from "../context";
+
 const Blog = (props) => {
+
+    const translations = useContext(TranslationContext)
 
     const [isLoading, setIsLoading] = useState(false);
     const [isBlogResponse, setIsBlogResponse] = useState('')
@@ -32,7 +37,7 @@ const Blog = (props) => {
         if (result.status) {
             // const response = result?.data?.result
             // setIsBlogResponse(response)
-            SHOW_SUCCESS_TOAST('done')
+            // SHOW_SUCCESS_TOAST('done')
         }
         else {
             SHOW_TOAST(result.error)
@@ -42,7 +47,7 @@ const Blog = (props) => {
         <View style={styles.container}>
             <SafeAreaView />
             <Header onBack={() => { onBack() }}
-                title={STRING.blog} />
+                title={translations.blog} />
             <ScrollView showsVerticalScrollIndicator={false}>
                 <Text
                     style={styles.text}

@@ -12,7 +12,7 @@ import { COLORS, SCALE_SIZE, FONT_NAME, STRING, SHOW_TOAST } from "../constant";
 import { BASE_IMAGE_URL } from "../constant/WebService";
 
 //CONTEXT
-import { AuthContext } from "../context";
+import { AuthContext, TranslationContext } from "../context";
 
 //API
 import { hotelDetail, likeUnlikeHotel } from "../api";
@@ -27,6 +27,8 @@ const HotelDetail = (props) => {
 
     const { user } = useContext(AuthContext);
 
+    const translations = useContext(TranslationContext)
+
     const { item } = props.route.params
 
     const [isLoading, setIsLoading] = useState(false);
@@ -35,7 +37,7 @@ const HotelDetail = (props) => {
     const [isLiked, setIsLiked] = useState(item.fv_status)
 
     useEffect(() => {
-        getHotelDetails()       
+        getHotelDetails()
     }, [])
 
     async function getHotelDetails() {
@@ -211,7 +213,7 @@ const HotelDetail = (props) => {
                             color={COLORS.white}
                             align='center'
                             family={FONT_NAME.semiBold}>
-                            {STRING.webSite}
+                            {translations.website}
                         </Text>
                     </TouchableOpacity>
                 </View>
@@ -225,7 +227,7 @@ const HotelDetail = (props) => {
                     onPress={() => {
                     }}
                     style={styles.bookNowButton}
-                    title={STRING.bookNow} />
+                    title={translations.booknow} />
             </ScrollView>
             <Modal visible={imageViewerVisible}
                 transparent={true}>
@@ -323,11 +325,11 @@ const styles = StyleSheet.create({
     websiteButton: {
         backgroundColor: COLORS.black,
         height: SCALE_SIZE(44),
-        width: SCALE_SIZE(105),
         borderRadius: SCALE_SIZE(24),
         justifyContent: 'center',
         alignSelf: 'center',
-        marginRight: SCALE_SIZE(35)
+        marginRight: SCALE_SIZE(35),
+        paddingHorizontal:SCALE_SIZE(16)
     },
     factEstablishText: {
         marginTop: SCALE_SIZE(13),

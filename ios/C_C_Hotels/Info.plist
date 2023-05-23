@@ -42,6 +42,12 @@
 	<string>Needs an media library for app</string>
 	<key>NSCameraUsageDescription</key>
 	<string>Needs an camera for app</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>App needs location always and when in usage</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>Allow location to use the location information of this device</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>App needs location when in usage</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Needs microphone usage for app</string>
 	<key>NSPhotoLibraryUsageDescription</key>

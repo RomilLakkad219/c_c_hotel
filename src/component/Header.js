@@ -14,7 +14,7 @@ import { COLORS, FONT_NAME, SCALE_SIZE, STRING } from "../constant";
 import Tooltip from "react-native-walkthrough-tooltip";
 
 //CONTEXT
-import { AuthContext } from "../context";
+import { AuthContext, TranslationContext } from "../context";
 
 const Header = (props) => {
 
@@ -62,6 +62,7 @@ const Header = (props) => {
                 </View>
                 <Text
                     style={{ flex: 1.0 }}
+                    numberOfLines={1}
                     align='center'
                     size={SCALE_SIZE(23)}
                     family={FONT_NAME.medium}
@@ -99,6 +100,8 @@ const Header = (props) => {
 
 const FilterToolTip = (props) => {
 
+    const translations = useContext(TranslationContext)
+
     const [visible, setVisible] = useState(false)
     const [selectedFilterItems, setSelectedFilterItems] = useState([])
 
@@ -117,7 +120,7 @@ const FilterToolTip = (props) => {
             arrowSize={{
                 height: 0, width: 0
             }}
-            content={<ToolItem items={[{ id: 0, name: STRING.beach }, { id: 1, name: STRING.village }, { id: 2, name: STRING.cityShopping }, { id: 3, name: STRING.mountainSky }, { id: 4, name: STRING.nature }, { id: 5, name: STRING.waterFront }]}
+            content={<ToolItem items={[{ id: 0, name: translations.beach }, { id: 1, name: translations.village }, { id: 2, name: translations.cityshopping }, { id: 3, name: translations.mountainsky }, { id: 4, name: translations.nature }, { id: 5, name: translations.waterfront }]}
                 selectedItems={selectedFilterItems}
                 onPress={(item, index) => {
                     const array = [...selectedFilterItems]

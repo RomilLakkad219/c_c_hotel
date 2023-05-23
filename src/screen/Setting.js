@@ -19,7 +19,7 @@ import { SCREENS } from ".";
 import { CommonActions } from "@react-navigation/native";
 
 //CONTEXT
-import { AuthContext } from "../context";
+import { AuthContext, TranslationContext } from "../context";
 
 //API
 import { languageChange, subscribe } from "../api";
@@ -28,47 +28,48 @@ const Setting = (props) => {
 
     const languageRef = useRef();
 
+    const translations = useContext(TranslationContext);
     const { user, profile, fetchProfile } = useContext(AuthContext)
 
     const settingData = [
         {
-            title: STRING.language,
+            title: translations.language,
             image: IMAGES.ic_down,
             key: 'language'
         },
         {
-            title: STRING.subscribe,
+            title: translations.subscribe,
             image: IMAGES.ic_down,
             key: 'subscribe',
             isSwitch: true,
         },
         {
-            title: STRING.howItWorks,
+            title: translations.howitworks,
             image: IMAGES.ic_down,
             key: 'how it work'
         },
         {
-            title: STRING.blog,
+            title: translations.blog,
             image: IMAGES.ic_down,
             key: 'blog'
         },
         {
-            title: STRING.rateTheApp,
+            title: translations.ratetheapp,
             image: IMAGES.ic_down,
             key: 'rate the app'
         },
         {
-            title: STRING.legalNotice,
+            title: translations.legalnotice,
             image: IMAGES.ic_down,
             key: 'legal notice'
         },
         {
-            title: STRING.personalData,
+            title: translations.personaldata,
             image: IMAGES.ic_down,
             key: 'personal data'
         },
         {
-            title: STRING.aboutDeveloper,
+            title: translations.aboutdeveloper,
             image: IMAGES.ic_down,
             key: 'about developer'
         },
@@ -94,7 +95,7 @@ const Setting = (props) => {
     async function getSubscribe() {
         const params = {
             user_id: user?.[0]?.user_id,
-            user_session:user?.[0]?.user_session,
+            user_session: user?.[0]?.user_session,
         }
 
         setIsLoading(true)
@@ -118,7 +119,7 @@ const Setting = (props) => {
     async function setLanguage(languageName) {
         const params = {
             user_id: user?.[0]?.user_id,
-            user_session:user?.[0]?.user_session,
+            user_session: user?.[0]?.user_session,
             user_lang: languageName,
         }
 
@@ -138,7 +139,7 @@ const Setting = (props) => {
         <View style={styles.container}>
             <SafeAreaView />
             <Header onBack={() => onBack()}
-                title={STRING.settings} />
+                title={translations.settings} />
             <View>
                 <FlatList data={settingData}
                     keyExtractor={(item, index) => index.toString()}
@@ -209,7 +210,7 @@ const Setting = (props) => {
                     size={18}
                     family={FONT_NAME.semiBold}
                     color={COLORS.blue}>
-                    {STRING.logOut}
+                    {translations.logout}
                 </Text>
             </TouchableOpacity>
             <LogoutPopup
@@ -238,8 +239,25 @@ const Setting = (props) => {
                 data={[{ id: 0, name: STRING.english }, { id: 1, name: STRING.spanish }, { id: 2, name: STRING.french }]}
                 onPressItem={(e) => {
                     languageRef?.current?.close()
-                    setSelectedLanguage(e.name)
-                    setLanguage(e)
+
+                    setTimeout(() => {
+                        setSelectedLanguage(e.name)
+                        setLanguage(e)
+
+                        const language = e?.name
+                        if (language?.toLowerCase() == 'english') {
+                            translations.setLanguage('en')
+                        }
+                        else if (language?.toLowerCase() == 'spanish') {
+                            translations.setLanguage('spanish')
+                        }
+                        else if (language?.toLowerCase() == 'french') {
+                            translations.setLanguage('french')
+                        }
+                        else {
+                            translations.setLanguage('en')
+                        }
+                    }, 500);
 
                 }} />
             {isLoading && <ProgressView />}

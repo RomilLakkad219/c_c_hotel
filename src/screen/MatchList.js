@@ -24,11 +24,13 @@ import { matchMakinghotels } from "../api";
 import WebView from "react-native-webview";
 
 //CONTEXT
-import { AuthContext } from "../context";
+import { AuthContext, TranslationContext } from "../context";
 
 const MatchList = (props) => {
 
-    const { user } = useContext(AuthContext)
+    const { user } = useContext(AuthContext);
+
+    const translations = useContext(TranslationContext)
 
     const calloutRef = useRef(null)
 
@@ -68,7 +70,7 @@ const MatchList = (props) => {
 
             if (hotelList?.length > 0) {
                 const lat = hotelList[0].hotel_lat
-                const lng = hotelList[0].hotel_long
+                const lng = hotelList[0].hotel_long   
 
                 setMapRegion({
                     latitude: lat,
@@ -93,7 +95,7 @@ const MatchList = (props) => {
             <SafeAreaView style={{ backgroundColor: 'rgba(255, 255, 255, 0.28)' }} />
             <View style={styles.headerContainer}>
                 <Header
-                    title={`Match List(${hotelResponse?.length ?? 0})`}
+                    title={`${translations.matchlist}(${hotelResponse?.length ?? 0})`}
                     onBack={() => {
                         props.navigation.goBack()
                     }} />
@@ -212,7 +214,7 @@ const MatchList = (props) => {
                                                 size={SCALE_SIZE(12)}
                                                 color={COLORS.white}
                                                 family={FONT_NAME.semiBold}>
-                                                {STRING.discover}
+                                                {translations.discover}
                                             </Text>
                                         </TouchableOpacity>
                                     </View>

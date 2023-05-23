@@ -5,7 +5,7 @@ import { View, StyleSheet, TouchableOpacity, Image } from 'react-native'
 import { IMAGES } from "../asset";
 
 //CONSTANT
-import { COLORS, FONT_NAME, SCALE_SIZE, STRING } from "../constant";
+import { COLORS, FONT_NAME, SCALE_SIZE } from "../constant";
 
 //SCREENS
 import { SCREENS } from "../screen";
@@ -18,7 +18,7 @@ import LinearGradient from "react-native-linear-gradient";
 import { ProgressView, Text } from "../component"
 
 //CONTEXT
-import { AuthContext } from "../context";
+import { AuthContext, TranslationContext } from "../context";
 
 //API
 import { likeUnlikeHotel } from "../api";
@@ -26,6 +26,8 @@ import { likeUnlikeHotel } from "../api";
 const FavouriteItem = (props) => {
 
     const { user } = useContext(AuthContext)
+
+    const translations=useContext(TranslationContext)
 
     const [isLoading, setIsLoading] = useState(false)
 
@@ -97,7 +99,7 @@ const FavouriteItem = (props) => {
                             size={SCALE_SIZE(12)}
                             color={COLORS.white}
                             family={FONT_NAME.semiBold}>
-                            {STRING.discover}
+                            {translations.discover}
                         </Text>
                     </TouchableOpacity>
                     <LinearGradient colors={['#6EB3FE', '#1377B1']} style={styles.bookButton}>
@@ -107,7 +109,7 @@ const FavouriteItem = (props) => {
                                 size={SCALE_SIZE(12)}
                                 color={COLORS.white}
                                 family={FONT_NAME.semiBold}>
-                                {STRING.book}
+                                {translations.book}
                             </Text>
                         </TouchableOpacity>
                     </LinearGradient>

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { View, StyleSheet, Platform, StatusBar, LogBox } from 'react-native'
 
 //PACKAGES
@@ -21,17 +21,22 @@ import KeyboardManager from 'react-native-keyboard-manager';
 import { COLORS, SCALE_SIZE } from './src/constant';
 
 //CONTEXT
-import { AuthProvider } from './src/context';
+import { AuthProvider, TranslationContext, translations } from './src/context';
 
 LogBox.ignoreAllLogs(true)
 
 const App = (props) => {
+
 
   useEffect(() => {
     if (Platform.OS == 'ios') {
       KeyboardManager.setEnable(true);
       KeyboardManager.setKeyboardDistanceFromTextField(30);
     }
+  }, [])
+
+  useEffect(() => {
+    translations.setLanguage('en')
   }, [])
 
   const { Navigator, Screen } = createStackNavigator()
@@ -66,26 +71,30 @@ const App = (props) => {
     )
   }
 
+
+
   return (
     <View style={styles.container}>
       <AuthProvider>
-        <StatusBar backgroundColor={'#fff'} barStyle={'dark-content'} translucent={false} />
-        <NavigationContainer>
-          <Navigator
-            initialRouteName={SCREENS.Prepare.name}
-            screenOptions={{ headerShown: false, gestureEnabled: false }}>
-            {_.toArray(SCREENS).map((item, index) => {
-              return item.component ? (
-                <Screen
-                  key={item.name}
-                  name={item.name}
-                  component={item.component}
-                />
-              ) : null;
-            })}
-          </Navigator>
-        </NavigationContainer>
-        <Toast config={toastConfig} />
+        <TranslationContext.Provider value={translations}>
+          <StatusBar backgroundColor={'#fff'} barStyle={'dark-content'} translucent={false} />
+          <NavigationContainer>
+            <Navigator
+              initialRouteName={SCREENS.Prepare.name}
+              screenOptions={{ headerShown: false, gestureEnabled: false }}>
+              {_.toArray(SCREENS).map((item, index) => {
+                return item.component ? (
+                  <Screen
+                    key={item.name}
+                    name={item.name}
+                    component={item.component}
+                  />
+                ) : null;
+              })}
+            </Navigator>
+          </NavigationContainer>
+          <Toast config={toastConfig} />
+        </TranslationContext.Provider>
       </AuthProvider>
     </View>
   )

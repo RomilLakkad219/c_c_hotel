@@ -22,11 +22,13 @@ import { IMAGES } from "../asset";
 import { likeUnlikeHotel } from "../api";
 
 //CONTEXT
-import { AuthContext } from "../context";
+import { AuthContext, TranslationContext } from "../context";
 
 const PopularItem = (props) => {
 
     const { user } = useContext(AuthContext)
+
+    const translations=useContext(TranslationContext)
 
     const [isLoading, setIsLoading] = useState(false);
     const [isLiked, setIsLiked] = useState(item?.fv_status)
@@ -98,7 +100,7 @@ const PopularItem = (props) => {
                             size={SCALE_SIZE(12)}
                             color={COLORS.white}
                             family={FONT_NAME.semiBold}>
-                            {STRING.discover}
+                            {translations.discover}
                         </Text>
                     </TouchableOpacity>
                     <LinearGradient colors={['#6EB3FE', '#1377B1']} style={styles.bookButton}>
@@ -108,7 +110,7 @@ const PopularItem = (props) => {
                                 size={SCALE_SIZE(12)}
                                 color={COLORS.white}
                                 family={FONT_NAME.semiBold}>
-                                {STRING.book}
+                                {translations.book}
                             </Text>
                         </TouchableOpacity>
                     </LinearGradient>

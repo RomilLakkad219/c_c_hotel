@@ -19,13 +19,15 @@ import { COLORS, FONT_NAME, SCALE_SIZE, SHOW_TOAST, STRING } from "../constant";
 import { getCountry, updateProfile, updateUserImage } from "../api";
 
 //CONTEXT
-import { AuthContext } from "../context";
+import { AuthContext, TranslationContext } from "../context";
 
 const EditProfile = (props) => {
 
     const mediaRef = useRef();
     const genderRef = useRef();
     const countryRef = useRef();
+
+    const translations = useContext(TranslationContext)
 
     const { user, profile, fetchProfile } = useContext(AuthContext)
 
@@ -44,7 +46,6 @@ const EditProfile = (props) => {
     const [selectedMedia, setSelectedMedia] = useState(false)
 
     useEffect(() => {
-        console.log(JSON.stringify(profile))
         getUserProfile()
         getCountries()
     }, [])
@@ -126,8 +127,6 @@ const EditProfile = (props) => {
             user_session_id: ''
         }
 
-        console.log(params)
-
         setIsLoading(true)
         const result = await updateProfile(params)
         setIsLoading(false)
@@ -189,7 +188,7 @@ const EditProfile = (props) => {
     async function getCountries() {
         const params = {
             user_id: user?.[0]?.user_id,
-            user_session:user?.[0]?.user_session
+            user_session: user?.[0]?.user_session
         }
 
         setIsLoading(true)
@@ -220,11 +219,11 @@ const EditProfile = (props) => {
             <SafeAreaView />
             <Header onBack={() => onBack()}
                 onEditProfile={() => { }}
-                title={STRING.editProfile} />
+                title={translations.editprofile} />
             <ScrollView showsVerticalScrollIndicator={false}>
                 <View style={{ flexDirection: 'row' }}>
                     <TouchableOpacity onPress={() => {
-                        mediaRef?.current?.open()
+                        mediaRef?.current?.open()    
                     }}>
                         <Image
                             style={styles.imageUpload}
@@ -236,7 +235,7 @@ const EditProfile = (props) => {
                         size={20}
                         family={FONT_NAME.medium}
                         color={COLORS.headerTitleGray}>
-                        {STRING.uploadImage}
+                        {translations.uploadimage}
                     </Text>
                 </View>
                 <View style={styles.nameContainer}>
@@ -245,7 +244,7 @@ const EditProfile = (props) => {
                         size={SCALE_SIZE(16)}
                         family={FONT_NAME.medium}
                         color={COLORS.black}>
-                        {STRING.name}
+                        {translations.name}
                     </Text>
                     <TextInput style={styles.input}
                         placeholderTextColor={COLORS.black}
@@ -259,9 +258,10 @@ const EditProfile = (props) => {
                     <Text
                         style={{ width: SCALE_SIZE(140) }}
                         size={SCALE_SIZE(16)}
+                        numberOfLines={1}
                         family={FONT_NAME.medium}
                         color={COLORS.black}>
-                        {STRING.dob}
+                        {translations.dob}
                     </Text>
                     <TouchableOpacity style={styles.directionContainer}
                         onPress={() => {
@@ -286,9 +286,10 @@ const EditProfile = (props) => {
                     <Text
                         style={{ width: SCALE_SIZE(140) }}
                         size={SCALE_SIZE(16)}
+                        numberOfLines={1}
                         family={FONT_NAME.medium}
                         color={COLORS.black}>
-                        {STRING.mobileNumber}
+                        {translations.mobilenumber}
                     </Text>
                     <TextInput style={styles.input}
                         value={mobileNumber}
@@ -303,7 +304,7 @@ const EditProfile = (props) => {
                         size={SCALE_SIZE(16)}
                         family={FONT_NAME.medium}
                         color={COLORS.black}>
-                        {STRING.gender}
+                        {translations.gender}
                     </Text>
                     <TouchableOpacity style={styles.directionContainer}
                         onPress={() => {
@@ -330,7 +331,7 @@ const EditProfile = (props) => {
                         size={SCALE_SIZE(16)}
                         family={FONT_NAME.medium}
                         color={COLORS.black}>
-                        {STRING.address}
+                        {translations.address}
                     </Text>
                     <TextInput style={styles.input}
                         value={address}
@@ -345,7 +346,7 @@ const EditProfile = (props) => {
                         size={SCALE_SIZE(16)}
                         family={FONT_NAME.medium}
                         color={COLORS.black}>
-                        {STRING.city}
+                        {translations.city}
                     </Text>
                     <TextInput style={styles.input}
                         value={city}
@@ -360,7 +361,7 @@ const EditProfile = (props) => {
                         size={SCALE_SIZE(16)}
                         family={FONT_NAME.medium}
                         color={COLORS.black}>
-                        {STRING.country}
+                        {translations.country}
                     </Text>
                     <TouchableOpacity style={styles.directionContainer}
                         onPress={() => {
@@ -388,7 +389,7 @@ const EditProfile = (props) => {
                         size={SCALE_SIZE(16)}
                         family={FONT_NAME.medium}
                         color={COLORS.black}>
-                        {STRING.postalCode}
+                        {translations.postalcode}
                     </Text>
                     <TextInput style={styles.input}
                         value={postalCode}
@@ -402,12 +403,11 @@ const EditProfile = (props) => {
                         onSave()
                     }}>
                     <Text
-                        style={{ width: SCALE_SIZE(100) }}
                         size={24}
                         align='center'
                         family={FONT_NAME.semiBold}
                         color={COLORS.white}>
-                        {STRING.save}
+                        {translations.save}
                     </Text>
                 </TouchableOpacity>
                 <BottomSheet
@@ -506,9 +506,7 @@ const styles = StyleSheet.create({
         marginTop: SCALE_SIZE(37),
         marginHorizontal: SCALE_SIZE(78),
         justifyContent: 'center',
-        paddingHorizontal: SCALE_SIZE(107),
         paddingVertical: SCALE_SIZE(14),
-        alignSelf: 'center',
         borderwidth: 1,
         borderRadius: SCALE_SIZE(30),
         marginBottom: SCALE_SIZE(50)

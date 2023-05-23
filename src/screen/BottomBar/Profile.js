@@ -14,11 +14,13 @@ import { Header, ProgressView, Text } from "../../component";
 import { COLORS, FONT_NAME, SCALE_SIZE, STRING } from "../../constant";
 
 //CONTEXT
-import { AuthContext } from "../../context";
+import { AuthContext, TranslationContext } from "../../context";
 
 const Profile = (props) => {
 
-    const { user, profile } = useContext(AuthContext);
+    const { profile } = useContext(AuthContext);
+
+    const translations = useContext(TranslationContext);
 
     const [isLoading, setIsLoading] = useState(false)
 
@@ -30,7 +32,7 @@ const Profile = (props) => {
         <View style={styles.container}>
             <SafeAreaView />
             <Header onBack={() => onBack()}
-                title={STRING.myProfile} />
+                title={translations.my_profile} />
             <View style={{ flexDirection: 'row' }}>
                 <Image
                     style={styles.profile}
@@ -66,7 +68,7 @@ const Profile = (props) => {
                     size={SCALE_SIZE(16)}
                     color={COLORS.gray}
                     family={FONT_NAME.medium}>
-                    {STRING.editProfile}
+                    {translations.editprofile}
                 </Text>
                 <Image
                     style={styles.forwardImage}
@@ -88,7 +90,7 @@ const Profile = (props) => {
                     size={SCALE_SIZE(16)}
                     color={COLORS.gray}
                     family={FONT_NAME.medium}>
-                    {STRING.settings}
+                    {translations.settings}
                 </Text>
                 <Image
                     style={styles.settingForwardImage}

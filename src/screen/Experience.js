@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState,useContext } from "react";
 import { View, StyleSheet, SafeAreaView, TextInput, Image, FlatList, TouchableOpacity, Dimensions } from 'react-native'
 
 //ASSET
@@ -13,7 +13,12 @@ import { COLORS, SCALE_SIZE, STRING, FONT_NAME } from "../constant";
 //PACKAGES
 import Carousel from 'react-native-snap-carousel';
 
+//CONTEXT
+import { TranslationContext } from "../context";
+
 const Experience = (props) => {
+
+    const translations =useContext(TranslationContext)
 
     function onBack() {
         props.navigation.goBack()
@@ -26,22 +31,22 @@ const Experience = (props) => {
     const placeOption =
         [
             {
-                title: STRING.beach
+                title: translations.beach
             },
             {
-                title: STRING.village
+                title: translations.village
             },
             {
-                title: STRING.cityShopping
+                title: translations.cityshopping
             },
             {
-                title: STRING.mountainSky
+                title: translations.mountainsky
             },
             {
-                title: STRING.nature
+                title: translations.nature
             },
             {
-                title: STRING.waterFront
+                title: translations.waterfront
             }
         ]
 
@@ -50,13 +55,13 @@ const Experience = (props) => {
             <SafeAreaView />
             <Header
                 onBack={() => onBack()}
-                title={STRING.experience}
+                title={translations.experience}
                 onFilter={() => { setVisible(true) }} />
             <View style={styles.searchInputContainer}>
                 <TextInput
                     style={styles.searchInput}
                     value={search}
-                    placeholder={STRING.searchHere}
+                    placeholder={translations.searchhere}
                     placeholderTextColor={COLORS.gray}
                     onChangeText={(text) => {
                         setSearch(text)
@@ -100,7 +105,7 @@ const Experience = (props) => {
             </View>
             <FlatList
                 showsVerticalScrollIndicator={false}
-                data={[{ title: STRING.beachSideHotel }, { title: STRING.villageSideHotel }, { title: STRING.beachSideHotel }, { title: STRING.villageSideHotel }, { title: STRING.beachSideHotel }, { title: STRING.villageSideHotel }]}
+                data={[{ title: translations.beachsidehotel }, { title: translations.villagesidehotel }, { title: translations.beachsidehotel }, { title: translations.villagesidehotel }, { title: translations.beachsidehotel }, { title: translations.villagesidehotel }]}
                 keyExtractor={(item, index) => index.toString()}
                 renderItem={({ item, index }) => {
                     return (
@@ -121,7 +126,7 @@ const Experience = (props) => {
                                 layoutCardOffset={9}
                                 ref={isCarousel}
                                 data={['', '', '', '', '', '', '', '', '']}
-                                renderItem={() => <HotelCarousel navigation={props.navigation} />}
+                                renderItem={(item,index) => <HotelCarousel navigation={props.navigation} item={item} />}
                                 sliderWidth={Dimensions.get('window').width}
                                 itemWidth={Dimensions.get('window').width - SCALE_SIZE(70)}
                                 useScrollView={true}>

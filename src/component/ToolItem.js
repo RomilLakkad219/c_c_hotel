@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { View, TouchableOpacity, FlatList, Image, ImageBackground, StyleSheet } from 'react-native'
 
 //ASSET
@@ -10,11 +10,30 @@ import { Text } from '../component'
 //CONSTANT
 import { COLORS, FONT_NAME, SCALE_SIZE } from "../constant";
 
+//CONTEXT
+import { TranslationContext } from "../context";
+
 export default function ToolItem(props) {
 
     const items = props.items
     const selectedItems = props.selectedItems
     const onItemChange = props.onItemChange
+
+    const translations = useContext(TranslationContext)
+
+    console.log('testing_items====>', items)
+
+    function getLocalization(item) {
+        if (translations.getLanguage() == 'en') {
+            return item.name
+        }
+        else if (translations.getLanguage() == 'french') {
+            return item.french_name
+        }
+        else {
+            return item.name
+        }
+    }
 
     return (
         <FlatList
@@ -38,7 +57,7 @@ export default function ToolItem(props) {
                                     size={SCALE_SIZE(12)}
                                     family={FONT_NAME.medium}
                                     color={COLORS.headerTitleGray}>
-                                    {item.name}
+                                    {getLocalization(item)}
                                 </Text>
                             </View>
                         </View>

@@ -17,7 +17,7 @@ import Carousel from 'react-native-snap-carousel';
 import { SCREENS } from "..";
 
 //CONTEXT
-import { AuthContext } from "../../context";
+import { AuthContext, TranslationContext } from "../../context";
 
 //API
 import { home, languageChange } from "../../api";
@@ -25,6 +25,8 @@ import { home, languageChange } from "../../api";
 const Home = (props) => {
 
     const { user, fetchProfile, profile } = useContext(AuthContext)
+
+    const translations = useContext(TranslationContext)
 
     const languageRef = useRef()
 
@@ -43,22 +45,22 @@ const Home = (props) => {
         [
             {
                 image: IMAGES.ic_map,
-                title: STRING.map,
+                title:translations.map,
                 key: 'map'
             },
             {
                 image: IMAGES.ic_expereience,
-                title: STRING.experience,
+                title: translations.experience,
                 key: 'experience'
             },
             {
                 image: IMAGES.ic_destination,
-                title: STRING.destinations,
+                title: translations.destinations,
                 key: 'destination'
             },
             {
                 image: IMAGES.ic_match,
-                title: STRING.match,
+                title: translations.match,
                 key: 'match'
             }
         ]
@@ -82,7 +84,7 @@ const Home = (props) => {
     async function getHome() {
         const params = {
             user_id: user?.[0]?.user_id,
-            user_session: user?.[0]?.user_session,
+            user_session: user?.[0]?.user_session,     
         }
 
         setIsLoading(true)
@@ -131,7 +133,7 @@ const Home = (props) => {
                     <TextInput
                         style={styles.searchInput}
                         value={search}
-                        placeholder={STRING.searchHere}
+                        placeholder={translations.searchhere}
                         placeholderTextColor={COLORS.gray}
                         onChangeText={(text) => {
                             setSearch(text)
@@ -192,7 +194,7 @@ const Home = (props) => {
                         size={SCALE_SIZE(20)}
                         color={COLORS.black}
                         family={FONT_NAME.medium}>
-                        {STRING.popularHotel}
+                        {translations.popularhotel}
                     </Text>
                     <Image style={styles.forwardImage}
                         resizeMode='contain'
@@ -215,7 +217,7 @@ const Home = (props) => {
                     size={SCALE_SIZE(20)}
                     color={COLORS.black}
                     family={FONT_NAME.medium}>
-                    {STRING.followOurBrands}
+                    {translations.followourbrands}
                 </Text>
                 <View>
                     <FlatList
@@ -249,8 +251,25 @@ const Home = (props) => {
                 data={[{ id: 0, name: STRING.english }, { id: 1, name: STRING.spanish }, { id: 2, name: STRING.french }]}
                 onPressItem={(e) => {
                     languageRef?.current?.close()
-                    setSelectedLanguage(e?.name)
-                    setLanguage(e?.name)
+
+                    setTimeout(() => {
+                        setSelectedLanguage(e?.name)
+                        setLanguage(e?.name)
+
+                        const language = e?.name
+                        if (language?.toLowerCase() == 'english') {
+                            translations.setLanguage('en')
+                        }
+                        else if (language?.toLowerCase() == 'spanish') {
+                            translations.setLanguage('spanish')
+                        }
+                        else if (language?.toLowerCase() == 'french') {
+                            translations.setLanguage('french')
+                        }
+                        else {
+                            translations.setLanguage('en')
+                        }
+                    }, 500);
                 }} />
             {isLoading && <ProgressView />}
         </View>

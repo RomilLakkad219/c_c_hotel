@@ -20,13 +20,15 @@ import Tooltip from "react-native-walkthrough-tooltip";
 import { destination, getCountry, getRegion } from "../api";
 
 //CONTEXT
-import { AuthContext } from "../context";
+import { AuthContext, TranslationContext } from "../context";
 
 const BookingSelectionPopup = (props) => {
 
     const navigation = props.navigation
 
     const { user } = useContext(AuthContext)
+
+    const translations = useContext(TranslationContext)
 
     const [isLoading, setIsLoading] = useState(false)
 
@@ -70,7 +72,7 @@ const BookingSelectionPopup = (props) => {
     async function getCountries() {
         const params = {
             user_id: user?.[0]?.user_id,
-            user_session:user?.[0]?.user_session,
+            user_session: user?.[0]?.user_session,
             continent: selectedContinent.french_name,
         }
 
@@ -101,7 +103,7 @@ const BookingSelectionPopup = (props) => {
     async function getRegionList() {
         const params = {
             user_id: user?.[0]?.user_id,
-            user_session:user?.[0]?.user_session,
+            user_session: user?.[0]?.user_session,
             continent: selectedContinent?.french_name,
             country: selectedCountries?.french_name
         }
@@ -153,7 +155,7 @@ const BookingSelectionPopup = (props) => {
                                 visible={isVisibleContinent}
                                 items={continents}
                                 selectedItem={selectedContinent}
-                                placeholder={STRING.selectContinent}
+                                placeholder={translations.selectcontinent}
                                 onOpen={() => {
                                     if (continents) {
                                         setVisibleContinent(true)
@@ -177,7 +179,7 @@ const BookingSelectionPopup = (props) => {
                                 visible={isVisibleCountry}
                                 items={countries}
                                 selectedItem={selectedCountries}
-                                placeholder={STRING.selectCountry}
+                                placeholder={translations.selectcountry}
                                 onOpen={() => {
                                     if (selectedContinent) {
                                         getCountries()
@@ -201,7 +203,7 @@ const BookingSelectionPopup = (props) => {
                                 visible={isVisibleRegion}
                                 items={regions}
                                 selectedItem={selectedRegion}
-                                placeholder={STRING.selectRegion}
+                                placeholder={translations.selectregion}
                                 onOpen={() => {
                                     if (selectedContinent && selectedCountries) {
                                         getRegionList()
@@ -233,7 +235,7 @@ const BookingSelectionPopup = (props) => {
                                 align='center'
                                 family={FONT_NAME.semiBold}
                                 color={COLORS.white}>
-                                {STRING.search}
+                                {translations.search}
                             </Text>
                         </TouchableOpacity>
                     </View>
@@ -272,7 +274,7 @@ const ToolTipView = (props) => {
                 props.onOpen()
             }}>
                 <Text
-                    style={{ flex: 1 }}
+                    style={styles.name}
                     numberOfLines={1}
                     size={10}
                     family={FONT_NAME.medium}
@@ -336,6 +338,10 @@ const styles = StyleSheet.create({
         width: SCALE_SIZE(205),
         borderRadius: SCALE_SIZE(10),
         elevation: 4,
+    },
+    name:{
+        flex: 1,
+        right:5
     }
 })
 

@@ -37,9 +37,9 @@ export const SCREENS = {
         name: 'Splash',
         component: Splash
     },
-    Prepare:{
-        name:'Prepare',
-        component:Prepare
+    Prepare: {
+        name: 'Prepare',
+        component: Prepare
     },
     Login: {
         name: 'Login',

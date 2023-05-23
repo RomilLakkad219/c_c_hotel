@@ -8,7 +8,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { CommonActions } from "@react-navigation/native";
 
 //CONTEXT
-import { AuthContext } from "../context";
+import { AuthContext, TranslationContext } from "../context";
 
 //SCREENS
 import { SCREENS } from ".";
@@ -18,6 +18,7 @@ import { userProfile } from "../api";
 
 const Prepare = (props) => {
 
+    const translations = useContext(TranslationContext)
     const { setUser, setProfile } = useContext(AuthContext)
 
     useEffect(() => {
@@ -39,7 +40,7 @@ const Prepare = (props) => {
     async function getUserProfile(user) {
         const params = {
             user_id: user?.[0]?.user_id,
-            user_session:user?.[0]?.user_session,
+            user_session: user?.[0]?.user_session,
         }
 
         const result = await userProfile(params)
@@ -48,6 +49,21 @@ const Prepare = (props) => {
             if (result?.data?.status == "1") {
                 const profile = result?.data?.result?.user?.[0]
                 setProfile(profile)
+
+                const language = profile?.user_lang
+                if (language?.toLowerCase() == 'english') {
+                    translations.setLanguage('en')
+                }
+                else if (language?.toLowerCase() == 'spanish') {
+                    translations.setLanguage('spanish')
+                }
+                else if (language?.toLowerCase() == 'french') {
+                    translations.setLanguage('french')
+                }
+                else {
+                    translations.setLanguage('en')
+                }
+
                 moveToHome()
             }
             else {
@@ -80,7 +96,7 @@ const Prepare = (props) => {
 
     return (
         <View style={styles.container}>
-            <ActivityIndicator/>
+            <ActivityIndicator />
         </View>
     )
 }
@@ -88,7 +104,7 @@ const Prepare = (props) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1.0,
-        justifyContent:'center'
+        justifyContent: 'center'
     }
 })
 

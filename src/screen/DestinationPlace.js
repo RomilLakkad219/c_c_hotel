@@ -11,13 +11,15 @@ import { COLORS, STRING, SHOW_TOAST } from "../constant";
 import { getDestinationPlace } from "../api";
 
 //CONTEXT
-import { AuthContext } from "../context";
+import { AuthContext, TranslationContext } from "../context";
 
 const DestinationPlace = (props) => {
 
     const { item } = props.route.params
 
     const { user } = useContext(AuthContext)
+
+    const translations = useContext(TranslationContext)
 
     const [isLoading, setIsLoading] = useState(false);
     const [destinationResponse, setDestinationResponse] = useState([])
@@ -33,13 +35,15 @@ const DestinationPlace = (props) => {
     async function getDestinationPlaces() {
         const params = {
             user_id: user?.[0]?.user_id,
-            user_session:user?.[0]?.user_session,
+            user_session: user?.[0]?.user_session,
             hotel_continent: item?.cont_french_design,
         }
 
         setIsLoading(true)
         const result = await getDestinationPlace(params)
         setIsLoading(false)
+
+        console.log(JSON.stringify(result))
 
         if (result.status) {
             const destinationPlaceResult = result?.data?.result ?? []
@@ -55,7 +59,7 @@ const DestinationPlace = (props) => {
             <SafeAreaView />
             <Header
                 onBack={() => onBack()}
-                title={STRING.destinations}
+                title={translations.destinations}
             />
             <FlatList data={destinationResponse}
                 showsVerticalScrollIndicator={false}

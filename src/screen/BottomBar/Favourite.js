@@ -8,7 +8,7 @@ import { Header, ProgressView, FavouriteItem, Text } from "../../component";
 import { COLORS, FONT_NAME, SCALE_SIZE, SHOW_TOAST, STRING } from "../../constant";
 
 //CONTEXT
-import { AuthContext } from "../../context";
+import { AuthContext, TranslationContext } from "../../context";
 
 //API
 import { favouriteHotelList } from "../../api";
@@ -16,6 +16,8 @@ import { favouriteHotelList } from "../../api";
 const Favourite = (props) => {
 
     const { user } = useContext(AuthContext)
+
+    const translations=useContext(TranslationContext)
 
     const [isLoading, setIsLoading] = useState(false);
     const [favouriteList, setFavouriteList] = useState([])
@@ -39,8 +41,6 @@ const Favourite = (props) => {
         const result = await favouriteHotelList(params)
         setIsLoading(false)
 
-        console.log(favouriteList?.length ?? 0)
-
         if (result.status) {
             const favouriteResponse = result?.data?.result?.front_fav ?? []
             setFavouriteList(favouriteResponse)
@@ -55,12 +55,13 @@ const Favourite = (props) => {
         <View style={styles.container}>
             <SafeAreaView />
             <Header onBack={() => onBack()}
-                title={STRING.favourite} />
+                title={translations.favourites} />
             {isLoading == false && favouriteList?.length == 0 ?
-                <View style={{ justifyContent: 'center', flex: 1 }}>
+                <View style={styles.errorView}>
                     <Text
                         size={SCALE_SIZE(20)}
-                        family={FONT_NAME.light}
+                        family={FONT_NAME.medium}
+                        color={COLORS.headerTitleGray}
                         align='center'>
                         {'No Data Found'}
                     </Text>
@@ -91,6 +92,10 @@ const styles = StyleSheet.create({
     container: {
         flex: 1.0,
         backgroundColor: COLORS.white
+    },
+    errorView: {
+        justifyContent: 'center',
+        flex: 1
     }
 })
 

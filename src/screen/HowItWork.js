@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState,useContext } from "react";
 import { View, StyleSheet, SafeAreaView, ScrollView } from 'react-native'
 
 //CONSTANT
-import { COLORS, FONT_NAME, SCALE_SIZE, SHOW_SUCCESS_TOAST, SHOW_TOAST, STRING } from "../constant";
+import { COLORS, FONT_NAME, SCALE_SIZE, SHOW_TOAST } from "../constant";
 
 //COMPONENT
 import { Header, ProgressView, Text } from "../component";
@@ -10,7 +10,12 @@ import { Header, ProgressView, Text } from "../component";
 //API
 import { howItWork } from "../api";
 
+//CONTEXT
+import { TranslationContext } from "../context";
+
 const HowItWork = (props) => {
+
+    const translations = useContext(TranslationContext)
 
     const [isLoading, setIsLoading] = useState(false);
     const [isResponse, setIsResponse] = useState('')
@@ -41,7 +46,7 @@ const HowItWork = (props) => {
         <View style={styles.container}>
             <SafeAreaView />
             <Header onBack={() => { onBack() }}
-                title={STRING.howItWork} />
+                title={translations.howitworks} />
             <ScrollView showsVerticalScrollIndicator={false}>
                 <Text
                     style={styles.text}
