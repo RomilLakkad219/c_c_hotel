@@ -167,7 +167,7 @@ export const translations = new LocalizedStrings({
         discover:'Descubrir',
         favourites:'Favoritas',
         book:'Libro',
-        doyouwanttologout:'¿Quieres cerrar sesión? ?',
+        doyouwanttologout:'¿Quieres cerrar sesión ?',
         yes:'Sí',
         no:'No',
         submit:'Entregar',

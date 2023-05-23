@@ -45,7 +45,6 @@ const MatchList = (props) => {
     }, [])
 
     async function getMatchMakingList() {
-        console.log(continent)
         const params = {
             user_session: user?.[0]?.user_session,
             seacrh_string: '',
@@ -68,17 +67,18 @@ const MatchList = (props) => {
             const hotelList = result?.data?.result ?? []
             setHotelResponse(hotelList)
 
-            if (hotelList?.length > 0) {
-                const lat = hotelList[0].hotel_lat
-                const lng = hotelList[0].hotel_long   
+            const lat = hotelList[0].hotel_lat ? Number(hotelList[0].hotel_lat) : 0
+            const lng = hotelList[0].hotel_long ? Number(hotelList[0].hotel_long) : 0
 
-                setMapRegion({
-                    latitude: lat,
-                    longitude: lng,
-                    latitudeDelta: 0.1,
-                    longitudeDelta: 0.1,
-                    selectedItemIndex: 0
-                })
+            if (hotelList?.length > 0) {
+    
+                    setMapRegion({
+                        latitude: lat,
+                        longitude: lng,
+                        latitudeDelta: 0.1,
+                        longitudeDelta: 0.1,
+                        selectedItemIndex: 0
+                    })
 
                 setTimeout(() => {
                     calloutRef.current.showCallout()

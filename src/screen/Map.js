@@ -50,8 +50,6 @@ const Map = (props) => {
         const result = await home(params)
         setIsLoading(false)
 
-        console.log(JSON.stringify(result))
-
         if (result.status) {
             const response = result?.data?.result ?? []
             setHotelResult(response)

@@ -74,7 +74,7 @@ const styles = StyleSheet.create({
     blueView: {
         backgroundColor: '#EEF2FF',
         borderRadius: SCALE_SIZE(6),
-        paddingHorizontal: SCALE_SIZE(35),
+        // paddingHorizontal: SCALE_SIZE(35),
         paddingVertical: SCALE_SIZE(9),
         marginVertical: SCALE_SIZE(12)
     },

@@ -43,8 +43,6 @@ const DestinationPlace = (props) => {
         const result = await getDestinationPlace(params)
         setIsLoading(false)
 
-        console.log(JSON.stringify(result))
-
         if (result.status) {
             const destinationPlaceResult = result?.data?.result ?? []
             setDestinationResponse(destinationPlaceResult)

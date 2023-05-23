@@ -21,8 +21,6 @@ export default function ToolItem(props) {
 
     const translations = useContext(TranslationContext)
 
-    console.log('testing_items====>', items)
-
     function getLocalization(item) {
         if (translations.getLanguage() == 'en') {
             return item.name

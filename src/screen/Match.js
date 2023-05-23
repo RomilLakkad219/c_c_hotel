@@ -153,8 +153,6 @@ const Match = (props) => {
         const result = await getServices(params)
         setIsLoading(false)
 
-        console.log('Service',JSON.stringify(result))
-
         if (result.status) {
             const response = result?.data?.result?.[0]?.hotel_services ?? []
             const serviceData = response.map((e) => {

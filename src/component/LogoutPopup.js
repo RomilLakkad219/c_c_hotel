@@ -70,9 +70,10 @@ const styles = StyleSheet.create({
         backgroundColor: 'rgba(0,0,0,0.3)',
     },
     logoutContainer: {
+        width:'80%',
         backgroundColor: COLORS.white,
         borderRadius: SCALE_SIZE(10),
-        alignSelf: 'center'
+        alignSelf: 'center',
     },
     yesNoContainer: {
         flexDirection: 'row',

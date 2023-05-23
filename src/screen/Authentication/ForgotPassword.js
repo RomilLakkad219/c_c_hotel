@@ -38,7 +38,6 @@ const ForgotPassword = (props) => {
         setIsLoading(true)
         const result = await forgotPassword(params)
         setIsLoading(false)
-        console.log(result)
 
         if (result.status) {
             props.navigation.navigate(SCREENS.Otp.name)
