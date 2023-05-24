@@ -8,10 +8,10 @@ import { SCREENS } from "..";
 import { IMAGES } from "../../asset";
 
 //COMPONENT
-import { Header, ProgressView, Text } from "../../component";
+import { Header, Text } from "../../component";
 
 //CONSTANT
-import { COLORS, FONT_NAME, SCALE_SIZE, STRING } from "../../constant";
+import { COLORS, FONT_NAME, SCALE_SIZE } from "../../constant";
 
 //CONTEXT
 import { AuthContext, TranslationContext } from "../../context";
@@ -21,8 +21,6 @@ const Profile = (props) => {
     const { profile } = useContext(AuthContext);
 
     const translations = useContext(TranslationContext);
-
-    const [isLoading, setIsLoading] = useState(false)
 
     function onBack() {
         props.navigation.goBack()
@@ -98,7 +96,6 @@ const Profile = (props) => {
                     source={IMAGES.ic_forward}
                 />
             </TouchableOpacity>
-            {isLoading && <ProgressView />}
         </View>
     )
 }

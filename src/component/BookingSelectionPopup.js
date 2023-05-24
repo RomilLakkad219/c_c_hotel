@@ -1,8 +1,8 @@
 import React, { useContext, useEffect, useState } from "react";
-import { View, StyleSheet, Modal, Image, TouchableOpacity, Alert } from 'react-native'
+import { View, StyleSheet, Modal, Image, TouchableOpacity } from 'react-native'
 
 //CONSTANT
-import { COLORS, FONT_NAME, SCALE_SIZE, SHOW_TOAST, STRING } from "../constant";
+import { COLORS, FONT_NAME, SCALE_SIZE, SHOW_TOAST } from "../constant";
 
 //COMPONENT
 import { ProgressView, Text, ToolItem } from "../component"
@@ -339,9 +339,9 @@ const styles = StyleSheet.create({
         borderRadius: SCALE_SIZE(10),
         elevation: 4,
     },
-    name:{
+    name: {
         flex: 1,
-        right:5
+        right: 5
     }
 })
 

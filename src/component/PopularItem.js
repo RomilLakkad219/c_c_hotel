@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import { View, StyleSheet, Image, TouchableOpacity } from 'react-native'
+import { View, StyleSheet, Image, TouchableOpacity, Linking } from 'react-native'
 
 //PACKAGES
 import { AirbnbRating } from 'react-native-ratings'
@@ -9,7 +9,7 @@ import LinearGradient from "react-native-linear-gradient";
 import { SCREENS } from "../screen";
 
 //CONSTANT
-import { COLORS, FONT_NAME, SCALE_SIZE, STRING } from "../constant";
+import { COLORS, FONT_NAME, SCALE_SIZE } from "../constant";
 import { BASE_IMAGE_URL } from "../constant/WebService";
 
 //COMPONENT
@@ -28,13 +28,15 @@ const PopularItem = (props) => {
 
     const { user } = useContext(AuthContext)
 
-    const translations=useContext(TranslationContext)
+    const translations = useContext(TranslationContext)
 
     const [isLoading, setIsLoading] = useState(false);
     const [isLiked, setIsLiked] = useState(item?.fv_status)
 
     const item = props.item
     const navigation = props.navigation
+
+    const isShowSearchImage = props.isShowSearchImage
 
     async function getLikeUnLikeHotel() {
         const params = {
@@ -58,7 +60,7 @@ const PopularItem = (props) => {
             }}>
             <Image style={styles.imageView}
                 resizeMode="cover"
-                source={{ uri: BASE_IMAGE_URL + item?.hotel_galary_photos ?? '' }} />
+                source={{ uri: isShowSearchImage ? (item.hotel_galary_photos ?? '') : (BASE_IMAGE_URL + (item?.hotel_galary_photos ?? '')) }} />
             <View style={{ flex: 1.0 }}>
                 <View style={{ flexDirection: 'row' }}>
                     <Text
@@ -94,7 +96,10 @@ const PopularItem = (props) => {
                     showRating={false}
                 />
                 <View style={{ flexDirection: 'row' }}>
-                    <TouchableOpacity style={styles.discoverButton}>
+                    <TouchableOpacity style={styles.discoverButton}
+                        onPress={() => {
+                            Linking.openURL(item.hotel_internet_bookingengine)
+                        }}>
                         <Text
                             align='center'
                             size={SCALE_SIZE(12)}
@@ -104,7 +109,9 @@ const PopularItem = (props) => {
                         </Text>
                     </TouchableOpacity>
                     <LinearGradient colors={['#6EB3FE', '#1377B1']} style={styles.bookButton}>
-                        <TouchableOpacity onPress={() => { }}>
+                        <TouchableOpacity onPress={() => {
+                            Linking.openURL(item.hotel_internet_bookingengine)
+                        }}>
                             <Text
                                 align='center'
                                 size={SCALE_SIZE(12)}

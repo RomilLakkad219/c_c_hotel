@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
-import { View, StyleSheet, SafeAreaView, Image, TouchableOpacity, FlatList } from 'react-native'
+import { View, StyleSheet, SafeAreaView, Image, TouchableOpacity, FlatList, Linking } from 'react-native'
 
 //ASSET
 import { IMAGES } from "../asset";
@@ -8,7 +8,7 @@ import { IMAGES } from "../asset";
 import { Header, ProgressView, Text } from "../component";
 
 //CONSTANT
-import { COLORS, FONT_NAME, SCALE_SIZE, SHOW_TOAST, STRING } from "../constant";
+import { COLORS, FONT_NAME, SCALE_SIZE, SHOW_TOAST } from "../constant";
 
 //PACKAGES
 import { AirbnbRating } from 'react-native-ratings'
@@ -208,7 +208,9 @@ const MatchList = (props) => {
                                             isDisabled={true}
                                             showRating={false}
                                         />
-                                        <TouchableOpacity style={styles.discoverButton}>
+                                        <TouchableOpacity style={styles.discoverButton} onPress={()=>{
+                                            Linking.openURL(item?.hotel_internet_bookingengine)
+                                        }}>
                                             <Text
                                                 align='center'
                                                 size={SCALE_SIZE(12)}

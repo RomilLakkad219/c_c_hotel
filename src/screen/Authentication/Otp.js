@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { StyleSheet, TouchableOpacity, SafeAreaView, ImageBackground, Image} from 'react-native'
+import React, { useContext, useState } from "react";
+import { StyleSheet, TouchableOpacity, SafeAreaView, ImageBackground, Image } from 'react-native'
 
 //ASSET
 import { IMAGES } from "../../asset";
@@ -11,14 +11,18 @@ import { Button, Text } from "../../component";
 import OTPTextInput from 'react-native-otp-textinput'
 
 //CONSTANT
-import { COLORS, FONT_NAME, SCALE_SIZE, SHOW_TOAST, STRING } from "../../constant";
+import { COLORS, FONT_NAME, SCALE_SIZE, SHOW_TOAST } from "../../constant";
 
 //SCREENS
 import { SCREENS } from "..";
 
+//CONTEXT
+import { TranslationContext } from "../../context";
+
 const Otp = (props) => {
 
-    const [selected, setSelected] = useState(false);
+    const translations = useContext(TranslationContext)
+
     const [otp, setOtp] = useState('')
 
     function onOtpCheck() {
@@ -50,13 +54,13 @@ const Otp = (props) => {
                 size={SCALE_SIZE(33)}
                 family={FONT_NAME.medium}
                 color={COLORS.black}>
-                {STRING.enterOtp}
+                {translations.enterotp}
             </Text>
             <Text style={styles.otpCodeSendText}
                 size={SCALE_SIZE(16)}
                 family={FONT_NAME.medium}
                 color={COLORS.gray}>
-                {STRING.otpCodeSend}
+                {translations.otpcodesend}
             </Text>
             <OTPTextInput
                 defaultValue={otp}
@@ -65,7 +69,6 @@ const Otp = (props) => {
                 inputCount={4}
                 handleTextChange={(text) => {
                     setOtp(text)
-                    // setSelected(true)
                 }}>
             </OTPTextInput>
             <Button
@@ -73,7 +76,7 @@ const Otp = (props) => {
                     onOtpCheck()
                 }}
                 style={styles.submitButton}
-                title={STRING.submit} />
+                title={translations.submit} />
             <SafeAreaView />
         </ImageBackground>
     )
@@ -119,7 +122,7 @@ const styles = StyleSheet.create({
         marginTop: SCALE_SIZE(42),
         color: COLORS.blue,
         backgroundColor: '#EEF2FF',
-        borderColor:COLORS.blue
+        borderColor: COLORS.blue
     },
     submitButton: {
         marginTop: SCALE_SIZE(80),

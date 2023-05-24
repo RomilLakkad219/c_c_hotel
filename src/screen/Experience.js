@@ -1,5 +1,5 @@
-import React, { useRef, useState,useContext } from "react";
-import { View, StyleSheet, SafeAreaView, TextInput, Image, FlatList, TouchableOpacity, Dimensions } from 'react-native'
+import React, { useRef, useState, useContext } from "react";
+import { View, StyleSheet, SafeAreaView, Image, FlatList, TouchableOpacity, Dimensions } from 'react-native'
 
 //ASSET
 import { IMAGES } from "../asset";
@@ -8,7 +8,7 @@ import { IMAGES } from "../asset";
 import { Header, HotelCarousel, Text } from "../component";
 
 //CONSTANT
-import { COLORS, SCALE_SIZE, STRING, FONT_NAME } from "../constant";
+import { COLORS, SCALE_SIZE, FONT_NAME } from "../constant";
 
 //PACKAGES
 import Carousel from 'react-native-snap-carousel';
@@ -18,14 +18,14 @@ import { TranslationContext } from "../context";
 
 const Experience = (props) => {
 
-    const translations =useContext(TranslationContext)
+    const translations = useContext(TranslationContext)
 
     function onBack() {
         props.navigation.goBack()
     }
 
-    const [search, setSearch] = useState('');
     const isCarousel = useRef();
+
     const [visible, setVisible] = useState(false);
 
     const placeOption =
@@ -57,21 +57,6 @@ const Experience = (props) => {
                 onBack={() => onBack()}
                 title={translations.experience}
                 onFilter={() => { setVisible(true) }} />
-            <View style={styles.searchInputContainer}>
-                <TextInput
-                    style={styles.searchInput}
-                    value={search}
-                    placeholder={translations.searchhere}
-                    placeholderTextColor={COLORS.gray}
-                    onChangeText={(text) => {
-                        setSearch(text)
-                    }}>
-                </TextInput>
-                <Image
-                    style={styles.searchImage}
-                    resizeMode="contain"
-                    source={IMAGES.ic_search} />
-            </View>
             <View>
                 <FlatList
                     horizontal={true}
@@ -126,7 +111,7 @@ const Experience = (props) => {
                                 layoutCardOffset={9}
                                 ref={isCarousel}
                                 data={['', '', '', '', '', '', '', '', '']}
-                                renderItem={(item,index) => <HotelCarousel navigation={props.navigation} item={item} />}
+                                renderItem={(item, index) => <HotelCarousel navigation={props.navigation} item={item} />}
                                 sliderWidth={Dimensions.get('window').width}
                                 itemWidth={Dimensions.get('window').width - SCALE_SIZE(70)}
                                 useScrollView={true}>
@@ -144,25 +129,6 @@ const styles = StyleSheet.create({
     container: {
         flex: 1.0,
         backgroundColor: COLORS.white
-    },
-    searchInputContainer: {
-        height: SCALE_SIZE(70),
-        backgroundColor: COLORS.lightgray,
-        borderRadius: SCALE_SIZE(20),
-        marginHorizontal: SCALE_SIZE(30),
-        marginTop: 8,
-        paddingHorizontal: SCALE_SIZE(28),
-        flexDirection: 'row'
-    },
-    searchInput: {
-        fontFamily: FONT_NAME.medium,
-        fontSize: SCALE_SIZE(16),
-        flex: 1.0
-    },
-    searchImage: {
-        height: SCALE_SIZE(30),
-        width: SCALE_SIZE(30),
-        alignSelf: 'center'
     },
     placeContainer: {
         height: SCALE_SIZE(49),

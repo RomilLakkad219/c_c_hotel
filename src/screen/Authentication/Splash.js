@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { View, StyleSheet, SafeAreaView, ImageBackground } from 'react-native'
 
 //ASSET
@@ -16,7 +16,12 @@ import { COLORS, FONT_NAME, SCALE_SIZE, STRING } from "../../constant";
 //PACKAGES
 import { CommonActions } from "@react-navigation/native";
 
+//CONTEXT
+import { TranslationContext } from "../../context";
+
 const Splash = (props) => {
+
+    const translations = useContext(TranslationContext)
 
     function moveToLogin() {
         props.navigation.dispatch(CommonActions.reset({
@@ -34,13 +39,13 @@ const Splash = (props) => {
                     size={SCALE_SIZE(24)}
                     family={FONT_NAME.medium}
                     color={COLORS.black}>
-                    {STRING.welcomeTo}
+                    {translations.welcometo}
                 </Text>
                 <Text style={styles.cAndCHotelsText}
                     size={SCALE_SIZE(40)}
                     family={FONT_NAME.semiBold}
                     color={COLORS.black}>
-                    {STRING.cAndCHotels}
+                    {translations.candchotels}
                 </Text>
                 <View style={styles.imgContainer}>
                     <ImageBackground
@@ -50,7 +55,7 @@ const Splash = (props) => {
                 </View>
                 <Button
                     style={styles.buttonStyle}
-                    title={STRING.getStarted}
+                    title={translations.getstarted}
                     isRightImage={true}
                     onPress={() => {
                         moveToLogin()

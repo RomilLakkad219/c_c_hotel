@@ -5,7 +5,7 @@ import { View, StyleSheet, SafeAreaView, FlatList } from 'react-native'
 import { Header, ProgressView, FavouriteItem, Text } from "../../component";
 
 //CONSTANT
-import { COLORS, FONT_NAME, SCALE_SIZE, SHOW_TOAST, STRING } from "../../constant";
+import { COLORS, FONT_NAME, SCALE_SIZE, SHOW_TOAST } from "../../constant";
 
 //CONTEXT
 import { AuthContext, TranslationContext } from "../../context";
@@ -17,7 +17,7 @@ const Favourite = (props) => {
 
     const { user } = useContext(AuthContext)
 
-    const translations=useContext(TranslationContext)
+    const translations = useContext(TranslationContext)
 
     const [isLoading, setIsLoading] = useState(false);
     const [favouriteList, setFavouriteList] = useState([])

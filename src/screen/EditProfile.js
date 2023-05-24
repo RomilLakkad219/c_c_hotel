@@ -13,7 +13,7 @@ import { IMAGES } from "../asset";
 import { BottomSheet, Header, ProgressView, Text } from "../component";
 
 //CONSTANT
-import { COLORS, FONT_NAME, SCALE_SIZE, SHOW_TOAST, STRING } from "../constant";
+import { COLORS, FONT_NAME, SCALE_SIZE, SHOW_TOAST } from "../constant";
 
 //API
 import { getCountry, updateProfile, updateUserImage } from "../api";
@@ -212,7 +212,6 @@ const EditProfile = (props) => {
             SHOW_TOAST(result.error)
         }
     }
-
 
     return (
         <View style={styles.container}>

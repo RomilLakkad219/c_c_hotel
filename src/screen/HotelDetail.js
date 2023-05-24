@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { View, StyleSheet, TouchableOpacity, ScrollView, ImageBackground, Dimensions, Image, SafeAreaView, FlatList, Modal } from 'react-native'
+import { View, StyleSheet, TouchableOpacity, ScrollView, ImageBackground, Dimensions, Image, SafeAreaView, FlatList, Modal, Linking } from 'react-native'
 
 //ASSET
 import { IMAGES } from "../asset";
@@ -8,7 +8,7 @@ import { IMAGES } from "../asset";
 import { Button, ProgressView, Text } from '../component'
 
 //CONSTANT
-import { COLORS, SCALE_SIZE, FONT_NAME, STRING, SHOW_TOAST } from "../constant";
+import { COLORS, SCALE_SIZE, FONT_NAME, SHOW_TOAST } from "../constant";
 import { BASE_IMAGE_URL } from "../constant/WebService";
 
 //CONTEXT
@@ -142,15 +142,6 @@ const HotelDetail = (props) => {
                     </TouchableOpacity>
                     <View style={{ flex: 1.0 }}></View>
                     <View style={styles.rateContainer}>
-                        {/* <Image style={styles.starImage}
-                            resizeMode='contain'
-                            source={IMAGES.ic_star} />
-                        <Text style={styles.numberText}
-                            size={SCALE_SIZE(20)}
-                            color={COLORS.white}
-                            family={FONT_NAME.semiBold}>
-                            {'4.9'}
-                        </Text> */}
                         <View style={{ flex: 1.0 }}></View>
                         <Text
                             size={SCALE_SIZE(22)}
@@ -207,7 +198,10 @@ const HotelDetail = (props) => {
                         family={FONT_NAME.medium}>
                         {(hotelDetailResult?.hotel_city ?? '') + ' , ' + (hotelDetailResult?.hotel_country ?? '')}
                     </Text>
-                    <TouchableOpacity style={styles.websiteButton}>
+                    <TouchableOpacity style={styles.websiteButton} 
+                        onPress={()=>{
+                            Linking.openURL(hotelDetailResult?.hotel_internet_web)
+                        }}>
                         <Text
                             size={SCALE_SIZE(17)}
                             color={COLORS.white}
@@ -225,6 +219,7 @@ const HotelDetail = (props) => {
                 </Text>
                 <Button
                     onPress={() => {
+                        Linking.openURL(hotelDetailResult?.hotel_internet_web)
                     }}
                     style={styles.bookNowButton}
                     title={translations.booknow} />
@@ -285,8 +280,6 @@ const styles = StyleSheet.create({
     },
     rateContainer: {
         flexDirection: 'row',
-        // alignItems: 'center',
-        // justifyContent: 'center',
         marginHorizontal: SCALE_SIZE(41),
         bottom: SCALE_SIZE(18)
     },

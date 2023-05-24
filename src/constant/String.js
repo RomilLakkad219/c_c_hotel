@@ -13,7 +13,7 @@ const STRING = {
     confirmPassword: 'Confirm Password',
     agreeTo: 'Agree To ',
     terms: 'Terms ',
-    conditions: 'Conditions',
+    conditions: 'Conditions',    
     alreadyHaveAnAccount: 'Already have an account ? ',
     emailEnteranceText: "Don’t worry it happens. Please enter the\naddress associated with your account",
     submit: 'Submit',

@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { View, StyleSheet, SafeAreaView, FlatList, ImageBackground, Dimensions, TouchableOpacity, Alert } from 'react-native'
+import { View, StyleSheet, SafeAreaView, FlatList, ImageBackground, Dimensions, TouchableOpacity } from 'react-native'
 
 //SCREENS
 import { SCREENS } from ".";
@@ -8,7 +8,7 @@ import { SCREENS } from ".";
 import { Header, ProgressView, Text } from "../component";
 
 //CONSTANT
-import { COLORS, FONT_NAME, SCALE_SIZE, SHOW_TOAST, STRING } from "../constant";
+import { COLORS, FONT_NAME, SCALE_SIZE, SHOW_TOAST } from "../constant";
 
 //API
 import { destination } from "../api";
@@ -25,8 +25,6 @@ const Destination = (props) => {
 
     useEffect(() => {
         getDestination()
-
-
     }, [])
 
     function onBack() {
@@ -62,7 +60,6 @@ const Destination = (props) => {
             return item.cont_english_design
         }
     }
-
 
     return (
         <View style={styles.container}>

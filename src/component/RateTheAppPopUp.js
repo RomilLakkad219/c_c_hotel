@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import { View, StyleSheet, Modal, TouchableOpacity } from 'react-native'
 
 //CONSTANT
-import { COLORS, FONT_NAME, SCALE_SIZE, STRING } from "../constant";
+import { COLORS, FONT_NAME, SCALE_SIZE } from "../constant";
 
 //COMPONENT
 import { Text } from "../component"
@@ -74,7 +74,6 @@ const styles = StyleSheet.create({
     blueView: {
         backgroundColor: '#EEF2FF',
         borderRadius: SCALE_SIZE(6),
-        // paddingHorizontal: SCALE_SIZE(35),
         paddingVertical: SCALE_SIZE(9),
         marginVertical: SCALE_SIZE(12)
     },
@@ -87,7 +86,6 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignSelf: 'center',
     }
-
 })
 
 export default RateTheAppPopUp;

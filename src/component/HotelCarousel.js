@@ -101,15 +101,6 @@ const HotelCarousel = (props) => {
                             family={FONT_NAME.medium}>
                             {item?.hotel_country ?? ''}
                         </Text>
-                        {/* <Image style={styles.starImage}
-                        resizeMode='contain'
-                        source={IMAGES.ic_star} />
-                    <Text style={styles.numberText}
-                        size={SCALE_SIZE(20)}
-                        color={COLORS.white}
-                        family={FONT_NAME.semiBold}>
-                        {'4.9'}
-                    </Text> */}
                     </View>
                 </View>
             </ImageBackground>

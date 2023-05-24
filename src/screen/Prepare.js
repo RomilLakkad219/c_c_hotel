@@ -19,6 +19,7 @@ import { userProfile } from "../api";
 const Prepare = (props) => {
 
     const translations = useContext(TranslationContext)
+
     const { setUser, setProfile } = useContext(AuthContext)
 
     useEffect(() => {
@@ -63,7 +64,6 @@ const Prepare = (props) => {
                 else {
                     translations.setLanguage('en')
                 }
-
                 moveToHome()
             }
             else {
@@ -74,7 +74,6 @@ const Prepare = (props) => {
             moveToLogin()
         }
     }
-
 
     function moveToHome() {
         props.navigation.dispatch(CommonActions.reset({

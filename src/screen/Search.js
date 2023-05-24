@@ -1,26 +1,60 @@
-import React from "react";
-import { View, StyleSheet, TouchableOpacity, SafeAreaView, FlatList, Image } from 'react-native'
+import React, { useContext, useEffect, useState } from "react";
+import { View, StyleSheet, SafeAreaView, Image, TextInput, FlatList } from 'react-native'
 
 //CONSTANT
-import { COLORS, SCALE_SIZE, STRING, FONT_NAME } from "../constant";
+import { COLORS, SCALE_SIZE, STRING, FONT_NAME, SHOW_TOAST } from "../constant";
 
 //COMPONENT
-import { Header, Text } from "../component";
-
-//PACKAGES
-import MapView, { Marker } from 'react-native-maps';
-import { AirbnbRating } from 'react-native-ratings'
+import { Header, ProgressView, PopularItem } from "../component";
 
 //ASSET
 import { IMAGES } from "../asset";
 
-//SCREENS
-import { SCREENS } from ".";
+//CONTEXT
+import { AuthContext, TranslationContext } from "../context";
+
+//API
+import { matchMakinghotels } from "../api";
 
 const Search = (props) => {
 
+    const { user } = useContext(AuthContext)
+
+    const translations = useContext(TranslationContext)
+
+    const [search, setSearch] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
+    const [isSearchResponse, setIsSearchResponse] = useState([]);
+
+    useEffect(() => {
+        if (search.length > 5) {
+            getSearchFilter()
+        }
+    }, [search])
+
     function onBack() {
         props.navigation.goBack()
+    }
+
+    async function getSearchFilter() {
+        const params = {
+            user_id: user?.[0]?.user_id,
+            user_session: user?.[0]?.user_session,
+            user_session_id: '',
+            seacrh_string: search,
+        }
+
+        setIsLoading(true)
+        const result = await matchMakinghotels(params)
+        setIsLoading(false)
+
+        if (result.status) {
+            const searchResult = result?.data?.result ?? []
+            setIsSearchResponse(searchResult)
+        }
+        else {
+            SHOW_TOAST(result.error)
+        }
     }
 
     return (
@@ -29,80 +63,36 @@ const Search = (props) => {
                 <SafeAreaView />
                 <Header
                     style={{ backgroundColor: 'transparent' }}
-                    onBack={() => onBack()} />
-            </View>
-            <View style={styles.container}>
-                <MapView style={styles.map}
-                    initialRegion={{
-                        latitude: 37.78825,
-                        longitude: -122.4324,
-                        latitudeDelta: 0.0922,
-                        longitudeDelta: 0.0421,
-                    }}>
-                    <Marker coordinate={{
-                        latitude: 37.78825,
-                        longitude: -122.4324,
-                    }}
-                        image={IMAGES.map_bg}>
-                    </Marker>
-                </MapView>
-            </View>
-            <View style={styles.hotelContainer}>
-                <FlatList data={['', '']}
+                    onBack={() => onBack()}
+                    title={STRING.search} />
+                <View style={styles.searchInputContainer}>
+                    <TextInput
+                        style={styles.searchInput}
+                        value={search}
+                        placeholder={translations.searchhere}
+                        placeholderTextColor={COLORS.gray}
+                        onChangeText={(text) => {
+                            setSearch(text)
+                        }}>
+                    </TextInput>
+                    <Image
+                        style={styles.searchImage}
+                        resizeMode="contain"
+                        source={IMAGES.ic_search} />
+                </View>
+                <FlatList data={isSearchResponse}
                     showsVerticalScrollIndicator={false}
                     keyExtractor={(item, index) => index.toString()}
-                    ListHeaderComponent={() => {
-                        return (
-                            <View style={{ marginTop: SCALE_SIZE(51) }}></View>
-                        )
-                    }}
                     renderItem={({ item, index }) => {
                         return (
-                            <TouchableOpacity style={styles.itemContainer}
-                                onPress={() => {
-                                    props.navigation.navigate(SCREENS.HotelDetail.name)
-                                }}>
-                                <View style={{ flexDirection: 'row' }}>
-                                    <Image style={styles.imageView}
-                                        resizeMode="contain"
-                                        source={IMAGES.popularhotel_bg} />
-                                    <View style={styles.directionView}>
-                                        <Text
-                                            style={styles.itemText}
-                                            size={SCALE_SIZE(18)}
-                                            color={COLORS.headerTitleGray}
-                                            family={FONT_NAME.medium}>
-                                            {"Oberio Hotel"}
-                                        </Text>
-                                        <Text
-                                            style={styles.southAmerica}
-                                            size={SCALE_SIZE(16)}
-                                            color={COLORS.gray}
-                                            family={FONT_NAME.medium}>
-                                            {"South America"}
-                                        </Text>
-                                        <AirbnbRating starContainerStyle={styles.starContainer}
-                                            defaultRating={0}
-                                            size={12}
-                                            isDisabled={true}
-                                            showRating={false}
-                                        />
-                                        <TouchableOpacity style={styles.discoverButton}>
-                                            <Text
-                                                align='center'
-                                                size={SCALE_SIZE(12)}
-                                                color={COLORS.white}
-                                                family={FONT_NAME.semiBold}>
-                                                {STRING.discover}
-                                            </Text>
-                                        </TouchableOpacity>
-                                    </View>
-                                </View>
-                            </TouchableOpacity>
+                            <PopularItem item={item}
+                                isShowSearchImage={true}
+                                navigation={props.navigation} />
                         )
                     }}>
                 </FlatList>
             </View>
+            {isLoading && <ProgressView />}
         </View>
     )
 }
@@ -112,39 +102,44 @@ const styles = StyleSheet.create({
         flex: 1.0,
         backgroundColor: COLORS.white
     },
-    map: {
-        ...StyleSheet.absoluteFillObject,
+    searchInputContainer: {
+        height: SCALE_SIZE(70),
+        backgroundColor: COLORS.lightgray,
+        borderRadius: SCALE_SIZE(20),
+        marginHorizontal: SCALE_SIZE(30),
+        marginTop: SCALE_SIZE(35),
+        paddingHorizontal: SCALE_SIZE(28),
+        flexDirection: 'row'
     },
-    hotelContainer: {
-        backgroundColor: COLORS.white,
-        borderTopLeftRadius: SCALE_SIZE(36),
-        borderTopRightRadius: SCALE_SIZE(36),
-        flex: 1.0,
-        marginTop: SCALE_SIZE(-30)
+    searchInput: {
+        fontFamily: FONT_NAME.medium,
+        fontSize: SCALE_SIZE(16),
+        flex: 1.0
     },
-    directionView: {
-        flexDirection: 'column',
-        justifyContent: 'center'
+    searchImage: {
+        height: SCALE_SIZE(30),
+        width: SCALE_SIZE(30),
+        alignSelf: 'center'
     },
     itemContainer: {
         borderWidth: 1,
         borderColor: '#DEDEDE',
         backgroundColor: COLORS.white,
         borderRadius: SCALE_SIZE(10),
-        marginTop: SCALE_SIZE(15),
+        marginTop: SCALE_SIZE(35),
         marginHorizontal: SCALE_SIZE(35),
-        paddingBottom: SCALE_SIZE(15)
+        padding: SCALE_SIZE(16),
+        flexDirection: 'row',
     },
     imageView: {
         height: SCALE_SIZE(117),
         width: SCALE_SIZE(124),
         alignSelf: 'center',
-        marginTop: SCALE_SIZE(16),
-        marginLeft: SCALE_SIZE(16),
-        paddingBottom: SCALE_SIZE(15)
+        borderRadius: SCALE_SIZE(20),
+        overflow: 'hidden'
     },
     itemText: {
-        marginTop: SCALE_SIZE(16),
+        flex: 1.0,
         marginHorizontal: SCALE_SIZE(16)
     },
     southAmerica: {
@@ -160,17 +155,23 @@ const styles = StyleSheet.create({
         marginTop: SCALE_SIZE(13),
         marginLeft: SCALE_SIZE(13)
     },
-    starContainer: {
-        alignItems: 'flex-start',
-        marginHorizontal: SCALE_SIZE(17),
-        marginTop: SCALE_SIZE(9)
+    bookButton: {
+        height: SCALE_SIZE(31),
+        width: SCALE_SIZE(77),
+        borderRadius: SCALE_SIZE(24),
+        justifyContent: 'center',
+        marginTop: SCALE_SIZE(13),
+        marginLeft: SCALE_SIZE(13)
     },
-    transparent: {
-        position: 'absolute',
-        top: 0,
-        right: 0,
-        left: 0,
-        zIndex: 5000,
+    heartImage: {
+        height: SCALE_SIZE(29),
+        width: SCALE_SIZE(29),
+        alignSelf: 'center',
+    },
+    starContainer: {
+        alignSelf: 'flex-start',
+        marginLeft: SCALE_SIZE(17),
+        marginTop: SCALE_SIZE(5)
     }
 })
 

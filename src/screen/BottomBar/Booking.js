@@ -1,11 +1,11 @@
 import React, { useContext, useEffect, useState } from "react";
-import { View, StyleSheet, SafeAreaView, Image, TextInput, Alert } from 'react-native'
+import { View, StyleSheet, SafeAreaView, Image, TextInput, Alert, TouchableOpacity } from 'react-native'
 
 //PACKAGES
 import MapView, { Callout, Marker } from 'react-native-maps';
 
 //ASSET
-import { IMAGES } from "../../asset";
+import { IMAGES } from "../../asset";   
 
 //COMPONENT
 import { BookingSelectionPopup, Header, ProgressView, Text } from "../../component";
@@ -46,7 +46,6 @@ const Booking = (props) => {
     useEffect(() => {
         getLocation()
     }, [])
-
 
     const getLocation = () => {
         Geolocation.requestAuthorization(() => {
@@ -98,11 +97,15 @@ const Booking = (props) => {
                     onDashboard={() => {
                         setVisible(true)
                     }} />
-                <View
-                    style={styles.searchInputContainer}>
+                <TouchableOpacity style={styles.searchInputContainer}
+                    onPress={() => {
+                        props.navigation.navigate(SCREENS.Search.name)
+                    }}>
                     <TextInput
                         style={styles.searchInput}
                         value={search}
+                        editable={false}
+                        pointerEvents="none"
                         placeholder={translations.searchhere}
                         placeholderTextColor={COLORS.gray}
                         onChangeText={(text) => {
@@ -113,7 +116,7 @@ const Booking = (props) => {
                         style={styles.searchImage}
                         resizeMode="contain"
                         source={IMAGES.ic_search} />
-                </View>
+                </TouchableOpacity>
             </View>
             <View style={styles.container}>
                 <MapView style={styles.map}

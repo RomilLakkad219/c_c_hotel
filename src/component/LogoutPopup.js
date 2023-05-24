@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import { View, StyleSheet, TouchableOpacity, Modal } from 'react-native'
 
 //CONSTANT
-import { COLORS, SCALE_SIZE, FONT_NAME, STRING } from "../constant";
+import { COLORS, SCALE_SIZE, FONT_NAME } from "../constant";
 
 //COMPONENT
 import { Text } from "../component";
@@ -70,7 +70,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'rgba(0,0,0,0.3)',
     },
     logoutContainer: {
-        width:'80%',
+        width: '80%',
         backgroundColor: COLORS.white,
         borderRadius: SCALE_SIZE(10),
         alignSelf: 'center',

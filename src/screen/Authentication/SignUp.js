@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { StyleSheet, Image, TouchableOpacity, SafeAreaView, ImageBackground, ScrollView, View } from 'react-native'
 
 //SCREENS
@@ -11,12 +11,17 @@ import { IMAGES } from "../../asset";
 import { Button, Input, ProgressView, Text } from "../../component";
 
 //CONSTANT
-import { COLORS, FONT_NAME, REGEX, SCALE_SIZE, SHOW_SUCCESS_TOAST, SHOW_TOAST, STRING } from "../../constant";
+import { COLORS, FONT_NAME, REGEX, SCALE_SIZE, SHOW_SUCCESS_TOAST, SHOW_TOAST } from "../../constant";
 
 //API
 import { signUp } from "../../api";
 
+//CONTEXT
+import { TranslationContext } from "../../context";
+
 const SignUp = (props) => {
+
+    const translations = useContext(TranslationContext)
 
     const [isTermsSelected, setTermsSelected] = useState(false);
     const [isSecurePassword, setSecurePassword] = useState(true);
@@ -101,12 +106,12 @@ const SignUp = (props) => {
                     align='left'
                     family={FONT_NAME.medium}
                     color={COLORS.black}>
-                    {STRING.signUp}
+                    {translations.signup}
                 </Text>
                 <Input
                     style={styles.emailInput}
                     value={email}
-                    title={STRING.email}
+                    title={translations.email}
                     icon={IMAGES.ic_email}
                     onChangeText={(text) => {
                         setEmail(text)
@@ -115,7 +120,7 @@ const SignUp = (props) => {
                 <Input
                     style={styles.passwordInput}
                     value={password}
-                    title={STRING.password}
+                    title={translations.password}
                     secureTextEntry={isSecurePassword}
                     onChangeText={(text) => {
                         setPassword(text)
@@ -128,7 +133,7 @@ const SignUp = (props) => {
                 <Input
                     style={styles.passwordInput}
                     value={confirmPassword}
-                    title={STRING.confirmPassword}
+                    title={translations.confirmpassword}
                     secureTextEntry={isVisiblePassword}
                     onChangeText={(text) => {
                         setConfirmPassword(text)
@@ -154,12 +159,12 @@ const SignUp = (props) => {
                         size={SCALE_SIZE(16)}
                         family={FONT_NAME.medium}
                         color={COLORS.gray}>
-                        {STRING.agreeTo}
+                        {translations.agreeto}
                         <Text
                             size={SCALE_SIZE(16)}
                             family={FONT_NAME.medium}
                             color={COLORS.blue}>
-                            {STRING.terms}
+                            {translations.terms}
                         </Text>
                         <Text
                             size={SCALE_SIZE(16)}
@@ -171,13 +176,13 @@ const SignUp = (props) => {
                             size={SCALE_SIZE(16)}
                             family={FONT_NAME.medium}
                             color={COLORS.blue}>
-                            {STRING.conditions}
+                            {translations.conditions}
                         </Text>
                     </Text>
                 </TouchableOpacity>
                 <Button
                     style={styles.signUpButton}
-                    title={STRING.signUp}
+                    title={translations.signup}
                     onPress={() => {
                         onSignUp()
                     }} />
@@ -189,12 +194,12 @@ const SignUp = (props) => {
                         size={SCALE_SIZE(20)}
                         family={FONT_NAME.semiBold}
                         color={COLORS.gray}>
-                        {STRING.alreadyHaveAnAccount}
+                        {translations.alreadyhaveanaccount}
                         <Text
                             size={SCALE_SIZE(20)}
                             family={FONT_NAME.semiBold}
                             color={COLORS.blue}>
-                            {STRING.login}
+                            {translations.login}
                         </Text>
                     </Text>
                     <SafeAreaView />

@@ -45,7 +45,7 @@ const Home = (props) => {
         [
             {
                 image: IMAGES.ic_map,
-                title:translations.map,
+                title: translations.map,
                 key: 'map'
             },
             {
@@ -84,7 +84,7 @@ const Home = (props) => {
     async function getHome() {
         const params = {
             user_id: user?.[0]?.user_id,
-            user_session: user?.[0]?.user_session,     
+            user_session: user?.[0]?.user_session,
         }
 
         setIsLoading(true)
@@ -121,7 +121,7 @@ const Home = (props) => {
     }
 
     return (
-        <View style={styles.container}>
+        <View style={styles.container}>   
             <SafeAreaView />
             <Header
                 type={'home'}
@@ -129,10 +129,15 @@ const Home = (props) => {
                 onLanguage={() => { languageRef.current.open() }}
                 title={profile?.user_lang} />
             <ScrollView showsVerticalScrollIndicator={false}>
-                <View style={styles.searchInputContainer}>
+                <TouchableOpacity style={styles.searchInputContainer}
+                    onPress={() => {
+                        props.navigation.navigate(SCREENS.Search.name)
+                    }}>
                     <TextInput
                         style={styles.searchInput}
                         value={search}
+                        editable={false}
+                        pointerEvents="none"
                         placeholder={translations.searchhere}
                         placeholderTextColor={COLORS.gray}
                         onChangeText={(text) => {
@@ -143,7 +148,7 @@ const Home = (props) => {
                         style={styles.searchImage}
                         resizeMode="contain"
                         source={IMAGES.ic_search} />
-                </View>
+                </TouchableOpacity>
                 <View>
                     <FlatList
                         horizontal={true}

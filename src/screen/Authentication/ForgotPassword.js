@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { StyleSheet, TouchableOpacity, SafeAreaView, ImageBackground, Image, View } from 'react-native'
 
 //SCREENS
@@ -11,12 +11,17 @@ import { IMAGES } from "../../asset";
 import { Button, Input, ProgressView, Text } from "../../component";
 
 //CONSTANT
-import { COLORS, FONT_NAME, SCALE_SIZE, SHOW_TOAST, STRING } from "../../constant";
+import { COLORS, FONT_NAME, SCALE_SIZE, SHOW_TOAST } from "../../constant";
 
 //API
 import { forgotPassword } from "../../api";
 
+//CONTEXT
+import { TranslationContext } from "../../context";
+
 const ForgotPassword = (props) => {
+
+    const translations=useContext(TranslationContext)
 
     const [email, setEmail] = useState('');
     const [isLoading, setIsLoading] = useState(false)
@@ -30,7 +35,7 @@ const ForgotPassword = (props) => {
         }
     }
 
-    async function OnForgotPassword() {
+    async function OnForgotPassword() {    
         const params = {
             user_email: email,
         }
@@ -69,19 +74,19 @@ const ForgotPassword = (props) => {
                 size={SCALE_SIZE(33)}
                 family={FONT_NAME.medium}
                 color={COLORS.black}>
-                {'Forgot'}
+                {translations.forgot}
             </Text>
             <Text style={styles.passwordText}
                 size={SCALE_SIZE(33)}
                 family={FONT_NAME.medium}
                 color={COLORS.black}>
-                {'Password?'}
+                {translations.passwordquestionmark}
             </Text>
             <Text style={styles.emailEnteranceText}
                 size={SCALE_SIZE(16)}
                 family={FONT_NAME.medium}
                 color={COLORS.gray}>
-                {STRING.emailEnteranceText}
+                {translations.emailtext}
             </Text>
             <Input
                 style={styles.emailInput}
@@ -90,14 +95,14 @@ const ForgotPassword = (props) => {
                 onChangeText={(text) => {
                     setEmail(text)
                 }}
-                title={STRING.email}
+                title={translations.email}
                 icon={IMAGES.ic_email} />
             <Button
                 onPress={() => {
                     onSubmit()
                 }}
                 style={styles.submitButton}
-                title={STRING.submit} />
+                title={translations.submit} />
             {isLoading && <ProgressView />}
         </ImageBackground>
     )

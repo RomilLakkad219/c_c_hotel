@@ -109,14 +109,6 @@ const Map = (props) => {
                                                 color={COLORS.borderGray}>
                                                 {e?.hotel_city + ', ' + e?.hotel_country}
                                             </Text>
-                                            {/* <Rating
-                                            style={styles.starContainer}
-                                            type='custom'
-                                            readonly={true}
-                                            startingValue={0}
-                                            ratingCount={5}
-                                            imageSize={12}>
-                                        </Rating> */}
                                         </View>
                                     </View>
                                 </Callout>

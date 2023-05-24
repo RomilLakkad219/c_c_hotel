@@ -5,7 +5,7 @@ import { View, StyleSheet, SafeAreaView, FlatList } from 'react-native'
 import { Header, HotelCarousel, ProgressView } from "../component";
 
 //CONSTANT
-import { COLORS, STRING, SHOW_TOAST } from "../constant";
+import { COLORS, SHOW_TOAST } from "../constant";
 
 //API
 import { getDestinationPlace } from "../api";

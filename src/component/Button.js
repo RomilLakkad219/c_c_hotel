@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, TouchableOpacity, Image, View } from 'react-native'
+import { StyleSheet, TouchableOpacity, Image } from 'react-native'
 
 //COMPONENT
 import { Text } from "../component";

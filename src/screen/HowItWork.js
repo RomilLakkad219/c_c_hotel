@@ -1,4 +1,4 @@
-import React, { useEffect, useState,useContext } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { View, StyleSheet, SafeAreaView, ScrollView } from 'react-native'
 
 //CONSTANT
@@ -42,6 +42,7 @@ const HowItWork = (props) => {
             SHOW_TOAST(result.error)
         }
     }
+
     return (
         <View style={styles.container}>
             <SafeAreaView />

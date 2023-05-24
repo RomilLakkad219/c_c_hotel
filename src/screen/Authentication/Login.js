@@ -11,7 +11,7 @@ import { IMAGES } from "../../asset";
 import { Button, Input, ProgressView, Text } from "../../component";
 
 //CONSTANT
-import { COLORS, FONT_NAME, REGEX, SCALE_SIZE, SHOW_TOAST, STRING } from "../../constant";
+import { COLORS, FONT_NAME, REGEX, SCALE_SIZE, SHOW_TOAST } from "../../constant";
 
 //API
 import { login } from "../../api";
@@ -30,7 +30,12 @@ import { updateUserSocialProfile } from "../../api/user";
 //PACKAGES
 import { CommonActions } from "@react-navigation/native";
 
+//CONTEXT
+import { TranslationContext } from "../../context";
+
 const Login = (props) => {
+
+    const translations = useContext(TranslationContext)
 
     const [isSecurePassword, setSecurePassword] = useState(true);
     const [email, setEmail] = useState('');
@@ -133,7 +138,7 @@ const Login = (props) => {
                 <Input
                     value={email}
                     style={styles.emailInput}
-                    title={STRING.email}
+                    title={translations.email}
                     keyboardType='email-address'
                     onChangeText={(text) => {
                         setEmail(text)
@@ -142,7 +147,7 @@ const Login = (props) => {
                 <Input
                     value={password}
                     style={styles.passwordInput}
-                    title={STRING.password}
+                    title={translations.password}
                     secureTextEntry={isSecurePassword}
                     onChangeText={(text) => {
                         setPassword(text)
@@ -153,7 +158,7 @@ const Login = (props) => {
                     }} />
                 <Button
                     style={styles.loginButton}
-                    title={STRING.login}
+                    title={translations.login}
                     onPress={() => {
                         onLogin()
                     }} />
@@ -166,7 +171,7 @@ const Login = (props) => {
                         color={COLORS.blue}
                         align='center'
                         family={FONT_NAME.medium}>
-                        {STRING.forgotPassword}
+                        {translations.forgotpassword}
                     </Text>
                 </TouchableOpacity>
                 <View style={styles.borderView}>
@@ -177,7 +182,7 @@ const Login = (props) => {
                         color={COLORS.borderGray}
                         align='center'
                         family={FONT_NAME.medium}>
-                        {STRING.or}
+                        {translations.or}
                     </Text>
                     <View style={styles.borderAfterLine}></View>
                 </View>
@@ -194,7 +199,7 @@ const Login = (props) => {
                         color={COLORS.borderGray}
                         align='center'
                         family={FONT_NAME.medium}>
-                        {STRING.google}
+                        {translations.google}
                     </Text>
                 </TouchableOpacity>
                 <View style={{ marginVertical: SCALE_SIZE(60) }}>
@@ -203,15 +208,14 @@ const Login = (props) => {
                         size={SCALE_SIZE(20)}
                         color={COLORS.borderGray}
                         family={FONT_NAME.medium}>
-                        {STRING.dontHaveAnAccount}
+                        {translations.donthaveanaccount}
                         <Text onPress={() => {
                             props.navigation.navigate(SCREENS.SignUp.name)
                         }}
                             size={SCALE_SIZE(20)}
                             color={COLORS.blue}
-                            // align='center'
                             family={FONT_NAME.medium}>
-                            {STRING.signUp}
+                            {translations.signup}
                         </Text>
                     </Text>
                 </View>

@@ -5,7 +5,7 @@ import { View, StyleSheet, SafeAreaView, FlatList } from 'react-native'
 import { PopularItem, Header, ProgressView } from '../component';
 
 //CONSTANT
-import { COLORS, STRING } from '../constant';
+import { COLORS } from '../constant';
 
 //CONTEXT
 import { AuthContext, TranslationContext } from "../context";
@@ -17,10 +17,6 @@ const PopularHotel = (props) => {
 
     const translations = useContext(TranslationContext)
 
-    function onBack() {
-        props.navigation.goBack()
-    }
-
     const { user } = useContext(AuthContext);
 
     const [isLoading, setIsLoading] = useState(false);
@@ -29,6 +25,10 @@ const PopularHotel = (props) => {
     useEffect(() => {
         getAllHotel()
     }, [])
+
+    function onBack() {
+        props.navigation.goBack()
+    }
 
     async function getAllHotel() {
         const params = {

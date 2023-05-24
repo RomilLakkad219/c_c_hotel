@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { View, StyleSheet, SafeAreaView, FlatList, Image, TouchableOpacity, Alert } from 'react-native'
+import { View, StyleSheet, SafeAreaView, Image, TouchableOpacity } from 'react-native'
 
 //SCREENS
 import { SCREENS } from ".";
@@ -11,14 +11,13 @@ import { IMAGES } from "../asset";
 import { Button, Header, ProgressView, Text, ToolItem } from "../component";
 
 //CONSTANT
-import { COLORS, SCALE_SIZE, STRING, FONT_NAME, SHOW_TOAST, SHOW_SUCCESS_TOAST } from "../constant";
+import { COLORS, SCALE_SIZE, FONT_NAME, SHOW_TOAST } from "../constant";
 
 //PACKAGES
 import Tooltip from "react-native-walkthrough-tooltip";
-import DateTimePickerModal from "react-native-modal-datetime-picker";
 
 //CONTEXT
-import { AuthContext, TranslationContext, translations } from "../context";
+import { AuthContext, TranslationContext } from "../context";
 
 //API
 import { destination, getCountry, getRegion, getServices } from "../api";
@@ -93,7 +92,7 @@ const Match = (props) => {
                     id: e.cnt_id,
                     name: e.cont_english_design,
                     french_name: e.cont_french_design,
-                    spanish_name:e.cont_spanish_design
+                    spanish_name: e.cont_spanish_design
                 }
             })
             setCountries(response)
@@ -126,7 +125,7 @@ const Match = (props) => {
                     id: e?.reg_id,
                     name: e?.reg_english_design,
                     french_name: e?.reg_french_design,
-                    spanish_name:e?.reg_spanish_desgin
+                    spanish_name: e?.reg_spanish_desgin
                 }
             })
             setRegion(regionData)
