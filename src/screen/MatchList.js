@@ -18,7 +18,7 @@ import MapView, { Callout, Marker } from "react-native-maps";
 import { SCREENS } from ".";
 
 //API
-import { matchMakinghotels } from "../api";
+import { matchMakingHotels } from "../api";
 
 //PACKAGES
 import WebView from "react-native-webview";
@@ -60,7 +60,7 @@ const MatchList = (props) => {
         }
 
         setIsLoading(true)
-        const result = await matchMakinghotels(params)
+        const result = await matchMakingHotels(params)
         setIsLoading(false)
 
         if (result.status) {

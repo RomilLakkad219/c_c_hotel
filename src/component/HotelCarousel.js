@@ -66,7 +66,7 @@ const HotelCarousel = (props) => {
             }}>
             <ImageBackground style={styles.carouselContainer}
                 resizeMode='cover'
-                source={{ uri: BASE_IMAGE_URL + item?.hotel_galary_photos ?? '' }}
+                source={{ uri: BASE_IMAGE_URL + item?.hotel_galary_photos ?? null }}
             >
                 <TouchableOpacity style={styles.heartImageContainer}
                     onPress={() => {

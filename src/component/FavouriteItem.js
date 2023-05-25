@@ -56,7 +56,7 @@ const FavouriteItem = (props) => {
             }}>
             <Image style={styles.imageView}
                 resizeMode="cover"
-                source={{ uri: item?.fav_hotel_imgurl ?? '' }} />
+                source={{ uri: item?.fav_hotel_imgurl ?? null }} />
             <View style={{ flex: 1.0 }}>
                 <View style={{ flexDirection: 'row' }}>
                     <Text

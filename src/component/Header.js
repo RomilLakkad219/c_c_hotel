@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { View, StyleSheet, Platform, TouchableOpacity, Image } from 'react-native'
 
 //ASSET
@@ -15,6 +15,9 @@ import Tooltip from "react-native-walkthrough-tooltip";
 
 //CONTEXT
 import { AuthContext, TranslationContext } from "../context";
+
+//API
+import { experienceFilter } from "../api";
 
 const Header = (props) => {
 
@@ -100,10 +103,34 @@ const Header = (props) => {
 
 const FilterToolTip = (props) => {
 
-    const translations = useContext(TranslationContext)
+    const [visible, setVisible] = useState(false);
+    const [selectedFilterItems, setSelectedFilterItems] = useState([]);
+    const [filterResponse, setFilterResponse] = useState([])
 
-    const [visible, setVisible] = useState(false)
-    const [selectedFilterItems, setSelectedFilterItems] = useState([])
+    useEffect(() => {
+        getExpereienceFilteration()
+    }, [])
+
+    async function getExpereienceFilteration() {
+
+        const result = await experienceFilter()
+
+        if (result.status) {
+            const filterData = result?.data?.result ?? []
+
+            const experienceData = filterData.map((e, index) => {
+                return {
+                    name: e?.them_english_design,
+                    french_name: e?.them_french_design,
+                    spanish_name: e?.them_spanish_design
+                }
+            })
+            setFilterResponse(experienceData)
+        }
+        else {
+            SHOW_TOAST(result?.error)
+        }
+    }
 
     return (
         <Tooltip
@@ -120,17 +147,18 @@ const FilterToolTip = (props) => {
             arrowSize={{
                 height: 0, width: 0
             }}
-            content={<ToolItem items={[{ id: 0, name: translations.beach }, { id: 1, name: translations.village }, { id: 2, name: translations.cityshopping }, { id: 3, name: translations.mountainsky }, { id: 4, name: translations.nature }, { id: 5, name: translations.waterfront }]}
+            content={<ToolItem
+                items={filterResponse}
                 selectedItems={selectedFilterItems}
                 onPress={(item, index) => {
                     const array = [...selectedFilterItems]
-                    if (selectedFilterItems.includes(index)) {
-                        const arrayIndex = array.indexOf(index)
+                    if (selectedFilterItems.includes(item)) {
+                        const arrayIndex = array.indexOf(item)
                         array.splice(arrayIndex, 1)
                         setSelectedFilterItems(array)
                     }
                     else {
-                        array.push(index)
+                        array.push(item)
                     }
                     setSelectedFilterItems(array)
                 }} />}>

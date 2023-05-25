@@ -81,7 +81,7 @@ const Destination = (props) => {
                                     marginLeft: index % 2 == 1 ? SCALE_SIZE(20) : 0
                                 }]}
                                     resizeMode='cover'
-                                    source={{ uri: item?.cont_img_url ?? '' }}
+                                    source={{ uri: item?.cont_img_url ?? undefined }}
                                 >
                                     <View style={styles.transparentView}>
                                         <Text

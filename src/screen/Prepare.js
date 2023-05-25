@@ -64,7 +64,7 @@ const Prepare = (props) => {
                 else {
                     translations.setLanguage('en')
                 }
-                moveToHome()
+                moveToHome()   
             }
             else {
                 moveToLogin()

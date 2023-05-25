@@ -1,14 +1,14 @@
-import React, { useRef, useState, useContext } from "react";
+import React, { useRef, useState, useContext, useEffect } from "react";
 import { View, StyleSheet, SafeAreaView, Image, FlatList, TouchableOpacity, Dimensions } from 'react-native'
 
 //ASSET
 import { IMAGES } from "../asset";
 
 //COMPONENT
-import { Header, HotelCarousel, Text } from "../component";
+import { Header, HotelCarousel, ProgressView, Text } from "../component";
 
 //CONSTANT
-import { COLORS, SCALE_SIZE, FONT_NAME } from "../constant";
+import { COLORS, SCALE_SIZE, FONT_NAME, SHOW_TOAST } from "../constant";
 
 //PACKAGES
 import Carousel from 'react-native-snap-carousel';
@@ -16,39 +16,54 @@ import Carousel from 'react-native-snap-carousel';
 //CONTEXT
 import { TranslationContext } from "../context";
 
+//API
+import { experienceFilter } from "../api";
+
 const Experience = (props) => {
 
     const translations = useContext(TranslationContext)
+
+    const isCarousel = useRef();
+
+    const [visible, setVisible] = useState(false);
+    const [isLoading, setIsLoading] = useState(false)
+    const [filterResponse, setFilterResponse] = useState([])
+
+    useEffect(() => {
+        getExpereienceFilteration()
+    }, [])
 
     function onBack() {
         props.navigation.goBack()
     }
 
-    const isCarousel = useRef();
+    async function getExpereienceFilteration() {
 
-    const [visible, setVisible] = useState(false);
+        setIsLoading(true)
+        const result = await experienceFilter()
+        setIsLoading(false)
 
-    const placeOption =
-        [
-            {
-                title: translations.beach
-            },
-            {
-                title: translations.village
-            },
-            {
-                title: translations.cityshopping
-            },
-            {
-                title: translations.mountainsky
-            },
-            {
-                title: translations.nature
-            },
-            {
-                title: translations.waterfront
-            }
-        ]
+        if (result.status) {
+            const filterData = result?.data?.result ?? []
+            setFilterResponse(filterData)
+        }
+        else {
+            SHOW_TOAST(result?.error)
+        }
+    }
+
+    function getLocalizationName(item) {
+
+        if (translations.getLanguage() == 'en') {
+            return item.them_english_design
+        }
+        else if (translations.getLanguage() == 'french') {
+            return item.them_french_design
+        }
+        else {
+            return item.them_spanish_design
+        }
+    }
 
     return (
         <View style={styles.container}>
@@ -61,7 +76,7 @@ const Experience = (props) => {
                 <FlatList
                     horizontal={true}
                     showsHorizontalScrollIndicator={false}
-                    data={placeOption}
+                    data={filterResponse}
                     ListHeaderComponent={() => {
                         return (
                             <View style={{ width: SCALE_SIZE(25) }}></View>
@@ -81,7 +96,7 @@ const Experience = (props) => {
                                     size={SCALE_SIZE(16)}
                                     color={COLORS.white}
                                     family={FONT_NAME.medium}>
-                                    {item.title}
+                                    {getLocalizationName(item)}
                                 </Text>
                             </TouchableOpacity>
                         )
@@ -121,6 +136,7 @@ const Experience = (props) => {
                 }}>
             </FlatList>
             <SafeAreaView />
+            {isLoading && <ProgressView />}
         </View>
     )
 }

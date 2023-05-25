@@ -102,7 +102,7 @@ const HotelDetail = (props) => {
 
     async function goBack() {
         EventRegister.emit('onLiked', item)
-        props.navigation.goBack()
+        props.navigation.goBack()  
     }
 
     return (

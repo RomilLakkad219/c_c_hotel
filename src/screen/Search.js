@@ -14,7 +14,7 @@ import { IMAGES } from "../asset";
 import { AuthContext, TranslationContext } from "../context";
 
 //API
-import { matchMakinghotels } from "../api";
+import { matchMakingHotels } from "../api";
 
 const Search = (props) => {
 
@@ -45,7 +45,7 @@ const Search = (props) => {
         }
 
         setIsLoading(true)
-        const result = await matchMakinghotels(params)
+        const result = await matchMakingHotels(params)
         setIsLoading(false)
 
         if (result.status) {

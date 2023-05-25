@@ -20,6 +20,7 @@ const BottomMultiSelectionSheet = (props) => {
 
     const data = props.data
     const bottomInsert = useSafeAreaInsets().bottom
+    
     return (
         <RBSheet ref={props.onRef}
             closeOnDragDown={true}

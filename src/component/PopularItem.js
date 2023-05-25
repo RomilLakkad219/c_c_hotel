@@ -35,7 +35,6 @@ const PopularItem = (props) => {
 
     const item = props.item
     const navigation = props.navigation
-
     const isShowSearchImage = props.isShowSearchImage
 
     async function getLikeUnLikeHotel() {
@@ -60,7 +59,7 @@ const PopularItem = (props) => {
             }}>
             <Image style={styles.imageView}
                 resizeMode="cover"
-                source={{ uri: isShowSearchImage ? (item.hotel_galary_photos ?? '') : (BASE_IMAGE_URL + (item?.hotel_galary_photos ?? '')) }} />
+                source={{ url: isShowSearchImage ? (item?.hotel_galary_photos ?? null) : (BASE_IMAGE_URL + (item?.hotel_galary_photos ?? null)) }} />
             <View style={{ flex: 1.0 }}>
                 <View style={{ flexDirection: 'row' }}>
                     <Text
@@ -144,7 +143,8 @@ const styles = StyleSheet.create({
         width: SCALE_SIZE(124),
         alignSelf: 'center',
         borderRadius: SCALE_SIZE(20),
-        overflow: 'hidden'
+        overflow: 'hidden',
+        backgroundColor:'gray'
     },
     itemText: {
         flex: 1.0,

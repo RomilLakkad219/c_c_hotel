@@ -21,7 +21,7 @@ const Input = (props) => {
                         size={SCALE_SIZE(14)}
                         family={FONT_NAME.medium}
                         color={COLORS.gray}>
-                        {props.title}
+                        {props.title}   
                     </Text>
                     <TextInput
                         {...props}
