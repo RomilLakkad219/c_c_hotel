@@ -47,6 +47,7 @@ const ExperienceCarousel = (props) => {
             onPress={() => {
                 props.navigation.navigate(SCREENS.HotelDetail.name, {
                     item: item,
+                    isSiteUrl: true
                 })
             }}>
             <ImageBackground style={styles.carouselContainer}

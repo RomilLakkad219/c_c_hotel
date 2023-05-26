@@ -29,7 +29,7 @@ const HotelDetail = (props) => {
 
     const translations = useContext(TranslationContext)
 
-    const { item } = props.route.params
+    const { item, isSiteUrl } = props.route.params
 
     const [isLoading, setIsLoading] = useState(false);
     const [hotelDetailResult, sethotelDetailResult] = useState(null);
@@ -85,11 +85,11 @@ const HotelDetail = (props) => {
     const galleryViewerImage = () => {
         if (hotelDetailResult) {
             const imagesArray = hotelDetailResult?.hotel_galary_photos?.split(',')
-            const newArray = imagesArray.map((e) => {
+            const newArray = imagesArray ? imagesArray.map((e) => {
                 return {
                     url: e.trim()
                 }
-            })
+            }) : []
             return newArray
         }
 
@@ -102,14 +102,15 @@ const HotelDetail = (props) => {
 
     async function goBack() {
         EventRegister.emit('onLiked', item)
-        props.navigation.goBack()  
+        props.navigation.goBack()
     }
 
+    console.log(isSiteUrl, item?.hotel_site_imgurl)
     return (
         <View style={styles.container}>
             <ImageBackground style={styles.headerContainer}
                 resizeMode='cover'
-                source={{ uri: BASE_IMAGE_URL + item?.hotel_galary_photos }}>
+                source={isSiteUrl ? { uri: item?.hotel_site_imgurl } : { uri: BASE_IMAGE_URL + item?.hotel_galary_photos }}>
                 <View style={styles.transparent}>
                     <SafeAreaView />
                     <View style={styles.imageContainer}>
@@ -198,8 +199,8 @@ const HotelDetail = (props) => {
                         family={FONT_NAME.medium}>
                         {(hotelDetailResult?.hotel_city ?? '') + ' , ' + (hotelDetailResult?.hotel_country ?? '')}
                     </Text>
-                    <TouchableOpacity style={styles.websiteButton} 
-                        onPress={()=>{
+                    <TouchableOpacity style={styles.websiteButton}
+                        onPress={() => {
                             Linking.openURL(hotelDetailResult?.hotel_internet_web)
                         }}>
                         <Text
@@ -239,7 +240,7 @@ const HotelDetail = (props) => {
                 </SafeAreaView>
             </Modal>
             {isLoading && <ProgressView />}
-        </View>
+        </View >
     )
 }
 
@@ -322,7 +323,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignSelf: 'center',
         marginRight: SCALE_SIZE(35),
-        paddingHorizontal:SCALE_SIZE(16)
+        paddingHorizontal: SCALE_SIZE(16)
     },
     factEstablishText: {
         marginTop: SCALE_SIZE(13),
