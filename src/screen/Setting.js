@@ -34,43 +34,35 @@ const Setting = (props) => {
     const settingData = [
         {
             title: translations.language,
-            image: IMAGES.ic_down,
             key: 'language'
         },
         {
             title: translations.subscribe,
-            image: IMAGES.ic_down,
             key: 'subscribe',
             isSwitch: true,
         },
         {
             title: translations.howitworks,
-            image: IMAGES.ic_down,
             key: 'how it work'
         },
         {
             title: translations.blog,
-            image: IMAGES.ic_down,
             key: 'blog'
         },
         {
             title: translations.ratetheapp,
-            image: IMAGES.ic_down,
             key: 'rate the app'
         },
         {
             title: translations.legalnotice,
-            image: IMAGES.ic_down,
             key: 'legal notice'
         },
         {
             title: translations.personaldata,
-            image: IMAGES.ic_down,
             key: 'personal data'
         },
         {
             title: translations.aboutdeveloper,
-            image: IMAGES.ic_down,
             key: 'about developer'
         },
     ]
@@ -81,6 +73,7 @@ const Setting = (props) => {
     const [visible, setVisible] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [isSubscribe, setIsSubscribe] = useState(false)
+    const [isVisibleLanguage, setVisibleLanguage] = useState(false)
 
 
     const toggleSwitch = () => {
@@ -155,6 +148,7 @@ const Setting = (props) => {
                                 activeOpacity={1}
                                 onPress={() => {
                                     if (item.key == 'language') {
+                                        setVisibleLanguage(true)
                                         languageRef?.current?.open()
                                     }
                                     else if (item.key == 'subscribe') {
@@ -194,7 +188,7 @@ const Setting = (props) => {
                                     <Image
                                         style={styles.itemImage}
                                         resizeMode='contain'
-                                        source={item.key == 'language' ? IMAGES.ic_down : IMAGES.ic_forward} />
+                                        source={item.key == 'language' ? (isVisibleLanguage ? IMAGES.ic_down : IMAGES.ic_forward) : IMAGES.ic_forward} />
                                 }
                             </TouchableOpacity>
                         )
@@ -237,7 +231,11 @@ const Setting = (props) => {
                 onRef={languageRef}
                 selectedItem={selectedLanguage}
                 data={[{ id: 0, name: STRING.english }, { id: 1, name: STRING.spanish }, { id: 2, name: STRING.french }]}
+                onClose={() => {
+                    setVisibleLanguage(false)
+                }}
                 onPressItem={(e) => {
+                    setVisibleLanguage(false)
                     languageRef?.current?.close()
 
                     setTimeout(() => {
