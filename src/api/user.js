@@ -159,6 +159,12 @@ async function experienceFilter(params) {
     return result
 }
 
+async function filterHotel(params) {
+    let url = WEB_SERVICE.filterHotel
+    const result = await postRequest(url, params)
+    return result
+}
+
 export {
     signUp,
     login,
@@ -184,5 +190,6 @@ export {
     matchMakingHotels,
     favouriteHotelList,
     likeUnlikeHotel,
-    experienceFilter
+    experienceFilter,
+    filterHotel
 }

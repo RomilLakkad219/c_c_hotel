@@ -13,6 +13,7 @@ import BottomSheet from './BottomSheet'
 import BottomMultiSelectionSheet from './BottomMultiSelectionSheet'
 import ProgressView from './ProgressView'
 import FavouriteItem from './FavouriteItem'
+import ExperienceCarousel from './ExperienceCarousel'
 
 export {
     Text,
@@ -29,5 +30,6 @@ export {
     BottomSheet,
     BottomMultiSelectionSheet,
     ProgressView,
-    FavouriteItem
+    FavouriteItem,
+    ExperienceCarousel
 }

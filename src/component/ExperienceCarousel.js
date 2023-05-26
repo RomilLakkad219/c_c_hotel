@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import { View, StyleSheet, Image, ImageBackground, TouchableOpacity, Dimensions } from 'react-native'
 
 //ASSET
@@ -6,7 +6,6 @@ import { IMAGES } from "../asset";
 
 //CONSTANT
 import { COLORS, FONT_NAME, SCALE_SIZE } from "../constant";
-import { BASE_IMAGE_URL } from "../constant/WebService";
 
 //SCREENS
 import { SCREENS } from "../screen";
@@ -20,28 +19,16 @@ import { likeUnlikeHotel } from "../api";
 //CONTEXT
 import { AuthContext } from "../context";
 
-//PACKAGES
-import { EventRegister } from "react-native-event-listeners";
-
-const HotelCarousel = (props) => {
+const ExperienceCarousel = (props) => {
 
     const { user } = useContext(AuthContext)
 
     const item = props.item
 
+    console.log('ITEM', item)
+
     const [isLiked, setIsLiked] = useState(item.fv_status)
     const [isLoading, setIsLoading] = useState(false)
-
-    useEffect(() => {
-        EventRegister.addEventListener('onLiked', (latestItems) => {
-            if (latestItems.hotel_id == item.hotel_id) {
-                setIsLiked(item.fv_status)
-            }
-        });
-        return () => {
-            EventRegister.removeEventListener('onLiked')
-        }
-    }, [item])
 
     async function getLikeUnLikeHotel() {
         const params = {
@@ -67,7 +54,7 @@ const HotelCarousel = (props) => {
             <ImageBackground style={styles.carouselContainer}
                 resizeMode='cover'
                 source={{
-                    uri: BASE_IMAGE_URL + item?.hotel_galary_photos ?? null
+                    uri: item?.hotel_site_imgurl ?? null
                 }}
             >
                 <TouchableOpacity style={styles.heartImageContainer}
@@ -171,4 +158,4 @@ const styles = StyleSheet.create({
     },
 })
 
-export default HotelCarousel;
+export default ExperienceCarousel;

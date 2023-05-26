@@ -5,7 +5,7 @@ import { View, StyleSheet, SafeAreaView, Image, FlatList, TouchableOpacity, Dime
 import { IMAGES } from "../asset";
 
 //COMPONENT
-import { Header, HotelCarousel, ProgressView, Text } from "../component";
+import { ExperienceCarousel, Header, ProgressView, Text } from "../component";
 
 //CONSTANT
 import { COLORS, SCALE_SIZE, FONT_NAME, SHOW_TOAST } from "../constant";
@@ -17,7 +17,7 @@ import Carousel from 'react-native-snap-carousel';
 import { TranslationContext } from "../context";
 
 //API
-import { experienceFilter } from "../api";
+import { experienceFilter, filterHotel } from "../api";
 
 const Experience = (props) => {
 
@@ -26,11 +26,14 @@ const Experience = (props) => {
     const isCarousel = useRef();
 
     const [visible, setVisible] = useState(false);
-    const [isLoading, setIsLoading] = useState(false)
-    const [filterResponse, setFilterResponse] = useState([])
+    const [isLoading, setIsLoading] = useState(false);
+    const [filterResponse, setFilterResponse] = useState([]);
+    const [isSelected, setIsSelected] = useState(false);
+    const [hotelExperienceResult, setHotelExperienceResult] = useState([])
 
     useEffect(() => {
         getExpereienceFilteration()
+        getFilterHotels()
     }, [])
 
     function onBack() {
@@ -65,6 +68,23 @@ const Experience = (props) => {
         }
     }
 
+    async function getFilterHotels() {
+
+        setIsLoading(true)
+        const result = await filterHotel()
+        setIsLoading(false)
+
+        if (result.status) {
+            const data = result?.data?.result ?? [] ?? hotel ?? []
+            const dataImage = data.slice(0, 5)
+            console.log('DATA', JSON.stringify(data))
+            setHotelExperienceResult(dataImage)
+        }
+        else {
+            SHOW_TOAST(result.error)
+        }
+    }
+
     return (
         <View style={styles.container}>
             <SafeAreaView />
@@ -72,7 +92,7 @@ const Experience = (props) => {
                 onBack={() => onBack()}
                 title={translations.experience}
                 onFilter={() => { setVisible(true) }} />
-            <View>
+            {/* <View>
                 <FlatList
                     horizontal={true}
                     showsHorizontalScrollIndicator={false}
@@ -90,11 +110,14 @@ const Experience = (props) => {
                     keyExtractor={(item, index) => index.toString()}
                     renderItem={({ item, index }) => {
                         return (
-                            <TouchableOpacity style={styles.placeContainer}>
+                            <TouchableOpacity style={isSelected ? styles.grayContainer : styles.placeContainer}
+                                onPress={() => {
+                                    setIsSelected(true)
+                                }}>
                                 <Text
                                     align='center'
                                     size={SCALE_SIZE(16)}
-                                    color={COLORS.white}
+                                    color={isSelected ? COLORS.headerTitleGray : COLORS.white}
                                     family={FONT_NAME.medium}>
                                     {getLocalizationName(item)}
                                 </Text>
@@ -102,10 +125,10 @@ const Experience = (props) => {
                         )
                     }}>
                 </FlatList>
-            </View>
+            </View> */}
             <FlatList
                 showsVerticalScrollIndicator={false}
-                data={[{ title: translations.beachsidehotel }, { title: translations.villagesidehotel }, { title: translations.beachsidehotel }, { title: translations.villagesidehotel }, { title: translations.beachsidehotel }, { title: translations.villagesidehotel }]}
+                data={filterResponse}
                 keyExtractor={(item, index) => index.toString()}
                 renderItem={({ item, index }) => {
                     return (
@@ -115,18 +138,26 @@ const Experience = (props) => {
                                     size={SCALE_SIZE(20)}
                                     color={COLORS.black}
                                     family={FONT_NAME.medium}>
-                                    {item.title}
+                                    {item.them_english_design + '\n'}
+                                    <Text style={styles.beachSideHotelText}
+                                        size={SCALE_SIZE(14)}
+                                        color={COLORS.black}
+                                        family={FONT_NAME.regular}>
+                                        {item.them_english_info}
+                                    </Text>
                                 </Text>
                                 <Image style={styles.forwardImage}
                                     resizeMode='contain'
                                     source={IMAGES.ic_forward} />
                             </TouchableOpacity>
+
                             <Carousel
                                 layout='default'
                                 layoutCardOffset={9}
                                 ref={isCarousel}
-                                data={['', '', '', '', '', '', '', '', '']}
-                                renderItem={(item, index) => <HotelCarousel navigation={props.navigation} item={item} />}
+                                data={hotelExperienceResult}
+                                renderItem={(item, index) =>
+                                    <ExperienceCarousel navigation={props.navigation} item={item}></ExperienceCarousel>}
                                 sliderWidth={Dimensions.get('window').width}
                                 itemWidth={Dimensions.get('window').width - SCALE_SIZE(70)}
                                 useScrollView={true}>
@@ -149,6 +180,16 @@ const styles = StyleSheet.create({
     placeContainer: {
         height: SCALE_SIZE(49),
         backgroundColor: COLORS.blue,
+        borderRadius: SCALE_SIZE(30),
+        justifyContent: 'center',
+        marginTop: SCALE_SIZE(33),
+        marginLeft: SCALE_SIZE(10),
+        paddingHorizontal: SCALE_SIZE(20),
+        marginBottom: SCALE_SIZE(13)
+    },
+    grayContainer: {
+        height: SCALE_SIZE(49),
+        backgroundColor: '#F3F3F3',
         borderRadius: SCALE_SIZE(30),
         justifyContent: 'center',
         marginTop: SCALE_SIZE(33),

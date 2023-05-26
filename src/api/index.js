@@ -22,7 +22,8 @@ import {
     matchMakingHotels,
     favouriteHotelList,
     likeUnlikeHotel,
-    experienceFilter
+    experienceFilter,
+    filterHotel
 } from './user'
 
 export {
@@ -49,5 +50,6 @@ export {
     matchMakingHotels,
     favouriteHotelList,
     likeUnlikeHotel,
-    experienceFilter   
+    experienceFilter,
+    filterHotel   
 }
