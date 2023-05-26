@@ -79,7 +79,8 @@ const Booking = (props) => {
         setIsLoading(false)
 
         if (result.status) {
-            const response = result?.data?.result ?? []
+            const array = result?.data?.result ?? []
+            const response = array.slice(0, 10)
             setHotelResult(response)
         }
         else {

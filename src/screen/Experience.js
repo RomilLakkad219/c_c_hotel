@@ -25,38 +25,34 @@ const Experience = (props) => {
 
     const isCarousel = useRef();
 
-    const [visible, setVisible] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
-    const [filterResponse, setFilterResponse] = useState([]);
-    const [isSelected, setIsSelected] = useState(false);
     const [hotelExperienceResult, setHotelExperienceResult] = useState([])
 
     useEffect(() => {
-        getExpereienceFilteration()
         getFilterHotels()
     }, [])
+
+    async function getFilterHotels() {
+
+        setIsLoading(true)
+        const result = await filterHotel()
+        setIsLoading(false)
+
+        if (result.status) {
+            const data = result?.data?.result ?? []
+            setHotelExperienceResult(data)
+        }
+        else {
+            SHOW_TOAST(result.error)
+        }
+    }
+
 
     function onBack() {
         props.navigation.goBack()
     }
 
-    async function getExpereienceFilteration() {
-
-        setIsLoading(true)
-        const result = await experienceFilter()
-        setIsLoading(false)
-
-        if (result.status) {
-            const filterData = result?.data?.result ?? []
-            setFilterResponse(filterData)
-        }
-        else {
-            SHOW_TOAST(result?.error)
-        }
-    }
-
     function getLocalizationName(item) {
-
         if (translations.getLanguage() == 'en') {
             return item.them_english_design
         }
@@ -68,67 +64,15 @@ const Experience = (props) => {
         }
     }
 
-    async function getFilterHotels() {
-
-        setIsLoading(true)
-        const result = await filterHotel()
-        setIsLoading(false)
-
-        if (result.status) {
-            const data = result?.data?.result ?? [] ?? hotel ?? []
-            const dataImage = data.slice(0, 5)
-            console.log('DATA', JSON.stringify(data))
-            setHotelExperienceResult(dataImage)
-        }
-        else {
-            SHOW_TOAST(result.error)
-        }
-    }
-
     return (
         <View style={styles.container}>
             <SafeAreaView />
             <Header
                 onBack={() => onBack()}
-                title={translations.experience}
-                onFilter={() => { setVisible(true) }} />
-            {/* <View>
-                <FlatList
-                    horizontal={true}
-                    showsHorizontalScrollIndicator={false}
-                    data={filterResponse}
-                    ListHeaderComponent={() => {
-                        return (
-                            <View style={{ width: SCALE_SIZE(25) }}></View>
-                        )
-                    }}
-                    ListFooterComponent={() => {
-                        return (
-                            <View style={{ width: SCALE_SIZE(35) }}></View>
-                        )
-                    }}
-                    keyExtractor={(item, index) => index.toString()}
-                    renderItem={({ item, index }) => {
-                        return (
-                            <TouchableOpacity style={isSelected ? styles.grayContainer : styles.placeContainer}
-                                onPress={() => {
-                                    setIsSelected(true)
-                                }}>
-                                <Text
-                                    align='center'
-                                    size={SCALE_SIZE(16)}
-                                    color={isSelected ? COLORS.headerTitleGray : COLORS.white}
-                                    family={FONT_NAME.medium}>
-                                    {getLocalizationName(item)}
-                                </Text>
-                            </TouchableOpacity>
-                        )
-                    }}>
-                </FlatList>
-            </View> */}
+                title={translations.experience} />
             <FlatList
                 showsVerticalScrollIndicator={false}
-                data={filterResponse}
+                data={hotelExperienceResult}
                 keyExtractor={(item, index) => index.toString()}
                 renderItem={({ item, index }) => {
                     return (
@@ -138,7 +82,7 @@ const Experience = (props) => {
                                     size={SCALE_SIZE(20)}
                                     color={COLORS.black}
                                     family={FONT_NAME.medium}>
-                                    {item.them_english_design + '\n'}
+                                    {getLocalizationName(item) + '\n'}
                                     <Text style={styles.beachSideHotelText}
                                         size={SCALE_SIZE(14)}
                                         color={COLORS.black}
@@ -150,14 +94,16 @@ const Experience = (props) => {
                                     resizeMode='contain'
                                     source={IMAGES.ic_forward} />
                             </TouchableOpacity>
-
                             <Carousel
                                 layout='default'
                                 layoutCardOffset={9}
                                 ref={isCarousel}
-                                data={hotelExperienceResult}
-                                renderItem={(item, index) =>
-                                    <ExperienceCarousel navigation={props.navigation} item={item}></ExperienceCarousel>}
+                                data={item.hotel}
+                                renderItem={({ item, index }) => {
+                                    return (
+                                        <ExperienceCarousel navigation={props.navigation} item={item} />
+                                    )
+                                }}
                                 sliderWidth={Dimensions.get('window').width}
                                 itemWidth={Dimensions.get('window').width - SCALE_SIZE(70)}
                                 useScrollView={true}>

@@ -25,8 +25,6 @@ const ExperienceCarousel = (props) => {
 
     const item = props.item
 
-    console.log('ITEM', item)
-
     const [isLiked, setIsLiked] = useState(item.fv_status)
     const [isLoading, setIsLoading] = useState(false)
 
