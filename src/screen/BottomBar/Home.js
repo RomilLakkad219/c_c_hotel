@@ -1,5 +1,5 @@
 import React, { useState, useRef, useContext, useEffect } from "react";
-import { View, StyleSheet, SafeAreaView, TextInput, Image, FlatList, TouchableOpacity, Dimensions, ScrollView, Alert } from 'react-native'
+import { View, StyleSheet, SafeAreaView, TextInput, Image, FlatList, TouchableOpacity, Dimensions, ScrollView } from 'react-native'
 
 //ASSET
 import { IMAGES } from "../../asset";
@@ -42,7 +42,6 @@ const Home = (props) => {
     }, [])
 
     useEffect(() => {
-        console.log('profile?.user_lang', profile?.user_lang)
         setSelectedLanguage(profile?.user_lang ?? '')
     }, [profile])
 
@@ -115,12 +114,13 @@ const Home = (props) => {
 
         setIsLoading(true)
         const result = await languageChange(params)
-        setIsLoading(false)
 
         if (result.status) {
-            fetchProfile()
+            await fetchProfile()
+            setIsLoading(false)
         }
         else {
+            setIsLoading(false)
             SHOW_TOAST(result.error)
         }
     }

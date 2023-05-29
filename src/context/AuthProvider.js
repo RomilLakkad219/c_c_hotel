@@ -11,7 +11,6 @@ export const AuthProvider = (props) => {
     const [profile, setProfile] = useState(null)
 
     async function fetchProfile() {
-        console.log('call')
         const params = {
             user_id: user?.[0]?.user_id,
             user_session:user?.[0]?.user_session
@@ -25,6 +24,8 @@ export const AuthProvider = (props) => {
                 setProfile(profile)
             }
         }
+
+        return
     }
 
     return (

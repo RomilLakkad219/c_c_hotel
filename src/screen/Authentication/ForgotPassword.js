@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import { StyleSheet, TouchableOpacity, SafeAreaView, ImageBackground, Image, View } from 'react-native'
+import { StyleSheet, TouchableOpacity, SafeAreaView, ImageBackground, Image, View, ScrollView } from 'react-native'
 
 //SCREENS
 import { SCREENS } from "..";
@@ -21,21 +21,21 @@ import { TranslationContext } from "../../context";
 
 const ForgotPassword = (props) => {
 
-    const translations=useContext(TranslationContext)
+    const translations = useContext(TranslationContext)
 
     const [email, setEmail] = useState('');
     const [isLoading, setIsLoading] = useState(false)
 
     function onSubmit() {
         if (!email) {
-            SHOW_TOAST('Enter Your Email')
+            SHOW_TOAST(translations.enteryouremail)
         }
         else {
             OnForgotPassword()
         }
     }
 
-    async function OnForgotPassword() {    
+    async function OnForgotPassword() {
         const params = {
             user_email: email,
         }
@@ -69,40 +69,42 @@ const ForgotPassword = (props) => {
                 style={styles.forgotBackground}
                 resizeMode="contain"
                 source={IMAGES.forgot_bg} />
-            <Text
-                style={styles.forgotText}
-                size={SCALE_SIZE(33)}
-                family={FONT_NAME.medium}
-                color={COLORS.black}>
-                {translations.forgot}
-            </Text>
-            <Text style={styles.passwordText}
-                size={SCALE_SIZE(33)}
-                family={FONT_NAME.medium}
-                color={COLORS.black}>
-                {translations.passwordquestionmark}
-            </Text>
-            <Text style={styles.emailEnteranceText}
-                size={SCALE_SIZE(16)}
-                family={FONT_NAME.medium}
-                color={COLORS.gray}>
-                {translations.emailtext}
-            </Text>
-            <Input
-                style={styles.emailInput}
-                value={email}
-                placeholderTextColor={COLORS.black}
-                onChangeText={(text) => {
-                    setEmail(text)
-                }}
-                title={translations.email}
-                icon={IMAGES.ic_email} />
-            <Button
-                onPress={() => {
-                    onSubmit()
-                }}
-                style={styles.submitButton}
-                title={translations.submit} />
+            <ScrollView>
+                <Text
+                    style={styles.forgotText}
+                    size={SCALE_SIZE(33)}
+                    family={FONT_NAME.medium}
+                    color={COLORS.black}>
+                    {translations.forgot}
+                </Text>
+                <Text style={styles.passwordText}
+                    size={SCALE_SIZE(33)}
+                    family={FONT_NAME.medium}
+                    color={COLORS.black}>
+                    {translations.passwordquestionmark}
+                </Text>
+                <Text style={styles.emailEnteranceText}
+                    size={SCALE_SIZE(16)}
+                    family={FONT_NAME.medium}
+                    color={COLORS.gray}>
+                    {translations.emailtext}
+                </Text>
+                <Input
+                    style={styles.emailInput}
+                    value={email}
+                    placeholderTextColor={COLORS.black}
+                    onChangeText={(text) => {
+                        setEmail(text)
+                    }}
+                    title={translations.email}
+                    icon={IMAGES.ic_email} />
+                <Button
+                    onPress={() => {
+                        onSubmit()
+                    }}
+                    style={styles.submitButton}
+                    title={translations.submit} />
+            </ScrollView>
             {isLoading && <ProgressView />}
         </ImageBackground>
     )

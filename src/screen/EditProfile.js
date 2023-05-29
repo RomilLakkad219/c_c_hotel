@@ -71,28 +71,28 @@ const EditProfile = (props) => {
 
     function onSave() {
         if (!name) {
-            SHOW_TOAST('Enter Your Name')
+            SHOW_TOAST(translations.enteryourname)
         }
         else if (!dateOfBirth) {
-            SHOW_TOAST('Enter Your Date Of Birth')
+            SHOW_TOAST(translations.enterdob)
         }
         else if (!mobileNumber) {
-            SHOW_TOAST('Enter Your Mobile Number')
+            SHOW_TOAST(translations.entermobilenumber)
         }
         else if (!gender) {
-            SHOW_TOAST('Select Your Gender')
+            SHOW_TOAST(translations.selectgender)
         }
         else if (!address) {
-            SHOW_TOAST('Enter Your Address')
+            SHOW_TOAST(translations.enteraddress)
         }
         else if (!city) {
-            SHOW_TOAST('Enter Your City')
+            SHOW_TOAST(translations.entercity)
         }
         else if (!country) {
-            SHOW_TOAST('Select Your Country')
+            SHOW_TOAST(translations.selectyourcountry)
         }
         else if (!postalCode) {
-            SHOW_TOAST('Enter Your Postal Code')
+            SHOW_TOAST(translations.enterpostalcode)
         }
         else {
             onUpdateProfile()
@@ -129,15 +129,14 @@ const EditProfile = (props) => {
 
         setIsLoading(true)
         const result = await updateProfile(params)
-        setIsLoading(false)
 
         if (result.status) {
-            if (result?.data?.status == '1') {
-                fetchProfile()
-                props.navigation.goBack()
-            }
+            await fetchProfile()
+            setIsLoading(false)
+            props.navigation.goBack()
         }
         else {
+            setIsLoading(false)
             SHOW_TOAST(result.error)
         }
     }
@@ -168,9 +167,7 @@ const EditProfile = (props) => {
         setIsLoading(false)
 
         if (result.status) {
-            if (result?.data?.status == '1') {
-                fetchProfile()
-            }
+            await fetchProfile()
         }
         else {
             SHOW_TOAST(result.error)
@@ -196,17 +193,14 @@ const EditProfile = (props) => {
         setIsLoading(false)
 
         if (result.status) {
-            if (countryResult) {
-                fetchProfile()
-                const countryResponse = result?.data?.result ?? []
-                const array = countryResponse.map((e, index) => {
-                    return {
-                        id: e.cnt_id,
-                        name: e.country
-                    }
-                })
-                setCountryResult(array)
-            }
+            const countryResponse = result?.data?.result ?? []
+            const array = countryResponse.map((e, index) => {
+                return {
+                    id: e?.cnt_id,
+                    name: e?.cont_english_design
+                }
+            })
+            setCountryResult(array)
         }
         else {
             SHOW_TOAST(result.error)
@@ -222,7 +216,7 @@ const EditProfile = (props) => {
             <ScrollView showsVerticalScrollIndicator={false}>
                 <View style={{ flexDirection: 'row' }}>
                     <TouchableOpacity onPress={() => {
-                        mediaRef?.current?.open()    
+                        mediaRef?.current?.open()
                     }}>
                         <Image
                             style={styles.imageUpload}

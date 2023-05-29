@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { View, StyleSheet, TouchableOpacity, ScrollView, ImageBackground, Dimensions, Image, SafeAreaView, FlatList, Modal, Linking } from 'react-native'
+import { View, StyleSheet, TouchableOpacity, ScrollView, ImageBackground, Dimensions, Image, SafeAreaView, FlatList, Modal, Linking, Share } from 'react-native'
 
 //ASSET
 import { IMAGES } from "../asset";
@@ -105,6 +105,12 @@ const HotelDetail = (props) => {
         props.navigation.goBack()
     }
 
+    function onShare() {
+        Share.share({
+            message: hotelDetailResult?.hotel_continent ?? '' + " " + hotelDetailResult?.hotel_country ?? ''
+        })
+    }
+
     return (
         <View style={styles.container}>
             <ImageBackground style={styles.headerContainer}
@@ -134,7 +140,9 @@ const HotelDetail = (props) => {
                                 source={isLiked == '1' ? IMAGES.ic_heart : IMAGES.ic_heart_white} />
                         </TouchableOpacity>
                     </View>
-                    <TouchableOpacity>
+                    <TouchableOpacity onPress={() => {
+                        onShare()
+                    }}>
                         <Image
                             style={styles.shareImage}
                             resizeMode="contain"

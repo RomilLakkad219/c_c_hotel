@@ -50,23 +50,23 @@ const Login = (props) => {
 
     function onLogin() {
         if (!email) {
-            SHOW_TOAST('Enter Your Email')
+            SHOW_TOAST(translations.enteryouremail)
         }
         else if (REGEX.emailRegex.test(email) == false) {
-            SHOW_TOAST('Enter Valid Email')
+            SHOW_TOAST(translations.entervalidemail)
         }
         else if (!password) {
-            SHOW_TOAST('Enter Your Password')
+            SHOW_TOAST(translations.enteryourpassword)
         }
         else if (REGEX.passwordRegex.test(password) == false) {
-            SHOW_TOAST('Password must contain 6 characters. 1 Numeric 1 Alphabet, 1 Special')
+            SHOW_TOAST(translations.passwordmessage)
         }
         else {
-            Login()
+            loginUser()
         }
     }
 
-    async function Login() {
+    async function loginUser() {
         const params = {
             user_email: email,
             user_password: password,
@@ -77,7 +77,7 @@ const Login = (props) => {
         setIsLoading(true)
         const result = await login(params)
         setIsLoading(false)
-
+        
         if (result.status) {
             if (result?.data?.status == '1') {
                 const user = result?.data?.result
@@ -94,7 +94,7 @@ const Login = (props) => {
 
             }
             else {
-                SHOW_TOAST(result?.data?.msg ?? "Something went wrong!")
+                SHOW_TOAST(result?.data?.msg ?? translations.somethingwentwrong)
             }
 
         }
@@ -186,7 +186,7 @@ const Login = (props) => {
                     </Text>
                     <View style={styles.borderAfterLine}></View>
                 </View>
-                <TouchableOpacity style={styles.googleButton}
+                {/* <TouchableOpacity style={styles.googleButton}
                     onPress={() => {
                         googleSignin()
                     }}>
@@ -201,7 +201,7 @@ const Login = (props) => {
                         family={FONT_NAME.medium}>
                         {translations.google}
                     </Text>
-                </TouchableOpacity>
+                </TouchableOpacity> */}
                 <View style={{ marginVertical: SCALE_SIZE(60) }}>
                     <Text
                         align='center'

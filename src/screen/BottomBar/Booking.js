@@ -5,31 +5,29 @@ import { View, StyleSheet, SafeAreaView, Image, TextInput, Alert, TouchableOpaci
 import MapView, { Callout, Marker } from 'react-native-maps';
 
 //ASSET
-import { IMAGES } from "../../asset";   
+import { IMAGES } from "../../asset";
 
 //COMPONENT
 import { BookingSelectionPopup, Header, ProgressView, Text } from "../../component";
 
 //CONSTANT
-import { COLORS, FONT_NAME, SCALE_SIZE, STRING } from "../../constant";
+import { COLORS, FONT_NAME, SCALE_SIZE, SHOW_TOAST } from "../../constant";
 import { BASE_IMAGE_URL } from "../../constant/WebService";
 
 //CONTEXT
-import { AuthContext, TranslationContext } from "../../context";
+import { TranslationContext } from "../../context";
 
 //API
-import { home } from "../../api";
+import { nearByHotel } from "../../api";
 
 //PACKAGES
 import WebView from "react-native-webview";
 import Geolocation from "@react-native-community/geolocation";
 
 //SCREENS
-import { SCREENS } from "..";
+import { SCREENS } from "..";   
 
 const Booking = (props) => {
-
-    const { user } = useContext(AuthContext);
 
     const translations = useContext(TranslationContext)
 
@@ -40,14 +38,11 @@ const Booking = (props) => {
     const [mapRegion, setMapRegion] = useState(null)
 
     useEffect(() => {
-        getHome()
-    }, [])
-
-    useEffect(() => {
         getLocation()
     }, [])
 
     const getLocation = () => {
+        setIsLoading(true)
         Geolocation.requestAuthorization(() => {
             Geolocation.getCurrentPosition((position) => {
                 setMapRegion({
@@ -58,9 +53,20 @@ const Booking = (props) => {
                     selectedItemIndex: 0
                 })
 
+                getNearByHotels(position?.coords?.latitude, position?.coords?.longitude)
+            }, (error) => {
+                setIsLoading(false)
+
+                setTimeout(() => {
+                    Alert.alert('', error.message)
+                }, 300);
             })
         }, (error) => {
-            Alert.alert('', error.message)
+            setIsLoading(false)
+
+            setTimeout(() => {
+                Alert.alert('', error.message)
+            }, 300);
         })
     }
 
@@ -68,23 +74,21 @@ const Booking = (props) => {
         props.navigation.goBack()
     }
 
-    async function getHome() {
+    async function getNearByHotels(lat, lng) {
         const params = {
-            user_id: user?.[0]?.user_id,
-            user_session: user?.[0]?.user_session,
+            lat: lat,
+            long: lng
         }
 
-        setIsLoading(true)
-        const result = await home(params)
+        const result = await nearByHotel(params)
         setIsLoading(false)
 
         if (result.status) {
-            const array = result?.data?.result ?? []
-            const response = array.slice(0, 10)
-            setHotelResult(response)
+            const hotels = result?.data?.result ?? []
+            setHotelResult(hotels)
         }
         else {
-            SHOW_TOAST(result.error)
+            SHOW_TOAST(result?.error)
         }
     }
 

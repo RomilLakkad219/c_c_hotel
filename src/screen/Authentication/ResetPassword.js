@@ -12,6 +12,10 @@ import { COLORS, FONT_NAME, SCALE_SIZE, SHOW_TOAST } from "../../constant";
 
 //CONTEXT
 import { TranslationContext } from "../../context";
+import { CommonActions } from "@react-navigation/native";
+
+//SCREENS
+import { SCREENS } from "..";
 
 const ResetPassword = (props) => {
 
@@ -24,13 +28,18 @@ const ResetPassword = (props) => {
 
     function onSubmit() {
         if (!newPassword) {
-            SHOW_TOAST('Enter New Password')
+            SHOW_TOAST(translations.enternewpassword)
         }
         else if (!confirmPassword) {
-            SHOW_TOAST('Enter Confirm Password')
+            SHOW_TOAST(translations.cofirm_password)
         }
         else {
-            SHOW_TOAST('Complete')
+            props.navigation.dispatch(CommonActions.reset({
+                index: 0,
+                routes: [{
+                    name: SCREENS.Login.name
+                }]
+            }))
         }
     }
 

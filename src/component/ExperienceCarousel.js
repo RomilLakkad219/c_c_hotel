@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import { View, StyleSheet, Image, ImageBackground, TouchableOpacity, Dimensions, Share} from 'react-native'
+import { View, StyleSheet, Image, ImageBackground, TouchableOpacity, Dimensions, Share } from 'react-native'
 
 //ASSET
 import { IMAGES } from "../asset";
@@ -41,70 +41,70 @@ const ExperienceCarousel = (props) => {
         setIsLoading(false)
     }
 
-    async function onShare(item) {
+    async function onShare() {
         Share.share({
             title: (item?.hotel_trader_name ?? ''),
-            message: item?.hotel_country ?? '',
+            message: item?.hotel_trader_name ?? ''+ "" + item?.hotel_country ?? '',
         })
-    }
+}
 
-    return (
-        <TouchableOpacity
-            activeOpacity={0.9}
-            onPress={() => {
-                props.navigation.navigate(SCREENS.HotelDetail.name, {
-                    item: item,
-                    isSiteUrl: true
-                })
-            }}>
-            <ImageBackground style={styles.carouselContainer}
-                resizeMode='cover'
-                source={{
-                    uri: item?.hotel_site_imgurl ?? null
-                }}
-            >
-                <TouchableOpacity style={styles.heartImageContainer}
-                    onPress={() => {
-                        item.fv_status = item.fv_status == '1' ? "0" : '1'
-                        setIsLiked(isLiked == '1' ? '0' : '1')
-                        getLikeUnLikeHotel()
-                    }}>
-                    <Image
-                        style={styles.heartImage}
-                        resizeMode="contain"
-                        source={isLiked == '1' ? IMAGES.ic_heart : IMAGES.ic_heart_white} />
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.heartImageContainer}
-                    onPress={() => {
-                        onShare()
-                    }}>
-                    <Image
-                        style={styles.heartImage}
-                        resizeMode="contain"
-                        source={IMAGES.ic_share} />
-                </TouchableOpacity>
-                <View style={{ flex: 1.0 }} />
-                <View
-                    style={{ marginBottom: SCALE_SIZE(27) }}>
-                    <Text style={styles.auraHouseText}
-                        size={SCALE_SIZE(28)}
+return (
+    <TouchableOpacity
+        activeOpacity={0.9}
+        onPress={() => {
+            props.navigation.navigate(SCREENS.HotelDetail.name, {
+                item: item,
+                isSiteUrl: true
+            })
+        }}>
+        <ImageBackground style={styles.carouselContainer}
+            resizeMode='cover'
+            source={{
+                uri: item?.hotel_site_imgurl ?? null
+            }}
+        >
+            <TouchableOpacity style={styles.heartImageContainer}
+                onPress={() => {
+                    item.fv_status = item.fv_status == '1' ? "0" : '1'
+                    setIsLiked(isLiked == '1' ? '0' : '1')
+                    getLikeUnLikeHotel()
+                }}>
+                <Image
+                    style={styles.heartImage}
+                    resizeMode="contain"
+                    source={isLiked == '1' ? IMAGES.ic_heart : IMAGES.ic_heart_white} />
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.heartImageContainer}
+                onPress={() => {
+                    onShare()
+                }}>
+                <Image
+                    style={styles.heartImage}
+                    resizeMode="contain"
+                    source={IMAGES.ic_share} />
+            </TouchableOpacity>
+            <View style={{ flex: 1.0 }} />
+            <View
+                style={{ marginBottom: SCALE_SIZE(27) }}>
+                <Text style={styles.auraHouseText}
+                    size={SCALE_SIZE(28)}
+                    color={COLORS.white}
+                    family={FONT_NAME.bold}>
+                    {item?.hotel_trader_name ?? ''}
+                </Text>
+                <View style={styles.rateContainer}>
+                    <Text style={styles.franceText}
+                        size={SCALE_SIZE(20)}
                         color={COLORS.white}
-                        family={FONT_NAME.bold}>
-                        {item?.hotel_trader_name ?? ''}
+                        family={FONT_NAME.medium}>
+                        {item?.hotel_country ?? ''}
                     </Text>
-                    <View style={styles.rateContainer}>
-                        <Text style={styles.franceText}
-                            size={SCALE_SIZE(20)}
-                            color={COLORS.white}
-                            family={FONT_NAME.medium}>
-                            {item?.hotel_country ?? ''}
-                        </Text>
-                    </View>
                 </View>
-            </ImageBackground>
-            {isLoading && <ProgressView />}
-        </TouchableOpacity>
-    )
+            </View>
+        </ImageBackground>
+        {isLoading && <ProgressView />}
+    </TouchableOpacity>
+)
 }
 
 const styles = StyleSheet.create({

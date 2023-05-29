@@ -185,7 +185,7 @@ const BookingSelectionPopup = (props) => {
                                         getCountries()
                                     }
                                     else {
-                                        SHOW_TOAST('Please select continent')
+                                        SHOW_TOAST(translations.pleaseselectcontinet)
                                     }
                                 }}
                                 onClose={() => {
@@ -209,7 +209,7 @@ const BookingSelectionPopup = (props) => {
                                         getRegionList()
                                     }
                                     else {
-                                        SHOW_TOAST('Please select continent and country')
+                                        SHOW_TOAST(translations.continentcountry)
                                     }
                                 }}
                                 onClose={() => {

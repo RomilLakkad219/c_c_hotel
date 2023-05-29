@@ -27,7 +27,7 @@ const Otp = (props) => {
 
     function onOtpCheck() {
         if (!otp) {
-            SHOW_TOAST('Enter Your Otp')
+            SHOW_TOAST(translations.otp)
         }
         else {
             props.navigation.navigate(SCREENS.ResetPassword.name)

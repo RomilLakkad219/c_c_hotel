@@ -221,7 +221,7 @@ const Match = (props) => {
                         getCountries()
                     }
                     else {
-                        SHOW_TOAST('Please select continent')
+                        SHOW_TOAST(translations.pleaseselectcontinet)
                     }
                 }}
                 onClose={() => {
@@ -242,7 +242,7 @@ const Match = (props) => {
                         getRegionList()
                     }
                     else {
-                        SHOW_TOAST('Please select continent and country')
+                        SHOW_TOAST(translations.continentcountry)
                     }
                 }}
                 onClose={() => {
@@ -261,7 +261,7 @@ const Match = (props) => {
                         getServicesList()
                     }
                     else {
-                        SHOW_TOAST('Please select continent,country or region')
+                        SHOW_TOAST(translations.continentcountryregion)
                     }
                 }}
                 onClose={() => {

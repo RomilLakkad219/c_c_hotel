@@ -165,6 +165,12 @@ async function filterHotel(params) {
     return result
 }
 
+async function nearByHotel(params) {
+    let url = WEB_SERVICE.nearByHotel
+    const result = await postRequest(url, params)
+    return result
+}
+
 export {
     signUp,
     login,
@@ -191,5 +197,6 @@ export {
     favouriteHotelList,
     likeUnlikeHotel,
     experienceFilter,
-    filterHotel
+    filterHotel,
+    nearByHotel
 }

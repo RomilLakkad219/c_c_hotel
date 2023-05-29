@@ -3,7 +3,7 @@ export const BASE_URL = 'http://hotels-charme.prometteur.in/Front/Api/'
 export const BASE_IMAGE_URL = 'https://backoffice.gaph.online/media/cache/normal_size/uploads/images/etablissements/'
 
 export const WEB_SERVICE = {
-    login: BASE_URL + 'mlogin',
+    login: BASE_URL + 'fields/login',
     signUp: BASE_URL + 'mAdd/login',
     forgotPassword: BASE_URL + 'forget',
     userProfile: BASE_URL + 'fields/profile',
@@ -27,5 +27,6 @@ export const WEB_SERVICE = {
     favouriteHotelList:BASE_URL+'fields/home',
     likeUnlikeHotel:BASE_URL+'mAdd/favouritelist_hotel',
     experienceFilter:BASE_URL+'fields/experience_filter',
-    filterHotel:BASE_URL+'fields/filter_hotel'
+    filterHotel:BASE_URL+'fields/filter_hotel',
+    nearByHotel:BASE_URL+'fields/nearby_hotel'
 }

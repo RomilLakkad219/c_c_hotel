@@ -102,10 +102,10 @@ const Setting = (props) => {
         if (result.status) {
             const subscriberes = result?.data?.sub_status
             if (subscriberes == '1') {
-                SHOW_SUCCESS_TOAST('SUBSCRIBED')
+                SHOW_SUCCESS_TOAST(translations.subscribed)
             }
             else {
-                SHOW_TOAST('UNSUBSCRIBED')
+                SHOW_TOAST(translations.unsubscribe)
             }
         }
         else {
@@ -122,12 +122,13 @@ const Setting = (props) => {
 
         setIsLoading(true)
         const result = await languageChange(params)
-        setIsLoading(false)
 
         if (result.status) {
-            fetchProfile()
+            await fetchProfile()
+            setIsLoading(false)
         }
         else {
+            setIsLoading(false)
             SHOW_TOAST(result.error)
         }
     }

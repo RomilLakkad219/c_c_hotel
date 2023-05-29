@@ -11,7 +11,7 @@ import { SCREENS } from "..";
 import { Button, Text } from "../../component";
 
 //CONSTANT
-import { COLORS, FONT_NAME, SCALE_SIZE, STRING } from "../../constant";
+import { COLORS, FONT_NAME, SCALE_SIZE } from "../../constant";
 
 //PACKAGES
 import { CommonActions } from "@react-navigation/native";

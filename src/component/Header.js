@@ -1,23 +1,17 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext } from "react";
 import { View, StyleSheet, Platform, TouchableOpacity, Image } from 'react-native'
 
 //ASSET
 import { IMAGES } from "../asset";
 
 //COMPONENT
-import { Text, ToolItem } from '../component'
+import { Text } from '../component'
 
 //CONSTANT
-import { COLORS, FONT_NAME, SCALE_SIZE, STRING } from "../constant";
-
-//PACKAGES
-import Tooltip from "react-native-walkthrough-tooltip";
+import { COLORS, FONT_NAME, SCALE_SIZE } from "../constant";
 
 //CONTEXT
-import { AuthContext, TranslationContext } from "../context";
-
-//API
-import { experienceFilter } from "../api";
+import { AuthContext } from "../context";
 
 const Header = (props) => {
 
@@ -73,9 +67,6 @@ const Header = (props) => {
                     {props.title}
                 </Text>
                 <View style={styles.itemContainer}>
-                    {/* {props.onFilter &&
-                        <FilterToolTip />
-                    } */}
                     {props.onEditProfile &&
                         <TouchableOpacity
                             style={styles.backContainer}
@@ -100,79 +91,6 @@ const Header = (props) => {
         )
     }
 }
-
-// const FilterToolTip = (props) => {
-
-//     const [visible, setVisible] = useState(false);
-//     const [selectedFilterItems, setSelectedFilterItems] = useState([]);
-//     const [filterResponse, setFilterResponse] = useState([])
-
-//     useEffect(() => {
-//         getExpereienceFilteration()
-//     }, [])
-
-//     async function getExpereienceFilteration() {
-
-//         const result = await experienceFilter()
-
-//         if (result.status) {
-//             const filterData = result?.data?.result ?? []
-
-//             const experienceData = filterData.map((e, index) => {
-//                 return {
-//                     name: e?.them_english_design,
-//                     french_name: e?.them_french_design,
-//                     spanish_name: e?.them_spanish_design
-//                 }
-//             })
-//             setFilterResponse(experienceData)
-//         }
-//         else {
-//             SHOW_TOAST(result?.error)
-//         }
-//     }
-
-//     return (
-//         <Tooltip
-//             isVisible={visible}
-//             contentStyle={styles.tooltipContainer}
-//             backgroundColor="transparent"
-//             placement='bottom'
-//             onClose={() => {
-//                 setVisible(false)
-//             }}
-//             arrowStyle={{
-//                 height: SCALE_SIZE(0), width: SCALE_SIZE(0)
-//             }}
-//             arrowSize={{
-//                 height: 0, width: 0
-//             }}
-//             content={<ToolItem
-//                 items={filterResponse}
-//                 selectedItems={selectedFilterItems}
-//                 onPress={(item, index) => {
-//                     const array = [...selectedFilterItems]
-//                     if (selectedFilterItems.includes(item)) {
-//                         const arrayIndex = array.indexOf(item)
-//                         array.splice(arrayIndex, 1)
-//                         setSelectedFilterItems(array)
-//                     }
-//                     else {
-//                         array.push(item)
-//                     }
-//                     setSelectedFilterItems(array)
-//                 }} />}>
-//             <TouchableOpacity
-//                 onPress={() => setVisible(true)}
-//                 style={styles.backContainer}>
-//                 <Image
-//                     style={styles.backImage}
-//                     resizeMode="contain"
-//                     source={IMAGES.ic_menu} />
-//             </TouchableOpacity>
-//         </Tooltip>
-//     )
-// }
 
 const styles = StyleSheet.create({
     headerContainer: {

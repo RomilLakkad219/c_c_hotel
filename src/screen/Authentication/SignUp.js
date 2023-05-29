@@ -26,41 +26,46 @@ const SignUp = (props) => {
     const [isTermsSelected, setTermsSelected] = useState(false);
     const [isSecurePassword, setSecurePassword] = useState(true);
     const [isVisiblePassword, setIsVisiblePassword] = useState(true);
+
+    const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [isLoading, setIsLoading] = useState(false)
 
     function onSignUp() {
-        if (!email) {
-            SHOW_TOAST('Enter Your Email')
+        if (!name) {
+            SHOW_TOAST(translations.enteryourname)
+        }
+        else if (!email) {
+            SHOW_TOAST(translations.enteryouremail)
         }
         else if (REGEX.emailRegex.test(email) == false) {
-            SHOW_TOAST('Enter Valid Email')
+            SHOW_TOAST(translations.entervalidemail)
         }
         else if (!password) {
-            SHOW_TOAST('Enter Your Password')
+            SHOW_TOAST(translations.enteryourpassword)
         }
         else if (REGEX.passwordRegex.test(password) == false) {
-            SHOW_TOAST('Password must contain 6 characters. 1 Numeric 1 Alphabet, 1 Special')
+            SHOW_TOAST(translations.passwordmessage)
         }
         else if (!confirmPassword) {
-            SHOW_TOAST('Enter Your Confirm Password')
+            SHOW_TOAST(translations.enterconfirmpassword)
         }
         else if (confirmPassword != password) {
-            SHOW_TOAST('Password and confirm password do not match')
+            SHOW_TOAST(translations.matchpassword)
         }
         else if (!isTermsSelected) {
-            SHOW_TOAST('Please except all terms and conditions')
+            SHOW_TOAST(translations.termsandcondition)
         }
         else {
-            SignUp()
+            registerUser()
         }
     }
 
-    async function SignUp() {
+    async function registerUser() {
         const params = {
-            user_name: '',
+            user_name: name,
             user_email: email,
             user_password: password,
             user_fcm_key: '',
@@ -73,13 +78,14 @@ const SignUp = (props) => {
         const result = await signUp(params)
         setIsLoading(false)
 
+        console.log(result)
         if (result.status) {
             if (result?.data?.status == "1") {
-                SHOW_SUCCESS_TOAST('Signup Successfull')
+                SHOW_SUCCESS_TOAST(translations.signupsuccessfull)
                 props.navigation.navigate(SCREENS.Login.name)
             }
             else {
-                SHOW_TOAST(result?.data?.msg ?? "Something went wrong!")
+                SHOW_TOAST(result?.data?.msg ?? translations.somethingwentwrong)
             }
         }
         else {
@@ -110,6 +116,15 @@ const SignUp = (props) => {
                 </Text>
                 <Input
                     style={styles.emailInput}
+                    value={name}
+                    title={translations.name}
+                    icon={IMAGES.ic_profile}
+                    onChangeText={(text) => {
+                        setName(text)
+                    }}>
+                </Input>
+                <Input
+                    style={styles.passwordInput}
                     value={email}
                     title={translations.email}
                     icon={IMAGES.ic_email}
@@ -202,7 +217,6 @@ const SignUp = (props) => {
                             {translations.login}
                         </Text>
                     </Text>
-                    <SafeAreaView />
                 </TouchableOpacity>
             </ScrollView>
             {isLoading && <ProgressView />}
@@ -262,7 +276,7 @@ const styles = StyleSheet.create({
     },
     alreadyHaveAnAccountView: {
         flexDirection: 'row',
-        marginTop: SCALE_SIZE(126),
+        marginVertical: SCALE_SIZE(40),
         justifyContent: 'center'
     }
 })
