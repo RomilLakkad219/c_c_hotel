@@ -19,6 +19,9 @@ import { likeUnlikeHotel } from "../api";
 //CONTEXT
 import { AuthContext } from "../context";
 
+//PACKAGES
+import Share from 'react-native-share';
+
 const ExperienceCarousel = (props) => {
 
     const { user } = useContext(AuthContext)
@@ -39,6 +42,16 @@ const ExperienceCarousel = (props) => {
         setIsLoading(true)
         const result = await likeUnlikeHotel(params)
         setIsLoading(false)
+    }
+
+    async function share() {
+        Share.open(options)
+            .then((res) => {
+                console.log(res);
+            })
+            .catch((err) => {
+                err && console.log(err);
+            });
     }
 
     return (
@@ -67,7 +80,10 @@ const ExperienceCarousel = (props) => {
                         resizeMode="contain"
                         source={isLiked == '1' ? IMAGES.ic_heart : IMAGES.ic_heart_white} />
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.heartImageContainer}>
+                <TouchableOpacity style={styles.heartImageContainer}
+                    onPress={() => {
+                        share()
+                    }}>
                     <Image
                         style={styles.heartImage}
                         resizeMode="contain"

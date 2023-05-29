@@ -22,6 +22,8 @@
 		79E193C01A5D4B90A0F7E536 /* Poppins-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FDA92DF5B02945758587BC28 /* Poppins-Black.ttf */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		877F82E829F933A6004AB1A3 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 877F82E729F933A6004AB1A3 /* GoogleService-Info.plist */; };
+		87C5FF942A24767E00ADE8C1 /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 87C5FF932A24767E00ADE8C1 /* Social.framework */; };
+		87C5FF962A24768900ADE8C1 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 87C5FF952A24768900ADE8C1 /* MessageUI.framework */; };
 		883FF5C581334F9BAFF06AA9 /* Poppins-ThinItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D0B8CD5D00A44523950A47DC /* Poppins-ThinItalic.ttf */; };
 		8D242F41CCF741AC9E58F011 /* Poppins-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D4C6C21436344A498AE0E20C /* Poppins-SemiBold.ttf */; };
 		8F13EA3B25104F17A81F1588 /* Poppins-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 809E2C28CA104E0586BA5F64 /* Poppins-Bold.ttf */; };
@@ -42,6 +44,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = 13B07F861A680F5B00A75B9A;
 			remoteInfo = C_C_Hotels;
+		};
+		87C5FF912A24762B00ADE8C1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 87C5FF8D2A24762A00ADE8C1 /* RNShare.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 134814201AA4EA6300B7C361;
+			remoteInfo = RNShare;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -72,6 +81,9 @@
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = C_C_Hotels/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		8764F91A29DC346600317359 /* hermes.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = hermes.xcframework; path = "Pods/hermes-engine/destroot/Library/Frameworks/universal/hermes.xcframework"; sourceTree = "<group>"; };
 		877F82E729F933A6004AB1A3 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		87C5FF8D2A24762A00ADE8C1 /* RNShare.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNShare.xcodeproj; path = "../node_modules/react-native-share/ios/RNShare.xcodeproj"; sourceTree = "<group>"; };
+		87C5FF932A24767E00ADE8C1 /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
+		87C5FF952A24768900ADE8C1 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		89C6BE57DB24E9ADA2F236DE /* Pods-C_C_Hotels-C_C_HotelsTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-C_C_Hotels-C_C_HotelsTests.release.xcconfig"; path = "Target Support Files/Pods-C_C_Hotels-C_C_HotelsTests/Pods-C_C_Hotels-C_C_HotelsTests.release.xcconfig"; sourceTree = "<group>"; };
 		9279D99EE2E0423F9C413321 /* Poppins-Light.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-Light.ttf"; path = "../src/asset/font/Poppins-Light.ttf"; sourceTree = "<group>"; };
 		A6BEDE8AA041442688EA25BC /* Poppins-ExtraLight.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-ExtraLight.ttf"; path = "../src/asset/font/Poppins-ExtraLight.ttf"; sourceTree = "<group>"; };
@@ -98,6 +110,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				87C5FF962A24768900ADE8C1 /* MessageUI.framework in Frameworks */,
+				87C5FF942A24767E00ADE8C1 /* Social.framework in Frameworks */,
 				0C80B921A6F3F58F76C31292 /* libPods-C_C_Hotels.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -139,6 +153,8 @@
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				87C5FF952A24768900ADE8C1 /* MessageUI.framework */,
+				87C5FF932A24767E00ADE8C1 /* Social.framework */,
 				8764F91A29DC346600317359 /* hermes.xcframework */,
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
 				5DCACB8F33CDC322A6C60F78 /* libPods-C_C_Hotels.a */,
@@ -150,6 +166,7 @@
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				87C5FF8D2A24762A00ADE8C1 /* RNShare.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -175,6 +192,14 @@
 			children = (
 				13B07F961A680F5B00A75B9A /* C_C_Hotels.app */,
 				00E356EE1AD99517003FC87E /* C_C_HotelsTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		87C5FF8E2A24762A00ADE8C1 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				87C5FF922A24762B00ADE8C1 /* libRNShare.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -290,6 +315,12 @@
 			mainGroup = 83CBB9F61A601CBA00E9B192;
 			productRefGroup = 83CBBA001A601CBA00E9B192 /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 87C5FF8E2A24762A00ADE8C1 /* Products */;
+					ProjectRef = 87C5FF8D2A24762A00ADE8C1 /* RNShare.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				13B07F861A680F5B00A75B9A /* C_C_Hotels */,
@@ -297,6 +328,16 @@
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		87C5FF922A24762B00ADE8C1 /* libRNShare.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRNShare.a;
+			remoteRef = 87C5FF912A24762B00ADE8C1 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		00E356EC1AD99517003FC87E /* Resources */ = {

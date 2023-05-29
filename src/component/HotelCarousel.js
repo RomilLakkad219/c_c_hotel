@@ -22,6 +22,7 @@ import { AuthContext } from "../context";
 
 //PACKAGES
 import { EventRegister } from "react-native-event-listeners";
+import Share from 'react-native-share';
 
 const HotelCarousel = (props) => {
 
@@ -56,6 +57,16 @@ const HotelCarousel = (props) => {
         setIsLoading(false)
     }
 
+    function share() {
+        Share.open()
+            .then((res) => {
+                console.log(res);
+            })
+            .catch((err) => {
+                err && console.log(err);
+            });
+    }
+
     return (
         <TouchableOpacity
             activeOpacity={0.9}
@@ -81,7 +92,10 @@ const HotelCarousel = (props) => {
                         resizeMode="contain"
                         source={isLiked == '1' ? IMAGES.ic_heart : IMAGES.ic_heart_white} />
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.heartImageContainer}>
+                <TouchableOpacity style={styles.heartImageContainer}
+                    onPress={() => {
+                        share()
+                    }}>
                     <Image
                         style={styles.heartImage}
                         resizeMode="contain"

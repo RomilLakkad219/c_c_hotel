@@ -105,7 +105,6 @@ const HotelDetail = (props) => {
         props.navigation.goBack()
     }
 
-    console.log(isSiteUrl, item?.hotel_site_imgurl)
     return (
         <View style={styles.container}>
             <ImageBackground style={styles.headerContainer}
