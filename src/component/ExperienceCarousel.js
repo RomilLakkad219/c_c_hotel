@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import { View, StyleSheet, Image, ImageBackground, TouchableOpacity, Dimensions } from 'react-native'
+import { View, StyleSheet, Image, ImageBackground, TouchableOpacity, Dimensions, Share} from 'react-native'
 
 //ASSET
 import { IMAGES } from "../asset";
@@ -18,9 +18,6 @@ import { likeUnlikeHotel } from "../api";
 
 //CONTEXT
 import { AuthContext } from "../context";
-
-//PACKAGES
-import Share from 'react-native-share';
 
 const ExperienceCarousel = (props) => {
 
@@ -44,14 +41,11 @@ const ExperienceCarousel = (props) => {
         setIsLoading(false)
     }
 
-    async function share() {
-        Share.open(options)
-            .then((res) => {
-                console.log(res);
-            })
-            .catch((err) => {
-                err && console.log(err);
-            });
+    async function onShare(item) {
+        Share.share({
+            title: (item?.hotel_trader_name ?? ''),
+            message: item?.hotel_country ?? '',
+        })
     }
 
     return (
@@ -82,7 +76,7 @@ const ExperienceCarousel = (props) => {
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.heartImageContainer}
                     onPress={() => {
-                        share()
+                        onShare()
                     }}>
                     <Image
                         style={styles.heartImage}

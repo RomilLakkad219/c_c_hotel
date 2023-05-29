@@ -65,6 +65,10 @@ const Setting = (props) => {
             title: translations.aboutdeveloper,
             key: 'about developer'
         },
+        {
+            title: translations.logout,
+            key: 'logout'
+        },
     ]
 
     const [selectedLanguage, setSelectedLanguage] = useState(profile?.user_lang)
@@ -172,6 +176,9 @@ const Setting = (props) => {
                                     else if (item.key == 'about developer') {
                                         props.navigation.navigate(SCREENS.AboutDeveloper.name)
                                     }
+                                    else if (item.key == 'logout') {
+                                        setModalVisible(true)
+                                    }
                                 }}>
                                 <Text
                                     style={styles.itemTitle}
@@ -195,7 +202,7 @@ const Setting = (props) => {
                     }}>
                 </FlatList>
             </View>
-            <TouchableOpacity
+            {/* <TouchableOpacity
                 onPress={() => {
                     setModalVisible(true)
                 }}
@@ -206,7 +213,7 @@ const Setting = (props) => {
                     color={COLORS.blue}>
                     {translations.logout}
                 </Text>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
             <LogoutPopup
                 visible={modalVisible}
                 onPressYes={async () => {
@@ -240,7 +247,7 @@ const Setting = (props) => {
 
                     setTimeout(() => {
                         setSelectedLanguage(e.name)
-                        setLanguage(e)
+                        setLanguage(e.name)
 
                         const language = e?.name
                         if (language?.toLowerCase() == 'english') {

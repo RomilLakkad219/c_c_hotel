@@ -1,5 +1,5 @@
 import React, { useState, useRef, useContext, useEffect } from "react";
-import { View, StyleSheet, SafeAreaView, TextInput, Image, FlatList, TouchableOpacity, Dimensions, ScrollView } from 'react-native'
+import { View, StyleSheet, SafeAreaView, TextInput, Image, FlatList, TouchableOpacity, Dimensions, ScrollView, Alert } from 'react-native'
 
 //ASSET
 import { IMAGES } from "../../asset";
@@ -29,17 +29,22 @@ const Home = (props) => {
     const translations = useContext(TranslationContext)
 
     const languageRef = useRef()
+    const isCarousel = useRef();
 
     const [search, setSearch] = useState('');
-    const isCarousel = useRef();
     const [index, setIndex] = useState(0);
     const [isLoading, setIsLoading] = useState(false);
-    const [selectedLanguage, setSelectedLanguage] = useState(false);
+    const [selectedLanguage, setSelectedLanguage] = useState(profile?.user_lang);
     const [hotel, setHotel] = useState([])
 
     useEffect(() => {
         getHome()
     }, [])
+
+    useEffect(() => {
+        console.log('profile?.user_lang', profile?.user_lang)
+        setSelectedLanguage(profile?.user_lang ?? '')
+    }, [profile])
 
     const hotelData =
         [
@@ -121,13 +126,13 @@ const Home = (props) => {
     }
 
     return (
-        <View style={styles.container}>   
+        <View style={styles.container}>
             <SafeAreaView />
             <Header
                 type={'home'}
                 onDown={() => { }}
                 onLanguage={() => { languageRef.current.open() }}
-                title={profile?.user_lang} />
+                title={selectedLanguage} />
             <ScrollView showsVerticalScrollIndicator={false}>
                 <TouchableOpacity style={styles.searchInputContainer}
                     onPress={() => {
