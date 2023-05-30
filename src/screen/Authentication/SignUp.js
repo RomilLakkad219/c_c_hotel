@@ -78,7 +78,6 @@ const SignUp = (props) => {
         const result = await signUp(params)
         setIsLoading(false)
 
-        console.log(result)
         if (result.status) {
             if (result?.data?.status == "1") {
                 SHOW_SUCCESS_TOAST(translations.signupsuccessfull)
@@ -105,7 +104,8 @@ const SignUp = (props) => {
                     resizeMode="contain"
                     source={IMAGES.back_arrow} />
             </TouchableOpacity>
-            <ScrollView showsVerticalScrollIndicator={false}>
+            <ScrollView
+                showsVerticalScrollIndicator={false}>
                 <Text
                     style={styles.signUpText}
                     size={SCALE_SIZE(33)}

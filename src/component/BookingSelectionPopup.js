@@ -224,11 +224,14 @@ const BookingSelectionPopup = (props) => {
                         <TouchableOpacity style={styles.searchButton}
                             onPress={() => {
                                 props.onClose()
-                                navigation.navigate(SCREENS.MatchList.name, {
-                                    continent: selectedContinent,
-                                    countries: selectedCountries,
-                                    region: selectedRegion
-                                })
+                                setTimeout(() => {
+                                    navigation.navigate(SCREENS.MatchList.name, {
+                                        continent: selectedContinent,
+                                        countries: selectedCountries,
+                                        region: selectedRegion
+                                    })
+                                }, 500);
+                               
                             }}>
                             <Text
                                 size={16}

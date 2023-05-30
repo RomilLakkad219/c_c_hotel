@@ -25,14 +25,14 @@ const DestinationPlace = (props) => {
     const [destinationResponse, setDestinationResponse] = useState([])
 
     useEffect(() => {
-        getDestinationPlaces()
+        getUserDestinationPlaces()
     }, [])
 
     function onBack() {
         props.navigation.goBack()
     }
 
-    async function getDestinationPlaces() {
+    async function getUserDestinationPlaces() {
         const params = {
             user_id: user?.[0]?.user_id,
             user_session: user?.[0]?.user_session,

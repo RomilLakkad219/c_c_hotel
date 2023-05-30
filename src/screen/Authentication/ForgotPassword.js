@@ -65,11 +65,11 @@ const ForgotPassword = (props) => {
                         source={IMAGES.back_arrow} />
                 </TouchableOpacity>
             </View>
+            <ScrollView>
             <Image
                 style={styles.forgotBackground}
                 resizeMode="contain"
                 source={IMAGES.forgot_bg} />
-            <ScrollView>
                 <Text
                     style={styles.forgotText}
                     size={SCALE_SIZE(33)}
@@ -104,8 +104,8 @@ const ForgotPassword = (props) => {
                     }}
                     style={styles.submitButton}
                     title={translations.submit} />
-            </ScrollView>
             {isLoading && <ProgressView />}
+            </ScrollView>
         </ImageBackground>
     )
 }

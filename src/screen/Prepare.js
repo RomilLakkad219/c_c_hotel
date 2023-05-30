@@ -52,6 +52,7 @@ const Prepare = (props) => {
                 setProfile(profile)
 
                 const language = profile?.user_lang
+
                 if (language?.toLowerCase() == 'english') {
                     translations.setLanguage('en')
                 }
