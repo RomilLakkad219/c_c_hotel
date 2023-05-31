@@ -12,16 +12,13 @@ import { COLORS, FONT_NAME, SCALE_SIZE, SHOW_TOAST } from "../constant";
 
 //PACKAGES
 import { AirbnbRating } from 'react-native-ratings'
-import MapView, { Callout, Marker } from "react-native-maps";
+import MapView, { Marker } from "react-native-maps";
 
 //SCREENS
 import { SCREENS } from ".";
 
 //API
 import { matchMakingHotels } from "../api";
-
-//PACKAGES
-import WebView from "react-native-webview";
 
 //CONTEXT
 import { AuthContext, TranslationContext } from "../context";
@@ -32,17 +29,42 @@ const MatchList = (props) => {
 
     const translations = useContext(TranslationContext)
 
+    const mapRef = useRef(null)
     const calloutRef = useRef(null)
 
     const [isLoading, setIsLoading] = useState(false);
-    const [hotelResponse, setHotelResponse] = useState([])
-    const [mapRegion, setMapRegion] = useState(null)
+    const [hotelResponse, setHotelResponse] = useState(null)
+    const [markerCordinates, setMarkerCordinates] = useState(null)
+    const [selectedItemIndex, setSelectedItemIndex] = useState(-1)
 
     const { continent, countries, region, services } = props.route.params
 
     useEffect(() => {
         getMatchMakingList()
     }, [])
+
+    useEffect(() => {
+        if (selectedItemIndex != -1 && hotelResponse) {
+            const lat = hotelResponse[selectedItemIndex].hotel_lat ? Number(hotelResponse[selectedItemIndex].hotel_lat) : 0
+            const lng = hotelResponse[selectedItemIndex].hotel_long ? Number(hotelResponse[selectedItemIndex].hotel_long) : 0
+
+            setMarkerCordinates({
+                latitude: lat,
+                longitude: lng,
+            })
+
+            mapRef?.current?.animateToRegion({
+                latitude: lat,
+                longitude: lng,
+                latitudeDelta: 0.1,
+                longitudeDelta: 0.1,
+            }, 1000)
+
+            setTimeout(() => {
+                calloutRef?.current?.showCallout()
+            }, 1200);
+        }
+    }, [selectedItemIndex, hotelResponse])
 
     async function getMatchMakingList() {
         const params = {
@@ -66,24 +88,7 @@ const MatchList = (props) => {
         if (result.status) {
             const hotelList = result?.data?.result ?? []
             setHotelResponse(hotelList)
-
-            const lat = hotelList[0].hotel_lat ? Number(hotelList[0].hotel_lat) : 0
-            const lng = hotelList[0].hotel_long ? Number(hotelList[0].hotel_long) : 0
-
-            if (hotelList?.length > 0) {
-    
-                    setMapRegion({
-                        latitude: lat,
-                        longitude: lng,
-                        latitudeDelta: 0.1,
-                        longitudeDelta: 0.1,
-                        selectedItemIndex: 0
-                    })
-
-                setTimeout(() => {
-                    calloutRef.current.showCallout()
-                }, 1000);
-            }
+            setSelectedItemIndex(0)
         }
         else {
             SHOW_TOAST(result?.error)
@@ -101,44 +106,20 @@ const MatchList = (props) => {
                     }} />
             </View>
             <View style={{ flex: 1.0 }}>
-                <MapView style={styles.map} region={mapRegion}>
-                    {mapRegion &&
-                        <Marker coordinate={{
-                            latitude: mapRegion.latitude,
-                            longitude: mapRegion.longitude,
-                        }}
+                <MapView ref={mapRef} style={styles.map}>
+                    {markerCordinates &&
+                        <Marker
+                            key={selectedItemIndex.toString()}
+                            coordinate={markerCordinates}
                             image={IMAGES.map_bg}
+                            title={hotelResponse?.[selectedItemIndex]?.hotel_trader_name ?? ''}
+                            description={hotelResponse?.[selectedItemIndex]?.hotel_city + ', ' + hotelResponse?.[selectedItemIndex]?.hotel_country}
+                            onCalloutPress={() => {
+                                props.navigation.navigate(SCREENS.HotelDetail.name, {
+                                    item: hotelResponse?.[selectedItemIndex]
+                                })
+                            }}
                             ref={calloutRef}>
-                            <Callout
-                                onPress={() => {
-                                    props.navigation.navigate(SCREENS.HotelDetail.name, { item: hotelResponse[mapRegion.selectedItemIndex] })
-                                }}
-                                key={mapRegion?.selectedItemIndex}
-                                tooltip={true}
-                                style={{ backgroundColor: "#ffffff" }}>
-                                <View style={styles.hotelView}>
-                                    <View>
-                                        <WebView style={styles.webview}
-                                            source={{ uri: hotelResponse[mapRegion.selectedItemIndex]?.hotel_galary_photos?.trim() }}></WebView>
-                                    </View>
-                                    <View style={styles.textView}>
-                                        <Text
-                                            size={SCALE_SIZE(14)}
-                                            align='left'
-                                            family={FONT_NAME.medium}
-                                            color={COLORS.black}>
-                                            {hotelResponse[mapRegion.selectedItemIndex]?.hotel_trader_name}
-                                        </Text>
-                                        <Text
-                                            size={SCALE_SIZE(9)}
-                                            align='left'
-                                            family={FONT_NAME.medium}
-                                            color={COLORS.borderGray}>
-                                            {hotelResponse[mapRegion.selectedItemIndex]?.hotel_city + ', ' + hotelResponse[mapRegion.selectedItemIndex]?.hotel_country}
-                                        </Text>
-                                    </View>
-                                </View>
-                            </Callout>
                         </Marker>
                     }
                 </MapView>
@@ -152,31 +133,18 @@ const MatchList = (props) => {
                             <View style={{ marginTop: SCALE_SIZE(52) }}></View>
                         )
                     }}
+                    ListFooterComponent={() => {
+                        return (
+                            <View style={{ marginBottom: SCALE_SIZE(20) }}></View>
+                        )
+                    }}
                     renderItem={({ item, index }) => {
                         return (
                             <TouchableOpacity style={[styles.itemContainer, {
-                                backgroundColor: mapRegion?.selectedItemIndex == index ? COLORS.blue_light : COLORS.white
+                                backgroundColor: selectedItemIndex == index ? COLORS.blue_light : COLORS.white
                             }]}
                                 onPress={() => {
-                                    const lat = item.hotel_lat
-                                    const lng = item.hotel_long
-
-                                    calloutRef.current.hideCallout()
-
-                                    setTimeout(() => {
-                                        setMapRegion({
-                                            latitude: lat,
-                                            longitude: lng,
-                                            latitudeDelta: 0.1,
-                                            longitudeDelta: 0.1,
-                                            selectedItemIndex: index
-                                        })
-
-                                        setTimeout(() => {
-                                            calloutRef.current.showCallout()
-                                        }, 300);
-                                    }, 300);
-
+                                    setSelectedItemIndex(index)
                                 }}>
                                 <View style={{ flexDirection: 'row' }}>
                                     {item?.hotel_galary_photos?.trim() ?
@@ -208,7 +176,7 @@ const MatchList = (props) => {
                                             isDisabled={true}
                                             showRating={false}
                                         />
-                                        <TouchableOpacity style={styles.discoverButton} onPress={()=>{
+                                        <TouchableOpacity style={styles.discoverButton} onPress={() => {
                                             Linking.openURL(item?.hotel_internet_bookingengine)
                                         }}>
                                             <Text

@@ -70,6 +70,11 @@ const Favourite = (props) => {
                 <FlatList data={favouriteList}
                     showsVerticalScrollIndicator={false}
                     keyExtractor={(item, index) => index.toString()}
+                    ListFooterComponent={() => {
+                        return (
+                            <View style={{ marginBottom: SCALE_SIZE(20) }}></View>
+                        )
+                    }}
                     renderItem={({ item, index }) => {
                         return (
                             <FavouriteItem item={item}

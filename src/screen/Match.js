@@ -311,7 +311,7 @@ const ToolTipView = (props) => {
                         props.onSelectItem(item)
                     }} />
             }>
-            <TouchableOpacity style={styles.listContainer}
+            <TouchableOpacity style={styles.itemContainer}
                 onPress={() => props.onOpen()}>
                 <Text
                     style={styles.title}
@@ -343,7 +343,7 @@ const styles = StyleSheet.create({
         marginTop: SCALE_SIZE(10),
         marginHorizontal: SCALE_SIZE(35)
     },
-    listContainer: {
+    itemContainer: {
         height: SCALE_SIZE(54),
         borderRadius: SCALE_SIZE(25),
         backgroundColor: COLORS.lightgray,

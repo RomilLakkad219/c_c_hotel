@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, {  useEffect } from 'react';
 import { View, StyleSheet, Platform, StatusBar, LogBox } from 'react-native'
 
 //PACKAGES
@@ -24,6 +24,7 @@ import { COLORS, SCALE_SIZE } from './src/constant';
 import { AuthProvider, TranslationContext, translations } from './src/context';
 
 LogBox.ignoreAllLogs(true)
+LogBox.ignoreLogs(["ViewPropTypes will be removed from React Native, along with all other PropTypes. We recommend that you migrate away from PropTypes and switch to a type system like TypeScript. If you need to continue using ViewPropTypes, migrate to the 'deprecated-react-native-prop-types' package."])
 
 const App = (props) => {
 

@@ -104,7 +104,7 @@ const styles = StyleSheet.create({
         marginTop: SCALE_SIZE(35),
         marginHorizontal: SCALE_SIZE(35),
         padding: SCALE_SIZE(16),
-        flexDirection: 'row',
+        flexDirection: 'row'
     },
     imageView: {
         height: SCALE_SIZE(117),

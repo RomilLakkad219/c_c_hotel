@@ -59,7 +59,7 @@ const PopularItem = (props) => {
             }}>
             <Image style={styles.imageView}
                 resizeMode="cover"
-                source={{ url: isShowSearchImage ? (item?.hotel_galary_photos ?? null) : (BASE_IMAGE_URL + (item?.hotel_galary_photos ?? null)) }} />
+                source={{ url: isShowSearchImage ? (item?.hotel_galary_photos ?? '') : (BASE_IMAGE_URL + (item?.hotel_galary_photos ?? '')) }} />
             <View style={{ flex: 1.0 }}>
                 <View style={{ flexDirection: 'row' }}>
                     <Text
@@ -144,7 +144,7 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         borderRadius: SCALE_SIZE(20),
         overflow: 'hidden',
-        backgroundColor:'gray'
+        backgroundColor: 'gray'
     },
     itemText: {
         flex: 1.0,

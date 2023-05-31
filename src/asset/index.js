@@ -52,8 +52,8 @@ const IMAGES = {
     africa_bg: require('../asset/images/africa_bg.png'),
     popularhotel_bg: require('../asset/images/popularhotel_bg.png'),
     ic_profile: require('../asset/images/ic_profile.png'),
-    ic_heart_white:require('../asset/images/ic_heart_white.png')
-
+    ic_heart_white: require('../asset/images/ic_heart_white.png'),
+    ic_user: require('../asset/images/ic_user.png')
 }
 
 export { IMAGES }

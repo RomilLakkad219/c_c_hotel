@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { View, StyleSheet, TouchableOpacity, ScrollView, ImageBackground, Dimensions, Image, SafeAreaView, FlatList, Modal, Linking, Share } from 'react-native'
+import { View, StyleSheet, TouchableOpacity, ScrollView, ImageBackground, Dimensions, Image, SafeAreaView, FlatList, Modal, Linking, Share, Alert } from 'react-native'
 
 //ASSET
 import { IMAGES } from "../asset";
@@ -33,7 +33,7 @@ const HotelDetail = (props) => {
 
     const [isLoading, setIsLoading] = useState(false);
     const [hotelDetailResult, sethotelDetailResult] = useState(null);
-    const [imageViewerVisible, setImageViewerVisible] = useState(false)
+    const [imageViewerVisible, setImageViewerVisible] = useState(false);
     const [isLiked, setIsLiked] = useState(item.fv_status)
 
     useEffect(() => {
@@ -111,11 +111,25 @@ const HotelDetail = (props) => {
         })
     }
 
+    function getValidURL() {
+        let s = isSiteUrl ? item?.hotel_site_imgurl ?? '' : item?.hotel_galary_photos ?? ''
+
+
+        if (s.includes('http:') || s.includes('https:')) {
+            return s?.trim()
+        }
+        else {
+            return (BASE_IMAGE_URL + s)?.trim()
+        }
+    }
+
+    const url = getValidURL()
+
     return (
         <View style={styles.container}>
             <ImageBackground style={styles.headerContainer}
                 resizeMode='cover'
-                source={isSiteUrl ? { uri: item?.hotel_site_imgurl } : { uri: BASE_IMAGE_URL + item?.hotel_galary_photos }}>
+                source={{ uri: url }}>
                 <View style={styles.transparent}>
                     <SafeAreaView />
                     <View style={styles.imageContainer}>
@@ -183,10 +197,15 @@ const HotelDetail = (props) => {
                                     onPress={() => {
                                         setImageViewerVisible(true)
                                     }}>
-                                    <Image
-                                        style={styles.itemImage}
-                                        resizeMode="cover"
-                                        source={{ uri: item.trim() }} />
+                                    {item.trim() ?
+                                        <Image
+                                            style={styles.itemImage}
+                                            resizeMode="cover"
+                                            source={{ uri: item.trim() }} />
+                                        :
+                                        <View
+                                            style={styles.itemImage} />
+                                    }
                                 </TouchableOpacity>
                             )
                         }}>
@@ -309,7 +328,8 @@ const styles = StyleSheet.create({
         width: SCALE_SIZE(126),
         alignSelf: 'center',
         borderRadius: SCALE_SIZE(20),
-        overflow: 'hidden'
+        overflow: 'hidden',
+        backgroundColor: 'rgba(0,0,0,0.4)'
     },
     villaMiaText: {
         marginTop: SCALE_SIZE(35),

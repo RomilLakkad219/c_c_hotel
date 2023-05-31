@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import { StyleSheet, TouchableOpacity, SafeAreaView, ImageBackground, Image } from 'react-native'
+import { StyleSheet, TouchableOpacity, SafeAreaView, ImageBackground, Image ,ScrollView} from 'react-native'
 
 //ASSET
 import { IMAGES } from "../../asset";
@@ -54,54 +54,57 @@ const ResetPassword = (props) => {
                     resizeMode="contain"
                     source={IMAGES.back_arrow} />
             </TouchableOpacity>
-            <Image
-                style={styles.resetPasswordBackground}
-                resizeMode="contain"
-                source={IMAGES.reset_pw_bg} />
-            <Text
-                style={styles.resetPasswordText}
-                size={SCALE_SIZE(33)}
-                family={FONT_NAME.medium}
-                color={COLORS.black}>
-                {translations.reset}
-            </Text>
-            <Text style={styles.passwordText}
-                size={SCALE_SIZE(33)}
-                family={FONT_NAME.medium}
-                color={COLORS.black}>
-                {translations.password}
-            </Text>
-            <Input
-                style={styles.newPasswordInput}
-                value={newPassword}
-                title={translations.newpassword}
-                secureTextEntry={isSecurePassword}
-                onChangeText={(text) => {
-                    setNewPassword(text)
-                }}
-                icon={isSecurePassword ? IMAGES.ic_eye_password : IMAGES.ic_s_password}
-                onPressIcon={() => {
-                    setSecurePassword(!isSecurePassword)
-                }} />
-            <Input
-                style={styles.confirmPasswordInput}
-                value={confirmPassword}
-                title={translations.confirmpassword}
-                secureTextEntry={isVisiblePassword}
-                onChangeText={(text) => {
-                    setConfirmPassword(text)
-                }}
-                icon={isVisiblePassword ? IMAGES.ic_eye_password : IMAGES.ic_s_password}
-                onPressIcon={() => {
-                    setIsVisiblePassword(!isVisiblePassword)
-                }} />
-            <Button
-                style={styles.submitButton}
-                onPress={() => {
-                    onSubmit()
-                }}
-                title={translations.submit} />
-            <SafeAreaView />
+            <ScrollView
+                showsVerticalScrollIndicator={false}>
+                <Image
+                    style={styles.resetPasswordBackground}
+                    resizeMode="contain"
+                    source={IMAGES.reset_pw_bg} />
+                <Text
+                    style={styles.resetPasswordText}
+                    size={SCALE_SIZE(33)}
+                    family={FONT_NAME.medium}
+                    color={COLORS.black}>
+                    {translations.reset}
+                </Text>
+                <Text style={styles.passwordText}
+                    size={SCALE_SIZE(33)}
+                    family={FONT_NAME.medium}
+                    color={COLORS.black}>
+                    {translations.password}
+                </Text>
+                <Input
+                    style={styles.newPasswordInput}
+                    value={newPassword}
+                    title={translations.newpassword}
+                    secureTextEntry={isSecurePassword}
+                    onChangeText={(text) => {
+                        setNewPassword(text)
+                    }}
+                    icon={isSecurePassword ? IMAGES.ic_eye_password : IMAGES.ic_s_password}
+                    onPressIcon={() => {
+                        setSecurePassword(!isSecurePassword)
+                    }} />
+                <Input
+                    style={styles.confirmPasswordInput}
+                    value={confirmPassword}
+                    title={translations.confirmpassword}
+                    secureTextEntry={isVisiblePassword}
+                    onChangeText={(text) => {
+                        setConfirmPassword(text)
+                    }}
+                    icon={isVisiblePassword ? IMAGES.ic_eye_password : IMAGES.ic_s_password}
+                    onPressIcon={() => {
+                        setIsVisiblePassword(!isVisiblePassword)
+                    }} />
+                <Button
+                    style={styles.submitButton}
+                    onPress={() => {
+                        onSubmit()
+                    }}
+                    title={translations.submit} />
+                <SafeAreaView />
+            </ScrollView>
         </ImageBackground>
     )
 }

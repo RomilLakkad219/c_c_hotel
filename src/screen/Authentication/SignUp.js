@@ -118,7 +118,7 @@ const SignUp = (props) => {
                     style={styles.emailInput}
                     value={name}
                     title={translations.name}
-                    icon={IMAGES.ic_profile}
+                    icon={IMAGES.ic_user}
                     onChangeText={(text) => {
                         setName(text)
                     }}>

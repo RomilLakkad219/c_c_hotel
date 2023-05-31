@@ -17,7 +17,7 @@ import Carousel from 'react-native-snap-carousel';
 import { TranslationContext } from "../context";
 
 //API
-import { experienceFilter, filterHotel } from "../api";
+import { filterHotel } from "../api";
 
 const Experience = (props) => {
 

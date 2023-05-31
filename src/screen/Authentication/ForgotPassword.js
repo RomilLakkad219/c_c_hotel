@@ -65,7 +65,7 @@ const ForgotPassword = (props) => {
                         source={IMAGES.back_arrow} />
                 </TouchableOpacity>
             </View>
-            <ScrollView>
+            <ScrollView showsVerticalScrollIndicator={false}>
             <Image
                 style={styles.forgotBackground}
                 resizeMode="contain"
