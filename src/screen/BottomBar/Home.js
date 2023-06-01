@@ -1,5 +1,5 @@
 import React, { useState, useRef, useContext, useEffect } from "react";
-import { View, StyleSheet, SafeAreaView, TextInput, Image, FlatList, TouchableOpacity, Dimensions, ScrollView } from 'react-native'
+import { View, StyleSheet, SafeAreaView, TextInput, Image, FlatList, TouchableOpacity, Dimensions, ScrollView, Linking } from 'react-native'
 
 //ASSET
 import { IMAGES } from "../../asset";
@@ -71,16 +71,20 @@ const Home = (props) => {
 
     const brandData = [
         {
-            brandImage: IMAGES.cosyplace_bg
+            brandImage: IMAGES.cosyplace_bg,
+            key: 'cosyplace'
         },
         {
-            brandImage: IMAGES.cosylux_bg
+            brandImage: IMAGES.cosylux_bg,
+            key: 'cosylux'
         },
         {
-            brandImage: IMAGES.generation_bg
+            brandImage: IMAGES.generation_bg,
+            key: 'generation'
         },
         {
-            brandImage: IMAGES.harme_bg
+            brandImage: IMAGES.harme_bg,
+            key: 'harme'
         }
     ]
 
@@ -242,17 +246,32 @@ const Home = (props) => {
                         keyExtractor={(item, index) => index.toString()}
                         renderItem={({ item, index }) => {
                             return (
-                                <View style={{ flexDirection: 'row' }}>
+                                <TouchableOpacity style={{ flexDirection: 'row' }}
+                                    onPress={() => {
+                                        // if (item.key == 'cosyplace') {
+                                        //     return Linking.openURL('https://jsonviewer.stack.hu')
+                                        // }
+                                        // else if (item.key == 'cosylux') {
+
+                                        // }
+                                        // else if (item.key == 'generation') {
+
+                                        // }
+                                        // else if (item.key == 'harme') {
+
+                                        // }
+                                    }}>
                                     <View style={styles.brandContainer}>
                                         <Image
                                             style={styles.brandImage}
                                             resizeMode="contain"
                                             source={item.brandImage} />
                                     </View>
-                                </View>
+                                </TouchableOpacity>
                             )
                         }}>
                     </FlatList>
+
                 </View>
             </ScrollView>
             <BottomSheet

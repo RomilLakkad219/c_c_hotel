@@ -59,7 +59,7 @@ const PopularItem = (props) => {
             }}>
             <Image style={styles.imageView}
                 resizeMode="cover"
-                source={{ url: isShowSearchImage ? (item?.hotel_galary_photos ?? '') : (BASE_IMAGE_URL + (item?.hotel_galary_photos ?? '')) }} />
+                source={{ url: isShowSearchImage ? (item?.hotel_galary_photos.trim() ?? '') : (BASE_IMAGE_URL + (item?.hotel_galary_photos ?? '')) }} />
             <View style={{ flex: 1.0 }}>
                 <View style={{ flexDirection: 'row' }}>
                     <Text

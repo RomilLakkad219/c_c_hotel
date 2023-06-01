@@ -11,7 +11,7 @@ import { Header, ProgressView, Text } from "../component";
 import { COLORS, FONT_NAME, SCALE_SIZE, SHOW_TOAST } from "../constant";
 
 //PACKAGES
-import { AirbnbRating } from 'react-native-ratings'
+import { AirbnbRating } from 'react-native-ratings'   
 import MapView, { Marker } from "react-native-maps";
 
 //SCREENS
@@ -87,8 +87,11 @@ const MatchList = (props) => {
 
         if (result.status) {
             const hotelList = result?.data?.result ?? []
-            setHotelResponse(hotelList)
-            setSelectedItemIndex(0)
+
+            if (hotelList.length > 0) {
+                setHotelResponse(hotelList)
+                setSelectedItemIndex(0)
+            }
         }
         else {
             SHOW_TOAST(result?.error)

@@ -130,11 +130,11 @@ const Login = (props) => {
 
     return (
         <ImageBackground style={styles.container} source={IMAGES.login_bg}>
-            <ScrollView showsVerticalScrollIndicator={false}>
-                <Image
+              <Image
                     style={styles.ccHotelLogo}
                     resizeMode="contain"
                     source={IMAGES.logo} />
+            <ScrollView showsVerticalScrollIndicator={false}>
                 <Input
                     value={email}
                     style={styles.emailInput}

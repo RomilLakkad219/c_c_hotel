@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { View, StyleSheet, Platform, TouchableOpacity, Image } from 'react-native'
 
 //ASSET
@@ -16,6 +16,8 @@ import { AuthContext } from "../context";
 const Header = (props) => {
 
     const { profile } = useContext(AuthContext)
+
+    const [isUserProfile, setUserProfile] = useState(false)
 
     if (props.type == 'home') {
 
@@ -35,9 +37,10 @@ const Header = (props) => {
                 </TouchableOpacity>
                 <View style={{ flex: 1.0 }} />
                 <TouchableOpacity onPress={() => {
+                    setUserProfile(!isUserProfile)
                 }}>
                     <Image
-                        style={styles.profileView}
+                        style={isUserProfile ? styles.profileView : styles.blankProfileView}
                         resizeMode="cover"
                         source={{ uri: profile?.user_imgurl }} />
                 </TouchableOpacity>
@@ -156,6 +159,14 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignSelf: 'center',
         marginLeft: 15
+    },
+    blankProfileView: {
+        height: SCALE_SIZE(40),
+        width: SCALE_SIZE(40),
+        marginRight: SCALE_SIZE(15),
+        borderRadius: SCALE_SIZE(20),
+        overflow: 'hidden',
+        backgroundColor: 'gray'
     }
 })
 

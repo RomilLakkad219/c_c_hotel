@@ -104,9 +104,7 @@ const SignUp = (props) => {
                     resizeMode="contain"
                     source={IMAGES.back_arrow} />
             </TouchableOpacity>
-            <ScrollView
-                showsVerticalScrollIndicator={false}>
-                <Text
+            <Text
                     style={styles.signUpText}
                     size={SCALE_SIZE(33)}
                     align='left'
@@ -114,6 +112,8 @@ const SignUp = (props) => {
                     color={COLORS.black}>
                     {translations.signup}
                 </Text>
+            <ScrollView
+                showsVerticalScrollIndicator={false}>
                 <Input
                     style={styles.emailInput}
                     value={name}
