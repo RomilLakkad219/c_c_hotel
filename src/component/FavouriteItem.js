@@ -10,9 +10,6 @@ import { COLORS, FONT_NAME, SCALE_SIZE } from "../constant";
 //SCREENS
 import { SCREENS } from "../screen";
 
-//PACKAGES
-import { AirbnbRating } from "react-native-ratings";
-
 //COMPONENT
 import { ProgressView, Text } from "../component"
 
@@ -83,12 +80,6 @@ const FavouriteItem = (props) => {
                     family={FONT_NAME.medium}>
                     {item?.fav_hotel_country ?? ''}
                 </Text>
-                <AirbnbRating starContainerStyle={styles.starContainer}
-                    defaultRating={0}
-                    size={12}
-                    isDisabled={true}
-                    showRating={false}
-                />
             </View>
             {isLoading && <ProgressView />}
         </TouchableOpacity>
@@ -122,14 +113,9 @@ const styles = StyleSheet.create({
         marginTop: SCALE_SIZE(1)
     },
     heartImage: {
-        height: SCALE_SIZE(29),
-        width: SCALE_SIZE(29),
+        height: SCALE_SIZE(32),
+        width: SCALE_SIZE(32),
         alignSelf: 'center',
-    },
-    starContainer: {
-        alignSelf: 'flex-start',
-        marginLeft: SCALE_SIZE(17),
-        marginTop: SCALE_SIZE(5)
     }
 })
 

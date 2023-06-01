@@ -1,8 +1,5 @@
 import React, { useRef, useState, useContext, useEffect } from "react";
-import { View, StyleSheet, SafeAreaView, Image, FlatList, TouchableOpacity, Dimensions } from 'react-native'
-
-//ASSET
-import { IMAGES } from "../asset";
+import { View, StyleSheet, SafeAreaView, FlatList, TouchableOpacity, Dimensions } from 'react-native'
 
 //COMPONENT
 import { ExperienceCarousel, Header, ProgressView, Text } from "../component";
@@ -90,9 +87,6 @@ const Experience = (props) => {
                                         {item.them_english_info}
                                     </Text>
                                 </Text>
-                                <Image style={styles.forwardImage}
-                                    resizeMode='contain'
-                                    source={IMAGES.ic_forward} />
                             </TouchableOpacity>
                             <Carousel
                                 layout='default'
@@ -147,13 +141,6 @@ const styles = StyleSheet.create({
         marginTop: SCALE_SIZE(28),
         marginHorizontal: SCALE_SIZE(35),
         flex: 1.0
-    },
-    forwardImage: {
-        height: SCALE_SIZE(20),
-        width: SCALE_SIZE(20),
-        alignSelf: 'center',
-        marginTop: SCALE_SIZE(32),
-        marginRight: SCALE_SIZE(35)
     }
 })
 

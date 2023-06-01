@@ -2,7 +2,6 @@ import React, { useContext, useState } from "react";
 import { View, StyleSheet, Image, TouchableOpacity, Linking } from 'react-native'
 
 //PACKAGES
-import { AirbnbRating } from 'react-native-ratings'
 import LinearGradient from "react-native-linear-gradient";
 
 //SCREENS
@@ -57,9 +56,10 @@ const PopularItem = (props) => {
                     item: item
                 })
             }}>
-            <Image style={styles.imageView}
+            <Image
+                style={styles.imageView}
                 resizeMode="cover"
-                source={{ url: isShowSearchImage ? (item?.hotel_galary_photos.trim() ?? '') : (BASE_IMAGE_URL + (item?.hotel_galary_photos ?? '')) }} />
+                source={{ url: isShowSearchImage ? (item?.hotel_galary_photos?.trim() ?? null) : (BASE_IMAGE_URL + (item?.hotel_galary_photos?.trim() ?? null)) }} />
             <View style={{ flex: 1.0 }}>
                 <View style={{ flexDirection: 'row' }}>
                     <Text
@@ -88,12 +88,6 @@ const PopularItem = (props) => {
                     family={FONT_NAME.medium}>
                     {item?.hotel_country ?? ''}
                 </Text>
-                <AirbnbRating starContainerStyle={styles.starContainer}
-                    defaultRating={0}
-                    size={12}
-                    isDisabled={true}
-                    showRating={false}
-                />
                 <View style={{ flexDirection: 'row' }}>
                     <TouchableOpacity style={styles.discoverButton}
                         onPress={() => {
@@ -172,14 +166,9 @@ const styles = StyleSheet.create({
         marginLeft: SCALE_SIZE(13)
     },
     heartImage: {
-        height: SCALE_SIZE(29),
-        width: SCALE_SIZE(29),
+        height: SCALE_SIZE(32),
+        width: SCALE_SIZE(32),
         alignSelf: 'center',
-    },
-    starContainer: {
-        alignSelf: 'flex-start',
-        marginLeft: SCALE_SIZE(17),
-        marginTop: SCALE_SIZE(5)
     }
 })
 

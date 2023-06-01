@@ -80,17 +80,17 @@ const Search = (props) => {
                         resizeMode="contain"
                         source={IMAGES.ic_search} />
                 </View>
-                <FlatList data={isSearchResponse}
-                    showsVerticalScrollIndicator={false}
-                    keyExtractor={(item, index) => index.toString()}
-                    renderItem={({ item, index }) => {
-                        return (
-                            <PopularItem item={item}
-                                isShowSearchImage={true}
-                                navigation={props.navigation} />
-                        )
-                    }}>
-                </FlatList>
+                    <FlatList data={isSearchResponse}
+                        showsVerticalScrollIndicator={false}
+                        keyExtractor={(item, index) => index.toString()}
+                        renderItem={({ item, index }) => {
+                            return (
+                                <PopularItem item={item}
+                                    isShowSearchImage={true}
+                                    navigation={props.navigation} />
+                            )
+                        }}>
+                    </FlatList>
             </View>
             {isLoading && <ProgressView />}
         </View>

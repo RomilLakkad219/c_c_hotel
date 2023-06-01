@@ -11,7 +11,6 @@ import { Header, ProgressView, Text } from "../component";
 import { COLORS, FONT_NAME, SCALE_SIZE, SHOW_TOAST } from "../constant";
 
 //PACKAGES
-import { AirbnbRating } from 'react-native-ratings'   
 import MapView, { Marker } from "react-native-maps";
 
 //SCREENS
@@ -128,77 +127,82 @@ const MatchList = (props) => {
                 </MapView>
             </View>
             <View style={styles.hotelContainer}>
-                <FlatList data={hotelResponse}
-                    showsVerticalScrollIndicator={false}
-                    keyExtractor={(item, index) => index.toString()}
-                    ListHeaderComponent={() => {
-                        return (
-                            <View style={{ marginTop: SCALE_SIZE(52) }}></View>
-                        )
-                    }}
-                    ListFooterComponent={() => {
-                        return (
-                            <View style={{ marginBottom: SCALE_SIZE(20) }}></View>
-                        )
-                    }}
-                    renderItem={({ item, index }) => {
-                        return (
-                            <TouchableOpacity style={[styles.itemContainer, {
-                                backgroundColor: selectedItemIndex == index ? COLORS.blue_light : COLORS.white
-                            }]}
-                                onPress={() => {
-                                    setSelectedItemIndex(index)
-                                }}>
-                                <View style={{ flexDirection: 'row' }}>
-                                    {item?.hotel_galary_photos?.trim() ?
-                                        <Image style={styles.imageView}
-                                            resizeMode="cover"
-                                            source={{ uri: item?.hotel_galary_photos?.trim() }} />
-                                        :
-                                        <View style={styles.imageView} />
-                                    }
-                                    <View style={styles.directionView}>
-                                        <Text
-                                            style={styles.itemText}
-                                            numberOfLines={1}
-                                            size={SCALE_SIZE(18)}
-                                            color={COLORS.headerTitleGray}
-                                            family={FONT_NAME.medium}>
-                                            {item?.hotel_trader_name ?? ''}
-                                        </Text>
-                                        <Text
-                                            style={styles.southAmerica}
-                                            size={SCALE_SIZE(16)}
-                                            color={COLORS.gray}
-                                            family={FONT_NAME.medium}>
-                                            {item?.hotel_country ?? ''}
-                                        </Text>
-                                        <AirbnbRating starContainerStyle={styles.starContainer}
-                                            defaultRating={0}
-                                            size={12}
-                                            isDisabled={true}
-                                            showRating={false}
-                                        />
-                                        <TouchableOpacity style={styles.discoverButton} onPress={() => {
-                                            Linking.openURL(item?.hotel_internet_bookingengine)
-                                        }}>
+                {isLoading == false && hotelResponse?.length == null ?
+                    <View style={styles.errorView}>
+                        <Text size={SCALE_SIZE(20)}
+                            family={FONT_NAME.medium}
+                            color={COLORS.headerTitleGray}
+                            align='center'>
+                            {'No data found'}
+                        </Text>
+                    </View>
+                    :
+                    <FlatList data={hotelResponse}
+                        showsVerticalScrollIndicator={false}
+                        keyExtractor={(item, index) => index.toString()}
+                        ListHeaderComponent={() => {
+                            return (
+                                <View style={{ marginTop: SCALE_SIZE(52) }}></View>
+                            )
+                        }}
+                        ListFooterComponent={() => {
+                            return (
+                                <View style={{ marginBottom: SCALE_SIZE(20) }}></View>
+                            )
+                        }}
+                        renderItem={({ item, index }) => {
+                            return (
+                                <TouchableOpacity style={[styles.itemContainer, {
+                                    backgroundColor: selectedItemIndex == index ? COLORS.blue_light : COLORS.white
+                                }]}
+                                    onPress={() => {
+                                        setSelectedItemIndex(index)
+                                    }}>
+                                    <View style={{ flexDirection: 'row' }}>
+                                        {item?.hotel_galary_photos?.trim() ?
+                                            <Image style={styles.imageView}
+                                                resizeMode="cover"
+                                                source={{ uri: item?.hotel_galary_photos?.trim() }} />
+                                            :
+                                            <View style={styles.imageView} />
+                                        }
+                                        <View style={styles.directionView}>
                                             <Text
-                                                align='center'
-                                                size={SCALE_SIZE(12)}
-                                                color={COLORS.white}
-                                                family={FONT_NAME.semiBold}>
-                                                {translations.discover}
+                                                style={styles.itemText}
+                                                numberOfLines={1}
+                                                size={SCALE_SIZE(18)}
+                                                color={COLORS.headerTitleGray}
+                                                family={FONT_NAME.medium}>
+                                                {item?.hotel_trader_name ?? ''}
                                             </Text>
-                                        </TouchableOpacity>
+                                            <Text
+                                                style={styles.southAmerica}
+                                                size={SCALE_SIZE(16)}
+                                                color={COLORS.gray}
+                                                family={FONT_NAME.medium}>
+                                                {item?.hotel_country ?? ''}
+                                            </Text>
+                                            <TouchableOpacity style={styles.discoverButton} onPress={() => {
+                                                Linking.openURL(item?.hotel_internet_bookingengine)
+                                            }}>
+                                                <Text
+                                                    align='center'
+                                                    size={SCALE_SIZE(12)}
+                                                    color={COLORS.white}
+                                                    family={FONT_NAME.semiBold}>
+                                                    {translations.discover}
+                                                </Text>
+                                            </TouchableOpacity>
+                                        </View>
                                     </View>
-                                </View>
-                            </TouchableOpacity>
-                        )
-                    }}>
-                </FlatList>
+                                </TouchableOpacity>
+                            )
+                        }}>
+                    </FlatList>
+                }
             </View>
             {isLoading && <ProgressView />}
-        </View>
+        </View >
     )
 }
 
@@ -270,11 +274,6 @@ const styles = StyleSheet.create({
     map: {
         ...StyleSheet.absoluteFillObject,
     },
-    starContainer: {
-        alignSelf: 'flex-start',
-        marginLeft: SCALE_SIZE(17),
-        marginTop: SCALE_SIZE(9)
-    },
     hotelView: {
         backgroundColor: COLORS.white,
         flexDirection: 'row',
@@ -290,6 +289,10 @@ const styles = StyleSheet.create({
     webview: {
         height: SCALE_SIZE(50),
         width: SCALE_SIZE(50)
+    },
+    errorView: {
+        justifyContent: 'center',
+        flex: 1
     }
 })
 

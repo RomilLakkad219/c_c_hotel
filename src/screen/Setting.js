@@ -71,7 +71,7 @@ const Setting = (props) => {
         },
     ]
 
-    const [selectedLanguage, setSelectedLanguage] = useState(profile?.user_lang)
+    const [selectedLanguage, setSelectedLanguage] = useState(profile?.user_lang == 'en' ? 'English' : profile?.user_lang);
 
     const [modalVisible, setModalVisible] = useState(false);
     const [visible, setVisible] = useState(false);

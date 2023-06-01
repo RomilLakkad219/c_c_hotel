@@ -34,7 +34,7 @@ const Home = (props) => {
     const [search, setSearch] = useState('');
     const [index, setIndex] = useState(0);
     const [isLoading, setIsLoading] = useState(false);
-    const [selectedLanguage, setSelectedLanguage] = useState(profile?.user_lang);
+    const [selectedLanguage, setSelectedLanguage] = useState(profile?.user_lang == 'en' ? 'English' : profile?.user_lang);
     const [hotel, setHotel] = useState([])
 
     useEffect(() => {
@@ -42,7 +42,12 @@ const Home = (props) => {
     }, [])
 
     useEffect(() => {
-        setSelectedLanguage(profile?.user_lang ?? '')
+        if (profile?.user_lang == "en") {
+            setSelectedLanguage('English')
+        }
+        else {
+            setSelectedLanguage(profile?.user_lang ?? '')
+        }
     }, [profile])
 
     const hotelData =
@@ -248,18 +253,18 @@ const Home = (props) => {
                             return (
                                 <TouchableOpacity style={{ flexDirection: 'row' }}
                                     onPress={() => {
-                                        // if (item.key == 'cosyplace') {
-                                        //     return Linking.openURL('https://jsonviewer.stack.hu')
-                                        // }
-                                        // else if (item.key == 'cosylux') {
+                                        if (item.key == 'cosyplace') {
+                                            return Linking.openURL('https://cosy-places.com/')
+                                        }
+                                        else if (item.key == 'cosylux') {
+                                            return Linking.openURL('https://cosy-places-luxe.com/')
+                                        }
+                                        else if (item.key == 'generation') {
+                                            return Linking.openURL('https://hostels-generations.xyz/')
+                                        }
+                                        else if (item.key == 'harme') {
 
-                                        // }
-                                        // else if (item.key == 'generation') {
-
-                                        // }
-                                        // else if (item.key == 'harme') {
-
-                                        // }
+                                        }
                                     }}>
                                     <View style={styles.brandContainer}>
                                         <Image
