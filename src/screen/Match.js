@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { View, StyleSheet, SafeAreaView, Image, TouchableOpacity } from 'react-native'
+import { View, StyleSheet, SafeAreaView, Image, TouchableOpacity, Alert } from 'react-native'
 
 //SCREENS
 import { SCREENS } from ".";
@@ -78,7 +78,8 @@ const Match = (props) => {
         const params = {
             user_id: user?.[0]?.user_id,
             user_session: user?.[0]?.user_session,
-            continent: selectedContinent.french_name
+            continent: selectedContinent.french_name,
+            cont_continent: selectedContinent.french_name,
         }
 
         setIsLoading(true)
@@ -111,6 +112,7 @@ const Match = (props) => {
             user_id: user?.[0]?.user_id,
             user_session: user?.[0]?.user_session,
             continent: selectedContinent?.french_name,
+            cont_continent: selectedContinent.french_name,
             country: selectedCountries?.french_name
         }
 
@@ -120,15 +122,20 @@ const Match = (props) => {
 
         if (result.status) {
             const regionResponse = result?.data?.result ?? []
-            const regionData = regionResponse.map((e) => {
-                return {
-                    id: e?.reg_id,
-                    name: e?.reg_english_design,
-                    french_name: e?.reg_french_design,
-                    spanish_name: e?.reg_spanish_desgin
-                }
-            })
-            setRegion(regionData)
+            if (regionResponse?.length > 0) {
+                const regionData = regionResponse.map((e) => {
+                    return {
+                        id: e?.reg_id,
+                        name: e?.reg_english_design,
+                        french_name: e?.reg_french_design,
+                        spanish_name: e?.reg_spanish_desgin
+                    }
+                })
+                setRegion(regionData)
+            }
+            else {
+                Alert.alert('', 'No Region found as per your selection')
+            }
 
             setTimeout(() => {
                 setVisibleRegion(true)
@@ -144,7 +151,8 @@ const Match = (props) => {
             user_id: user?.[0]?.user_id,
             user_session: user?.[0]?.user_session,
             continent: selectedContinent?.french_name,
-            country: selectedCountries?.name,
+            cont_continent: selectedContinent.french_name,
+            country: selectedCountries?.french_name,
             hotel_region: selectedRegion?.id
         }
 
@@ -154,13 +162,17 @@ const Match = (props) => {
 
         if (result.status) {
             const response = result?.data?.result?.[0]?.hotel_services ?? []
-            const serviceData = response.map((e) => {
-                return {
-                    name: e?.services
-                }
-            })
-            setServices(serviceData)
-
+            if (response.length > 0) {
+                const serviceData = response.map((e) => {
+                    return {
+                        name: e?.services
+                    }
+                })
+                setServices(serviceData)
+            }
+            else {
+                Alert.alert('', 'No Service found as per your selection')
+            }
             setTimeout(() => {
                 setVisibleService(true)
             }, 300);

@@ -286,6 +286,7 @@ const EditProfile = (props) => {
                     </Text>
                     <TextInput style={styles.input}
                         value={mobileNumber}
+                        keyboardType="numeric"
                         onChangeText={(text) => {
                             setMobileNumber(text)
                         }}>
@@ -386,6 +387,7 @@ const EditProfile = (props) => {
                     </Text>
                     <TextInput style={styles.input}
                         value={postalCode}
+                        keyboardType="numeric"
                         onChangeText={(text) => {
                             setPostalCode(text)
                         }}>

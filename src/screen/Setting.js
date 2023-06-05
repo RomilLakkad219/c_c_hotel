@@ -203,18 +203,6 @@ const Setting = (props) => {
                     }}>
                 </FlatList>
             </View>
-            {/* <TouchableOpacity
-                onPress={() => {
-                    setModalVisible(true)
-                }}
-                style={styles.logOutButton}>
-                <Text
-                    size={18}
-                    family={FONT_NAME.semiBold}
-                    color={COLORS.blue}>
-                    {translations.logout}
-                </Text>
-            </TouchableOpacity> */}
             <LogoutPopup
                 visible={modalVisible}
                 onPressYes={async () => {

@@ -254,10 +254,10 @@ const Home = (props) => {
                                 <TouchableOpacity style={{ flexDirection: 'row' }}
                                     onPress={() => {
                                         if (item.key == 'cosyplace') {
-                                            return Linking.openURL('https://cosy-places.com/')
+                                            return Linking.openURL('https://cosy-places-luxe.com/')
                                         }
                                         else if (item.key == 'cosylux') {
-                                            return Linking.openURL('https://cosy-places-luxe.com/')
+                                            return Linking.openURL('https://cosy-places.com/')
                                         }
                                         else if (item.key == 'generation') {
                                             return Linking.openURL('https://hostels-generations.xyz/')
