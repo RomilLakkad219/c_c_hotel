@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import { StyleSheet, TouchableOpacity, SafeAreaView, ImageBackground, Image } from 'react-native'
+import { StyleSheet, TouchableOpacity, SafeAreaView, ImageBackground, Image, ScrollView } from 'react-native'
 
 //ASSET
 import { IMAGES } from "../../asset";
@@ -45,39 +45,42 @@ const Otp = (props) => {
                     resizeMode="contain"
                     source={IMAGES.back_arrow} />
             </TouchableOpacity>
-            <Image
-                style={styles.otpBackground}
-                resizeMode="contain"
-                source={IMAGES.otp_bg} />
-            <Text
-                style={styles.enterOtpText}
-                size={SCALE_SIZE(33)}
-                family={FONT_NAME.medium}
-                color={COLORS.black}>
-                {translations.enterotp}
-            </Text>
-            <Text style={styles.otpCodeSendText}
-                size={SCALE_SIZE(16)}
-                family={FONT_NAME.medium}
-                color={COLORS.gray}>
-                {translations.otpcodesend}
-            </Text>
-            <OTPTextInput
-                defaultValue={otp}
-                containerStyle={styles.otpContainerStyle}
-                textInputStyle={styles.otpSelected}
-                inputCount={4}
-                handleTextChange={(text) => {
-                    setOtp(text)
-                }}>
-            </OTPTextInput>
-            <Button
-                onPress={() => {
-                    onOtpCheck()
-                }}
-                style={styles.submitButton}
-                title={translations.submit} />
-            <SafeAreaView />
+            <ScrollView
+                showsVerticalScrollIndicator={false}>
+                <Image
+                    style={styles.otpBackground}
+                    resizeMode="contain"
+                    source={IMAGES.otp_bg} />
+                <Text
+                    style={styles.enterOtpText}
+                    size={SCALE_SIZE(33)}
+                    family={FONT_NAME.medium}
+                    color={COLORS.black}>
+                    {translations.enterotp}
+                </Text>
+                <Text style={styles.otpCodeSendText}
+                    size={SCALE_SIZE(16)}
+                    family={FONT_NAME.medium}
+                    color={COLORS.gray}>
+                    {translations.otpcodesend}
+                </Text>
+                <OTPTextInput
+                    defaultValue={otp}
+                    containerStyle={styles.otpContainerStyle}
+                    textInputStyle={styles.otpSelected}
+                    inputCount={4}
+                    handleTextChange={(text) => {
+                        setOtp(text)
+                    }}>
+                </OTPTextInput>
+                <Button
+                    onPress={() => {
+                        onOtpCheck()
+                    }}
+                    style={styles.submitButton}
+                    title={translations.submit} />
+                <SafeAreaView />
+            </ScrollView>
         </ImageBackground>
     )
 }

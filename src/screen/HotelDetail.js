@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { View, StyleSheet, TouchableOpacity, ScrollView, ImageBackground, Dimensions, Image, SafeAreaView, FlatList, Modal, Linking, Share, Alert } from 'react-native'
+import { View, StyleSheet, TouchableOpacity, ScrollView, ImageBackground, Dimensions, Image, SafeAreaView, FlatList, Modal, Linking, Share } from 'react-native'
 
 //ASSET
 import { IMAGES } from "../asset";
@@ -29,7 +29,7 @@ const HotelDetail = (props) => {
 
     const translations = useContext(TranslationContext)
 
-    const { item, isSiteUrl } = props.route.params
+    const { item, isSiteUrl, isFrom } = props.route.params
 
     const [isLoading, setIsLoading] = useState(false);
     const [hotelDetailResult, sethotelDetailResult] = useState(null);
@@ -112,14 +112,18 @@ const HotelDetail = (props) => {
     }
 
     function getValidURL() {
-        let s = isSiteUrl ? item?.hotel_site_imgurl ?? '' : item?.hotel_galary_photos ?? ''
-
-
-        if (s.includes('http:') || s.includes('https:')) {
-            return s?.trim()
+        if (isFrom) {
+            return item?.fav_hotel_imgurl
         }
         else {
-            return (BASE_IMAGE_URL + s)?.trim()
+            let s = isSiteUrl ? item?.hotel_site_imgurl ?? '' : item?.hotel_galary_photos ?? ''
+
+            if (s.includes('http:') || s.includes('https:')) {
+                return s?.trim()
+            }
+            else {
+                return (BASE_IMAGE_URL + s)?.trim()
+            }
         }
     }
 

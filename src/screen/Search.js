@@ -59,39 +59,38 @@ const Search = (props) => {
 
     return (
         <View style={styles.container}>
-            <View style={styles.transparent}>
-                <SafeAreaView />
-                <Header
-                    style={{ backgroundColor: 'transparent' }}
-                    onBack={() => onBack()}
-                    title={STRING.search} />
-                <View style={styles.searchInputContainer}>
-                    <TextInput
-                        style={styles.searchInput}
-                        value={search}
-                        placeholder={translations.searchhere}
-                        placeholderTextColor={COLORS.gray}
-                        onChangeText={(text) => {
-                            setSearch(text)
-                        }}>
-                    </TextInput>
-                    <Image
-                        style={styles.searchImage}
-                        resizeMode="contain"
-                        source={IMAGES.ic_search} />
-                </View>
-                    <FlatList data={isSearchResponse}
-                        showsVerticalScrollIndicator={false}
-                        keyExtractor={(item, index) => index.toString()}
-                        renderItem={({ item, index }) => {
-                            return (
-                                <PopularItem item={item}
-                                    isShowSearchImage={true}
-                                    navigation={props.navigation} />
-                            )
-                        }}>
-                    </FlatList>
+            <SafeAreaView />
+            <Header
+                style={{ backgroundColor: 'transparent' }}
+                onBack={() => onBack()}
+                title={STRING.search} />
+            <View style={styles.searchInputContainer}>
+                <TextInput
+                    style={styles.searchInput}
+                    value={search}
+                    placeholder={translations.searchhere}
+                    placeholderTextColor={COLORS.gray}
+                    onChangeText={(text) => {
+                        setSearch(text)
+                    }}>
+                </TextInput>
+                <Image
+                    style={styles.searchImage}
+                    resizeMode="contain"
+                    source={IMAGES.ic_search} />
             </View>
+            <FlatList
+                data={isSearchResponse}
+                showsVerticalScrollIndicator={false}
+                keyExtractor={(item, index) => index.toString()}
+                renderItem={({ item, index }) => {
+                    return (
+                        <PopularItem item={item}
+                            isShowSearchImage={true}
+                            navigation={props.navigation} />
+                    )
+                }}>
+            </FlatList>
             {isLoading && <ProgressView />}
         </View>
     )

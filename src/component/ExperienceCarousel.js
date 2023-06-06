@@ -54,7 +54,8 @@ return (
         onPress={() => {
             props.navigation.navigate(SCREENS.HotelDetail.name, {
                 item: item,
-                isSiteUrl: true
+                isSiteUrl: true,
+                isFrom: false
             })
         }}>
         <ImageBackground style={styles.carouselContainer}

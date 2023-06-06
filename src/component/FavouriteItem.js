@@ -48,7 +48,9 @@ const FavouriteItem = (props) => {
         <TouchableOpacity style={styles.itemContainer}
             onPress={() => {
                 navigation.navigate(SCREENS.HotelDetail.name, {
-                    item: item
+                    item: item,
+                    isSiteUrl: null,
+                    isFrom: true
                 })
             }}>
             <Image style={styles.imageView}

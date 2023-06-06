@@ -132,14 +132,13 @@ const Match = (props) => {
                     }
                 })
                 setRegion(regionData)
+                setTimeout(() => {
+                    setVisibleRegion(true)
+                }, 300);
             }
             else {
                 Alert.alert('', 'No Region found as per your selection')
             }
-
-            setTimeout(() => {
-                setVisibleRegion(true)
-            }, 300);
         }
         else {
             SHOW_TOAST(result.error)
@@ -169,13 +168,13 @@ const Match = (props) => {
                     }
                 })
                 setServices(serviceData)
+                setTimeout(() => {
+                    setVisibleService(true)
+                }, 300);
             }
             else {
                 Alert.alert('', 'No Service found as per your selection')
             }
-            setTimeout(() => {
-                setVisibleService(true)
-            }, 300);
         }
         else {
             SHOW_TOAST(result.error)
@@ -222,6 +221,7 @@ const Match = (props) => {
                     setSelectedCountries(null)
                     setSelectedRegion(null)
                     setSelectedServices(null)
+                    setVisibleContinent(false)
                 }} />
             <ToolTipView
                 visible={isVisibleCountry}
@@ -243,6 +243,7 @@ const Match = (props) => {
                     setSelectedCountries(item)
                     setSelectedRegion(null)
                     setSelectedServices(null)
+                    setVisibleCountry(false)
                 }} />
             <ToolTipView
                 visible={isVisibleRegion}
@@ -263,6 +264,7 @@ const Match = (props) => {
                 onSelectItem={(item) => {
                     setSelectedRegion(item)
                     setSelectedServices(null)
+                    setVisibleRegion(false)
                 }} />
             <ToolTipView visible={isVisibleService}
                 items={services}
@@ -281,6 +283,7 @@ const Match = (props) => {
                 }}
                 onSelectItem={(item) => {
                     setSelectedServices(item)
+                    setVisibleService(false)
                 }} />
 
             <Button

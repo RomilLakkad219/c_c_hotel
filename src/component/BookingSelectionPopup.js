@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { View, StyleSheet, Modal, Image, TouchableOpacity } from 'react-native'
+import { View, StyleSheet, Modal, Image, TouchableOpacity, Alert } from 'react-native'
 
 //CONSTANT
 import { COLORS, FONT_NAME, SCALE_SIZE, SHOW_TOAST } from "../constant";
@@ -74,6 +74,7 @@ const BookingSelectionPopup = (props) => {
             user_id: user?.[0]?.user_id,
             user_session: user?.[0]?.user_session,
             continent: selectedContinent.french_name,
+            cont_continent: selectedContinent.french_name,
         }
 
         setIsLoading(true)
@@ -105,6 +106,7 @@ const BookingSelectionPopup = (props) => {
             user_id: user?.[0]?.user_id,
             user_session: user?.[0]?.user_session,
             continent: selectedContinent?.french_name,
+            cont_continent: selectedContinent.french_name,
             country: selectedCountries?.french_name
         }
 
@@ -114,18 +116,22 @@ const BookingSelectionPopup = (props) => {
 
         if (result.status) {
             const regionResponse = result?.data?.result ?? []
-            const regionData = regionResponse.map((e) => {
-                return {
-                    id: e?.reg_id,
-                    name: e?.reg_english_design,
-                    french_name: e?.reg_french_design
-                }
-            })
-            setRegion(regionData)
-
-            setTimeout(() => {
-                setVisibleRegion(true)
-            }, 300);
+            if (regionResponse?.length > 0) {
+                const regionData = regionResponse.map((e) => {
+                    return {
+                        id: e?.reg_id,
+                        name: e?.reg_english_design,
+                        french_name: e?.reg_french_design
+                    }
+                })
+                setRegion(regionData)
+                setTimeout(() => {
+                    setVisibleRegion(true)
+                }, 300);
+            }
+            else {
+                Alert.alert('', 'No Region found as per your selection')
+            }
         }
         else {
             SHOW_TOAST(result.error)
@@ -147,7 +153,12 @@ const BookingSelectionPopup = (props) => {
             }}
             visible={props.visible}>
             <View style={styles.modalContainer}>
-                <TouchableOpacity style={{ flex: 1.0 }} onPress={props.onClose} />
+                <TouchableOpacity style={{ flex: 1.0 }} onPress={() => {
+                    setSelectedContinent(null)
+                    setSelectedCountries(null)
+                    setSelectedRegion(null)
+                    props.onClose()
+                }} />
                 <View style={styles.container}>
                     <View style={styles.whiteContainer}>
                         <View style={{ flexDirection: 'row' }}>
@@ -159,6 +170,9 @@ const BookingSelectionPopup = (props) => {
                                 onOpen={() => {
                                     if (continents) {
                                         setVisibleContinent(true)
+                                        setSelectedContinent(null)
+                                        setSelectedCountries(null)
+                                        setSelectedRegion(null)
                                     }
                                     else {
                                         getDestination()
@@ -171,6 +185,7 @@ const BookingSelectionPopup = (props) => {
                                     setSelectedContinent(item)
                                     setSelectedCountries(null)
                                     setSelectedRegion(null)
+                                    setVisibleContinent(false)
                                 }}
                             >
                             </ToolTipView>
@@ -194,6 +209,7 @@ const BookingSelectionPopup = (props) => {
                                 onSelectItem={(item) => {
                                     setSelectedCountries(item)
                                     setSelectedRegion(null)
+                                    setVisibleCountry(false)
                                 }}
                             >
                             </ToolTipView>
@@ -217,6 +233,7 @@ const BookingSelectionPopup = (props) => {
                                 }}
                                 onSelectItem={(item) => {
                                     setSelectedRegion(item)
+                                    setVisibleRegion(false)
                                 }}
                             >
                             </ToolTipView>
@@ -224,6 +241,11 @@ const BookingSelectionPopup = (props) => {
                         <TouchableOpacity style={styles.searchButton}
                             onPress={() => {
                                 props.onClose()
+
+                                setSelectedContinent(null)
+                                setSelectedCountries(null)
+                                setSelectedRegion(null)
+
                                 setTimeout(() => {
                                     navigation.navigate(SCREENS.MatchList.name, {
                                         continent: selectedContinent,
@@ -231,7 +253,7 @@ const BookingSelectionPopup = (props) => {
                                         region: selectedRegion
                                     })
                                 }, 500);
-                               
+
                             }}>
                             <Text
                                 size={16}
@@ -243,7 +265,12 @@ const BookingSelectionPopup = (props) => {
                         </TouchableOpacity>
                     </View>
                 </View>
-                <TouchableOpacity style={{ flex: 1.0 }} onPress={props.onClose} />
+                <TouchableOpacity style={{ flex: 1.0 }} onPress={() => {
+                    setSelectedContinent(null)
+                    setSelectedCountries(null)
+                    setSelectedRegion(null)
+                    props.onClose()
+                }} />
             </View>
             {isLoading && <ProgressView />}
         </Modal>

@@ -77,7 +77,7 @@ const Login = (props) => {
         setIsLoading(true)
         const result = await login(params)
         setIsLoading(false)
-        
+
         if (result.status) {
             if (result?.data?.status == '1') {
                 const user = result?.data?.result
@@ -130,10 +130,10 @@ const Login = (props) => {
 
     return (
         <ImageBackground style={styles.container} source={IMAGES.login_bg}>
-              <Image
-                    style={styles.ccHotelLogo}
-                    resizeMode="contain"
-                    source={IMAGES.logo} />
+            <Image
+                style={styles.ccHotelLogo}
+                resizeMode="contain"
+                source={IMAGES.logo} />
             <ScrollView showsVerticalScrollIndicator={false}>
                 <Input
                     value={email}
@@ -210,6 +210,8 @@ const Login = (props) => {
                         family={FONT_NAME.medium}>
                         {translations.donthaveanaccount}
                         <Text onPress={() => {
+                            setEmail('')
+                            setPassword('')
                             props.navigation.navigate(SCREENS.SignUp.name)
                         }}
                             size={SCALE_SIZE(20)}

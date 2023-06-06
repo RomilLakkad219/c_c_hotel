@@ -110,7 +110,7 @@ const styles = StyleSheet.create({
     backContainer: {
         height: Platform.OS == 'ios' ? 44 : 56,
         width: Platform.OS == 'ios' ? 44 : 56,
-        justifyContent: 'center'
+        justifyContent: 'center',
     },
     backImage: {
         height: SCALE_SIZE(25),
