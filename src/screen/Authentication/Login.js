@@ -210,8 +210,6 @@ const Login = (props) => {
                         family={FONT_NAME.medium}>
                         {translations.donthaveanaccount}
                         <Text onPress={() => {
-                            setEmail('')
-                            setPassword('')
                             props.navigation.navigate(SCREENS.SignUp.name)
                         }}
                             size={SCALE_SIZE(20)}

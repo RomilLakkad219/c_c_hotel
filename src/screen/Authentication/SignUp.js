@@ -19,6 +19,9 @@ import { signUp } from "../../api";
 //CONTEXT
 import { TranslationContext } from "../../context";
 
+//PACKAGES
+import { CommonActions } from "@react-navigation/native";
+
 const SignUp = (props) => {
 
     const translations = useContext(TranslationContext)
@@ -81,7 +84,12 @@ const SignUp = (props) => {
         if (result.status) {
             if (result?.data?.status == "1") {
                 SHOW_SUCCESS_TOAST(translations.signupsuccessfull)
-                props.navigation.navigate(SCREENS.Login.name)
+                props.navigation.dispatch(CommonActions.reset({
+                    index: 0,
+                    routes: [{
+                        name: SCREENS.Login.name
+                    }]
+                }))
             }
             else {
                 SHOW_TOAST(result?.data?.msg ?? translations.somethingwentwrong)
@@ -105,13 +113,13 @@ const SignUp = (props) => {
                     source={IMAGES.back_arrow} />
             </TouchableOpacity>
             <Text
-                    style={styles.signUpText}
-                    size={SCALE_SIZE(33)}
-                    align='left'
-                    family={FONT_NAME.medium}
-                    color={COLORS.black}>
-                    {translations.signup}
-                </Text>
+                style={styles.signUpText}
+                size={SCALE_SIZE(33)}
+                align='left'
+                family={FONT_NAME.medium}
+                color={COLORS.black}>
+                {translations.signup}
+            </Text>
             <ScrollView
                 showsVerticalScrollIndicator={false}>
                 <Input
