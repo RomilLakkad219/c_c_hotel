@@ -31,11 +31,11 @@ const ForgotPassword = (props) => {
             SHOW_TOAST(translations.enteryouremail)
         }
         else {
-            OnForgotPassword()
+            onForgotPassword()
         }
     }
 
-    async function OnForgotPassword() {
+    async function onForgotPassword() {
         const params = {
             user_email: email,
         }
@@ -45,6 +45,7 @@ const ForgotPassword = (props) => {
         setIsLoading(false)
 
         if (result.status) {
+            console.log(result)
             props.navigation.navigate(SCREENS.Otp.name)
         }
         else {

@@ -5,7 +5,7 @@ import { StyleSheet, TouchableOpacity, SafeAreaView, ImageBackground, Image, Scr
 import { IMAGES } from "../../asset";
 
 //COMPONENT
-import { Button, Input, Text } from "../../component";
+import { Button, Input, ProgressView, Text } from "../../component";
 
 //CONSTANT
 import { COLORS, FONT_NAME, SCALE_SIZE, SHOW_TOAST } from "../../constant";
@@ -29,14 +29,15 @@ const ResetPassword = (props) => {
     const [isSecurePassword, setSecurePassword] = useState(true);
     const [isVisiblePassword, setIsVisiblePassword] = useState(true);
     const [newPassword, setNewPassword] = useState('');
-    const [confirmPassword, setConfirmPassword] = useState('')
+    const [confirmPassword, setConfirmPassword] = useState('');
+    const [isLoading, setIsLoading] = useState(false)
 
     function onSubmit() {
         if (!newPassword) {
             SHOW_TOAST(translations.enternewpassword)
         }
         else if (!confirmPassword) {
-            SHOW_TOAST(translations.cofirm_password)
+            SHOW_TOAST(translations.confirm_password)
         }
         else {
             onResetPassword()
@@ -49,7 +50,9 @@ const ResetPassword = (props) => {
             new_password: newPassword
         }
 
+        setIsLoading(true)
         const result = await resetPassword(params)
+        setIsLoading(false)
 
         if (result.status) {
             props.navigation.dispatch(CommonActions.reset({
@@ -126,6 +129,7 @@ const ResetPassword = (props) => {
                     title={translations.submit} />
                 <SafeAreaView />
             </ScrollView>
+            {isLoading && <ProgressView />}
         </ImageBackground>
     )
 }
