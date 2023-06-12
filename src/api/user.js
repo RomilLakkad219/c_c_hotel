@@ -171,6 +171,12 @@ async function nearByHotel(params) {
     return result
 }
 
+async function resetPassword(params){
+    let url=WEB_SERVICE.resetPassword
+    const result=await postRequest(url,params)
+    return result
+}
+
 export {
     signUp,
     login,
@@ -198,5 +204,6 @@ export {
     likeUnlikeHotel,
     experienceFilter,
     filterHotel,
-    nearByHotel
+    nearByHotel,
+    resetPassword
 }

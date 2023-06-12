@@ -263,7 +263,7 @@ const Home = (props) => {
                                             return Linking.openURL('https://hostels-generations.xyz/')
                                         }
                                         else if (item.key == 'harme') {
-
+                                            return Linking.openURL('https://charme-caractere.com/')
                                         }
                                     }}>
                                     <View style={styles.brandContainer}>

@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import { StyleSheet, TouchableOpacity, SafeAreaView, ImageBackground, Image ,ScrollView} from 'react-native'
+import { StyleSheet, TouchableOpacity, SafeAreaView, ImageBackground, Image, ScrollView } from 'react-native'
 
 //ASSET
 import { IMAGES } from "../../asset";
@@ -11,15 +11,20 @@ import { Button, Input, Text } from "../../component";
 import { COLORS, FONT_NAME, SCALE_SIZE, SHOW_TOAST } from "../../constant";
 
 //CONTEXT
-import { TranslationContext } from "../../context";
+import { AuthContext, TranslationContext } from "../../context";
 import { CommonActions } from "@react-navigation/native";
 
 //SCREENS
 import { SCREENS } from "..";
 
+//API
+import { resetPassword } from "../../api";
+
 const ResetPassword = (props) => {
 
     const translations = useContext(TranslationContext)
+
+    const { user } = useContext(AuthContext)
 
     const [isSecurePassword, setSecurePassword] = useState(true);
     const [isVisiblePassword, setIsVisiblePassword] = useState(true);
@@ -34,12 +39,28 @@ const ResetPassword = (props) => {
             SHOW_TOAST(translations.cofirm_password)
         }
         else {
+            onResetPassword()
+        }
+    }
+
+    async function onResetPassword() {
+        const params = {
+            user_id: user?.[0]?.user_id,
+            new_password: newPassword
+        }
+
+        const result = await resetPassword(params)
+
+        if (result.status) {
             props.navigation.dispatch(CommonActions.reset({
                 index: 0,
                 routes: [{
                     name: SCREENS.Login.name
                 }]
             }))
+        }
+        else {
+            SHOW_TOAST(result?.error)
         }
     }
 

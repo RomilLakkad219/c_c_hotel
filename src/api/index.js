@@ -24,7 +24,8 @@ import {
     likeUnlikeHotel,
     experienceFilter,
     filterHotel,
-    nearByHotel
+    nearByHotel,
+    resetPassword
 } from './user'
 
 export {
@@ -53,5 +54,6 @@ export {
     likeUnlikeHotel,
     experienceFilter,
     filterHotel,
-    nearByHotel   
+    nearByHotel,
+    resetPassword 
 }

@@ -28,5 +28,6 @@ export const WEB_SERVICE = {
     likeUnlikeHotel:BASE_URL+'mAdd/favouritelist_hotel',
     experienceFilter:BASE_URL+'fields/experience_filter',
     filterHotel:BASE_URL+'fields/filter_hotel',
-    nearByHotel:BASE_URL+'fields/nearby_hotel'
+    nearByHotel:BASE_URL+'fields/nearby_hotel',
+    resetPassword:BASE_URL+'fields/reset_password'
 }
