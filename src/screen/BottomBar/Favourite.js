@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import { View, StyleSheet, SafeAreaView, FlatList } from 'react-native'
 
 //COMPONENT
@@ -13,6 +13,9 @@ import { AuthContext, TranslationContext } from "../../context";
 //API
 import { favouriteHotelList } from "../../api";
 
+//PACKAGES
+import { useFocusEffect } from "@react-navigation/native";
+
 const Favourite = (props) => {
 
     const { user } = useContext(AuthContext)
@@ -22,9 +25,11 @@ const Favourite = (props) => {
     const [isLoading, setIsLoading] = useState(false);
     const [favouriteList, setFavouriteList] = useState([])
 
-    useEffect(() => {
-        getFavouriteHotels()
-    }, [])
+    useFocusEffect(
+        React.useCallback(() => {
+            getFavouriteHotels()
+        }, [])
+    );
 
     function onBack() {
         props.navigation.goBack()
@@ -34,7 +39,6 @@ const Favourite = (props) => {
         const params = {
             user_id: user?.[0]?.user_id,
             user_session: user?.[0]?.user_session,
-            user_session_id: ''
         }
 
         setIsLoading(true)

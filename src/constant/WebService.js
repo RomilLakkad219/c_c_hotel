@@ -3,7 +3,7 @@ export const BASE_URL = 'http://hotels-charme.prometteur.in/Front/Api/'
 export const BASE_IMAGE_URL = 'https://backoffice.gaph.online/media/cache/normal_size/uploads/images/etablissements/'
 
 export const WEB_SERVICE = {
-    login: BASE_URL + 'fields/login',
+    login: BASE_URL + 'mLogin',
     signUp: BASE_URL + 'mAdd/login',
     forgotPassword: BASE_URL + 'forget',
     userProfile: BASE_URL + 'fields/profile',

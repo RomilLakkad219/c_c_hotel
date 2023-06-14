@@ -7,6 +7,9 @@ import { IMAGES } from "../asset";
 //CONSTANT
 import { COLORS, SCALE_SIZE } from "../constant";
 
+//PACAGES
+import { EventRegister } from "react-native-event-listeners";
+
 const Tabbar = (props) => {
 
     function onPress(name, index) {

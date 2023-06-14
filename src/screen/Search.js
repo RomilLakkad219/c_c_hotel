@@ -40,7 +40,6 @@ const Search = (props) => {
         const params = {
             user_id: user?.[0]?.user_id,
             user_session: user?.[0]?.user_session,
-            user_session_id: '',
             seacrh_string: search,
         }
 

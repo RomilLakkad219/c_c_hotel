@@ -124,7 +124,6 @@ const EditProfile = (props) => {
             user_twitter_url: '',
             user_instagram_url: '',
             user_linkedin_url: '',
-            user_session_id: ''
         }
 
         setIsLoading(true)

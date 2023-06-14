@@ -70,14 +70,12 @@ const Login = (props) => {
         const params = {
             user_email: email,
             user_password: password,
-            user_fcm_key: '',
-            user_device_type: '',
         }
 
         setIsLoading(true)
         const result = await login(params)
         setIsLoading(false)
-
+        
         if (result.status) {
             if (result?.data?.status == '1') {
                 const user = result?.data?.result

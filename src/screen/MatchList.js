@@ -77,7 +77,6 @@ const MatchList = (props) => {
             hotel_services: services?.id ?? '',
             hotel_region: region?.id ?? '',
             hotel_equipment: '',
-            user_session_id: ''
         }
 
         setIsLoading(true)

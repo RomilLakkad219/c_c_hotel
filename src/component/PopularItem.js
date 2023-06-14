@@ -41,7 +41,6 @@ const PopularItem = (props) => {
             fv_user_id: user?.[0]?.user_id,
             user_session: user?.[0]?.user_session,
             fv_hotel_id: item?.hotel_id,
-            user_session_id: ''
         }
 
         setIsLoading(true)
