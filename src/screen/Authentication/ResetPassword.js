@@ -11,7 +11,7 @@ import { Button, Input, ProgressView, Text } from "../../component";
 import { COLORS, FONT_NAME, SCALE_SIZE, SHOW_TOAST } from "../../constant";
 
 //CONTEXT
-import { AuthContext, TranslationContext } from "../../context";
+import { TranslationContext } from "../../context";
 import { CommonActions } from "@react-navigation/native";
 
 //SCREENS
@@ -24,7 +24,7 @@ const ResetPassword = (props) => {
 
     const translations = useContext(TranslationContext)
 
-    const { user } = useContext(AuthContext)
+    const userId = props?.route?.params?.id ?? ''
 
     const [isSecurePassword, setSecurePassword] = useState(true);
     const [isVisiblePassword, setIsVisiblePassword] = useState(true);
@@ -46,7 +46,7 @@ const ResetPassword = (props) => {
 
     async function onResetPassword() {
         const params = {
-            user_id: user?.[0]?.user_id,
+            user_id: userId,
             new_password: newPassword
         }
 

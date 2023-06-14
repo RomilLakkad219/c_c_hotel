@@ -23,6 +23,8 @@ const Otp = (props) => {
 
     const translations = useContext(TranslationContext)
 
+    const userId = props?.route?.params?.id ?? ''
+
     const [otp, setOtp] = useState('')
 
     function onOtpCheck() {
@@ -30,7 +32,9 @@ const Otp = (props) => {
             SHOW_TOAST(translations.otp)
         }
         else {
-            props.navigation.navigate(SCREENS.ResetPassword.name)
+            props.navigation.navigate(SCREENS.ResetPassword.name, {
+                id: userId
+            })
         }
     }
 

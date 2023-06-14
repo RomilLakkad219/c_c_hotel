@@ -45,8 +45,15 @@ const ForgotPassword = (props) => {
         setIsLoading(false)
 
         if (result.status) {
-            console.log(result)
-            props.navigation.navigate(SCREENS.Otp.name)
+            if (result?.data?.status == "0") {
+                SHOW_TOAST('Email is invalid')
+            }
+            else {
+                const userId = result.data.result?.[0]?.user_id
+                props.navigation.navigate(SCREENS.Otp.name, {
+                    id: userId
+                })
+            }
         }
         else {
             SHOW_TOAST(result.error)
@@ -67,10 +74,10 @@ const ForgotPassword = (props) => {
                 </TouchableOpacity>
             </View>
             <ScrollView showsVerticalScrollIndicator={false}>
-            <Image
-                style={styles.forgotBackground}
-                resizeMode="contain"
-                source={IMAGES.forgot_bg} />
+                <Image
+                    style={styles.forgotBackground}
+                    resizeMode="contain"
+                    source={IMAGES.forgot_bg} />
                 <Text
                     style={styles.forgotText}
                     size={SCALE_SIZE(33)}
@@ -105,7 +112,7 @@ const ForgotPassword = (props) => {
                     }}
                     style={styles.submitButton}
                     title={translations.submit} />
-            {isLoading && <ProgressView />}
+                {isLoading && <ProgressView />}
             </ScrollView>
         </ImageBackground>
     )
