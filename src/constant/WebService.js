@@ -24,7 +24,7 @@ export const WEB_SERVICE = {
     personalData: BASE_URL + 'fields/personal_data',
     blog: BASE_URL + 'fields/blog',
     matchMakingHotels: BASE_URL + 'fields/match_making_hotels',
-    favouriteHotelList:BASE_URL+'fields/home',
+    favouriteHotelList:BASE_URL+'fields/favourite_hotel',
     likeUnlikeHotel:BASE_URL+'mAdd/favouritelist_hotel',
     experienceFilter:BASE_URL+'fields/experience_filter',
     filterHotel:BASE_URL+'fields/filter_hotel',

@@ -5,7 +5,7 @@ import { View, StyleSheet, SafeAreaView, FlatList } from 'react-native'
 import { Header, ProgressView, FavouriteItem, Text } from "../../component";
 
 //CONSTANT
-import { COLORS, FONT_NAME, SCALE_SIZE, SHOW_TOAST } from "../../constant";
+import { COLORS, FONT_NAME, SCALE_SIZE } from "../../constant";
 
 //CONTEXT
 import { AuthContext, TranslationContext } from "../../context";
@@ -18,7 +18,7 @@ import { useFocusEffect } from "@react-navigation/native";
 
 const Favourite = (props) => {
 
-    const { user } = useContext(AuthContext)
+    const { user, profile } = useContext(AuthContext)
 
     const translations = useContext(TranslationContext)
 
@@ -36,9 +36,11 @@ const Favourite = (props) => {
     }
 
     async function getFavouriteHotels() {
+
         const params = {
             user_id: user?.[0]?.user_id,
             user_session: user?.[0]?.user_session,
+            language: profile?.user_lang
         }
 
         setIsLoading(true)
@@ -46,10 +48,14 @@ const Favourite = (props) => {
         setIsLoading(false)
 
         if (result.status) {
-            const favouriteResponse = result?.data?.result?.front_fav ?? []
-            setFavouriteList(favouriteResponse)
+            if (result?.data?.status == 1) {
+                const favResponse = result?.data?.result ?? [0]
+                setFavouriteList(favResponse)
+            }
+            else {
+                SHOW_TOAST('No Records found')
+            }
         }
-
         else {
             SHOW_TOAST(result?.error)
         }

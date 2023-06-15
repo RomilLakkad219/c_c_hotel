@@ -21,7 +21,7 @@ import { likeUnlikeHotel } from "../api";
 
 const FavouriteItem = (props) => {
 
-    const { user } = useContext(AuthContext)
+    const { user, profile } = useContext(AuthContext)
 
     const [isLoading, setIsLoading] = useState(false)
 
@@ -43,6 +43,35 @@ const FavouriteItem = (props) => {
         props.onFavouriteStausChanged(item, index)
     }
 
+    const galleryThumbImage = () => {
+        if (item) {
+            let imagesArray = item?.hotel_galary_photos?.split(',')
+            imagesArray = imagesArray.filter((e) => e)
+            return imagesArray.length > 0 ? (imagesArray?.[0])?.trim() : null
+        }
+
+        return null
+    }
+
+    const getNameAsPerLanguage = () => {
+        if (profile.user_lang == 'English' || profile.user_lang == 'en') {
+            return item?.cont_english_design
+        }
+        else if (profile.user_lang == 'French') {
+            return item?.cont_french_design
+        }
+        else if (profile.user_lang == 'Spanish') {
+            return item?.cont_spanish_design
+        }
+        else {
+            return item?.cont_english_design
+        }
+    }
+
+    const thumbImage = galleryThumbImage()
+
+    const setCountry = getNameAsPerLanguage()
+    
     return (
         <TouchableOpacity style={styles.itemContainer}
             onPress={() => {
@@ -54,7 +83,7 @@ const FavouriteItem = (props) => {
             }}>
             <Image style={styles.imageView}
                 resizeMode="cover"
-                source={{ uri: item?.fav_hotel_imgurl ?? null }} />
+                source={thumbImage ? { uri: thumbImage } : null} />
             <View style={{ flex: 1.0 }}>
                 <View style={{ flexDirection: 'row' }}>
                     <Text
@@ -63,7 +92,7 @@ const FavouriteItem = (props) => {
                         numberOfLines={1}
                         color={COLORS.headerTitleGray}
                         family={FONT_NAME.medium}>
-                        {item?.fav_hotel_name ?? ''}
+                        {item?.hotel_trader_name ?? ''}
                     </Text>
                     <TouchableOpacity style={styles.heartImage} onPress={() => {
                         getLikeUnLikeHotel()
@@ -79,7 +108,7 @@ const FavouriteItem = (props) => {
                     size={SCALE_SIZE(16)}
                     color={COLORS.gray}
                     family={FONT_NAME.medium}>
-                    {item?.fav_hotel_country ?? ''}
+                    {setCountry}
                 </Text>
             </View>
             {isLoading && <ProgressView />}

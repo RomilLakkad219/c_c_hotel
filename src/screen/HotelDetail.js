@@ -110,9 +110,21 @@ const HotelDetail = (props) => {
         })
     }
 
+    const galleryThumbImageFav = () => {
+        if (item) {
+            let imagesArray = item?.hotel_galary_photos?.split(',')
+            imagesArray = imagesArray.filter((e) => e)
+            return imagesArray.length > 0 ? (imagesArray?.[0])?.trim() : null
+        }
+
+        return null
+    }
+
+    const favHotelImage = galleryThumbImageFav()
+
     function getValidURL() {
-        if (isFrom) {
-            return item?.fav_hotel_imgurl
+        if (isFrom){
+            return favHotelImage
         }
         else {
             let s = isSiteUrl ? item?.hotel_site_imgurl ?? '' : item?.hotel_galary_photos ?? ''
