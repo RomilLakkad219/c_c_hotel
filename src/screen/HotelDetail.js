@@ -169,7 +169,9 @@ const HotelDetail = (props) => {
                                 source={isLiked == '1' ? IMAGES.ic_heart : IMAGES.ic_heart_white} />
                         </TouchableOpacity>
                     </View>
-                    <TouchableOpacity onPress={() => {
+                    <TouchableOpacity 
+                    style={styles.shareImageContainer}
+                    onPress={() => {
                         onShare()
                     }}>
                         <Image
@@ -313,12 +315,17 @@ const styles = StyleSheet.create({
         height: SCALE_SIZE(58),
         width: SCALE_SIZE(58),
     },
-    shareImage: {
+    shareImageContainer:{
         height: SCALE_SIZE(58),
         width: SCALE_SIZE(58),
         alignSelf: 'flex-end',
         marginTop: SCALE_SIZE(22),
         marginRight: SCALE_SIZE(35)
+    },
+    shareImage: {
+        height: SCALE_SIZE(58),
+        width: SCALE_SIZE(58),
+        alignSelf: 'flex-end'
     },
     rateContainer: {
         flexDirection: 'row',

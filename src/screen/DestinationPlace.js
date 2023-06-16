@@ -13,6 +13,9 @@ import { getDestinationPlace } from "../api";
 //CONTEXT
 import { AuthContext, TranslationContext } from "../context";
 
+//PACKAGES
+import { EventRegister } from "react-native-event-listeners";
+
 const DestinationPlace = (props) => {
 
     const { item } = props.route.params
@@ -27,6 +30,17 @@ const DestinationPlace = (props) => {
     useEffect(() => {
         getUserDestinationPlaces()
     }, [])
+
+    useEffect(() => {
+        EventRegister.addEventListener('onLiked', (latestItems) => {
+            if (latestItems.hotel_id == item.hotel_id) {
+                setIsLiked(latestItems.fv_status)
+            }
+        });
+        return () => {
+            EventRegister.removeEventListener('onLiked')
+        }
+    }, [item])
 
     function onBack() {
         props.navigation.goBack()

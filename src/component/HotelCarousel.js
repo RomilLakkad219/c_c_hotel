@@ -35,7 +35,7 @@ const HotelCarousel = (props) => {
     useEffect(() => {
         EventRegister.addEventListener('onLiked', (latestItems) => {
             if (latestItems.hotel_id == item.hotel_id) {
-                setIsLiked(item.fv_status)
+                setIsLiked(latestItems.fv_status)
             }
         });
         return () => {
@@ -73,8 +73,7 @@ const HotelCarousel = (props) => {
                 resizeMode='cover'
                 source={{
                     uri: BASE_IMAGE_URL + item?.hotel_galary_photos ?? null
-                }}
-            >
+                }}>
                 <TouchableOpacity style={styles.heartImageContainer}
                     onPress={() => {
                         item.fv_status = item.fv_status == '1' ? "0" : '1'
@@ -84,7 +83,8 @@ const HotelCarousel = (props) => {
                     <Image
                         style={styles.heartImage}
                         resizeMode="contain"
-                        source={isLiked == '1' ? IMAGES.ic_heart : IMAGES.ic_heart_white} />
+                        source={isLiked == '1' ? IMAGES.ic_heart : IMAGES.ic_heart_white}
+                         />
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.heartImageContainer}
                     onPress={() => {

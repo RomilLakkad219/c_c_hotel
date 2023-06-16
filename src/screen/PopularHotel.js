@@ -39,7 +39,7 @@ const PopularHotel = (props) => {
         setIsLoading(true)
         const result = await home(params)
         setIsLoading(false)
-
+        
         if (result.status) {
             const response = result?.data?.result ?? []
             setHotelData(response)

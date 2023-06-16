@@ -28,8 +28,8 @@ const Home = (props) => {
 
     const translations = useContext(TranslationContext)
 
-    const languageRef = useRef()
-    const isCarousel = useRef();
+    const languageRef = useRef();
+    const isCarousel = useRef()
 
     const [search, setSearch] = useState('');
     const [index, setIndex] = useState(0);

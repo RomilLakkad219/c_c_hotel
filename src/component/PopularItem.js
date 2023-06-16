@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { View, StyleSheet, Image, TouchableOpacity, Linking } from 'react-native'
 
 //PACKAGES
@@ -23,6 +23,9 @@ import { likeUnlikeHotel } from "../api";
 //CONTEXT
 import { AuthContext, TranslationContext } from "../context";
 
+//PACKAGES
+import { EventRegister } from "react-native-event-listeners";
+
 const PopularItem = (props) => {
 
     const { user } = useContext(AuthContext)
@@ -35,6 +38,17 @@ const PopularItem = (props) => {
     const item = props.item
     const navigation = props.navigation
     const isShowSearchImage = props.isShowSearchImage
+
+    useEffect(() => {
+        EventRegister.addEventListener('onLiked', (latestItems) => {
+            if (latestItems.hotel_id == item.hotel_id) {
+                setIsLiked(latestItems.fv_status)
+            }
+        });
+        return () => {
+            EventRegister.removeEventListener('onLiked')
+        }
+    }, [item])
 
     async function getLikeUnLikeHotel() {
         const params = {

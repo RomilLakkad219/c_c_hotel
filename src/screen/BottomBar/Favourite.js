@@ -5,7 +5,7 @@ import { View, StyleSheet, SafeAreaView, FlatList } from 'react-native'
 import { Header, ProgressView, FavouriteItem, Text } from "../../component";
 
 //CONSTANT
-import { COLORS, FONT_NAME, SCALE_SIZE } from "../../constant";
+import { COLORS, FONT_NAME, SCALE_SIZE, SHOW_TOAST } from "../../constant";
 
 //CONTEXT
 import { AuthContext, TranslationContext } from "../../context";
@@ -31,7 +31,7 @@ const Favourite = (props) => {
         }, [])
     );
 
-    function onBack() {
+    async function onBack() {
         props.navigation.goBack()
     }
 
@@ -48,11 +48,12 @@ const Favourite = (props) => {
         setIsLoading(false)
 
         if (result.status) {
-            if (result?.data?.status == 1) {
+            if (result?.data?.status == '1') {
                 const favResponse = result?.data?.result ?? [0]
                 setFavouriteList(favResponse)
             }
             else {
+                setFavouriteList([])
                 SHOW_TOAST('No Records found')
             }
         }
@@ -89,11 +90,14 @@ const Favourite = (props) => {
                         return (
                             <FavouriteItem item={item}
                                 navigation={props.navigation}
-                                onFavouriteStausChanged={(item, index) => {
-                                    const listItems = [...favouriteList]
-                                    listItems.splice(index, 1)
-                                    setFavouriteList(listItems)
-                                }} />
+                                onFavouriteStausChanged={(item, index) => { 
+                                    getFavouriteHotels()
+                                    // console.log("index===>",index)                                   
+                                    // const listItems = [...favouriteList]
+                                    // listItems.splice(index, 1)
+                                    // setFavouriteList(listItems)
+                                }}
+                            />
                         )
                     }}>
                 </FlatList>

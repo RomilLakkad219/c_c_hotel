@@ -1,11 +1,11 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { View, StyleSheet, TouchableOpacity, Image } from 'react-native'
 
 //ASSET
 import { IMAGES } from "../asset";
 
 //CONSTANT
-import { COLORS, FONT_NAME, SCALE_SIZE } from "../constant";
+import { COLORS, FONT_NAME, SCALE_SIZE, SHOW_TOAST } from "../constant";
 
 //SCREENS
 import { SCREENS } from "../screen";
@@ -19,15 +19,30 @@ import { AuthContext } from "../context";
 //API
 import { likeUnlikeHotel } from "../api";
 
+//PACKAGES
+import { EventRegister } from "react-native-event-listeners";
+
 const FavouriteItem = (props) => {
 
     const { user, profile } = useContext(AuthContext)
 
-    const [isLoading, setIsLoading] = useState(false)
+    const [isLoading, setIsLoading] = useState(false);
+    const [isLiked, setIsLiked] = useState(item?.fv_status)
 
     const item = props.item
     const index = props.index
     const navigation = props.navigation
+
+    useEffect(() => {
+        EventRegister.addEventListener('onLiked', (latestItems) => {
+            if (latestItems.hotel_id == item.hotel_id) {
+                setIsLiked(latestItems.fv_status)
+            }
+        });
+        return () => {
+            EventRegister.removeEventListener('onLiked')
+        }
+    }, [item])
 
     async function getLikeUnLikeHotel() {
         const params = {
@@ -40,7 +55,15 @@ const FavouriteItem = (props) => {
         const result = await likeUnlikeHotel(params)
         setIsLoading(false)
 
-        props.onFavouriteStausChanged(item, index)
+        if (result?.data?.status == '1') {        
+            let newItem = { ...item }
+            newItem.fv_status = '0'                             
+            EventRegister.emit('onLiked', newItem)
+            props.onFavouriteStausChanged(item, index)
+        }
+        else {
+            SHOW_TOAST(result?.error)
+        }
     }
 
     const galleryThumbImage = () => {
@@ -71,7 +94,7 @@ const FavouriteItem = (props) => {
     const thumbImage = galleryThumbImage()
 
     const setCountry = getNameAsPerLanguage()
-    
+
     return (
         <TouchableOpacity style={styles.itemContainer}
             onPress={() => {
@@ -95,12 +118,14 @@ const FavouriteItem = (props) => {
                         {item?.hotel_trader_name ?? ''}
                     </Text>
                     <TouchableOpacity style={styles.heartImage} onPress={() => {
+                        item.fv_status = item.fv_status == '1' ? "0" : '1'
+                        setIsLiked(isLiked == '1' ? '0' : '1')
                         getLikeUnLikeHotel()
                     }}>
                         <Image
                             style={styles.heartImage}
                             resizeMode="contain"
-                            source={IMAGES.ic_heart} />
+                            source={isLiked == '1' ? IMAGES.ic_heart_white : IMAGES.ic_heart} />
                     </TouchableOpacity>
                 </View>
                 <Text
@@ -111,8 +136,8 @@ const FavouriteItem = (props) => {
                     {setCountry}
                 </Text>
             </View>
-            {isLoading && <ProgressView />}
-        </TouchableOpacity>
+            { isLoading && <ProgressView /> }
+        </TouchableOpacity >
     )
 }
 

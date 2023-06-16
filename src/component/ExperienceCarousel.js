@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { View, StyleSheet, Image, ImageBackground, TouchableOpacity, Dimensions, Share } from 'react-native'
 
 //ASSET
@@ -19,6 +19,9 @@ import { likeUnlikeHotel } from "../api";
 //CONTEXT
 import { AuthContext } from "../context";
 
+//PACKAGES
+import { EventRegister } from "react-native-event-listeners";
+
 const ExperienceCarousel = (props) => {
 
     const { user } = useContext(AuthContext)
@@ -27,6 +30,17 @@ const ExperienceCarousel = (props) => {
 
     const [isLiked, setIsLiked] = useState(item.fv_status)
     const [isLoading, setIsLoading] = useState(false)
+
+    useEffect(() => {
+        EventRegister.addEventListener('onLiked', (latestItems) => {
+            if (latestItems.hotel_id == item.hotel_id) {
+                setIsLiked(latestItems.fv_status)
+            }
+        });
+        return () => {
+            EventRegister.removeEventListener('onLiked')
+        }
+    }, [item])
 
     async function getLikeUnLikeHotel() {
         const params = {
